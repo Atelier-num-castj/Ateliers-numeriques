@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sons simples</title>
+    <link rel="stylesheet" href="../../../styles.css" />
+    <link rel="stylesheet" href="../../styles.css" />
+    <script src="sons.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <img
+        src="../../../assets/logo-CASTJ.png"
+        alt="Logo du centre d'animation"
+      />
+      <div class="header-container">
+        <div class="header-title">
+          <h1>Centre d'animation Saint Jean</h1>
+          <h2>AlphaNum</h2>
+        </div>
+        <nav>
+          <ul>
+            <li>
+              <a href="../../../index.html" class="bouton"
+                >Retour à l'accueil</a
+              >
+            </li>
+            <li>
+              <a href="../../index.html" class="bouton">Retour à l'atelier</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <p class="consigne">
+        <span aria-hidden="true">🗣️</span> Dire et ⌨️ Ecrire
+      </p>
+      <div class="modele" id="modele"></div>
+      <input
+        type="text"
+        id="reponse"
+        autocomplete="off"
+        spellcheck="false"
+        autofocus
+        aria-label="Écrire le son lu"
+      />
+      <p id="message"></p>
+    </main>
+  </body>
+</html>

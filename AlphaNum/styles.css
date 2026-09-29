@@ -1,0 +1,98 @@
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  flex: 1;
+}
+
+.modele {
+  width: 9rem;
+  height: 9rem;
+  margin: 2rem auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 3rem;
+  font-weight: bold;
+  color: #16213e;
+  text-transform: uppercase;
+}
+
+.modele span {
+  padding: 0 0.1em;
+  color: #5b6675;
+}
+
+.modele .fait {
+  color: #1e8a4c;
+}
+
+.modele .courante {
+  color: #16213e;
+  background: #f18d20;
+  border-radius: 6px 6px 0 0;
+}
+
+.valide {
+  color: #85c734;
+}
+
+.mot.valide {
+  transform: translateY(4px);
+}
+.invalide {
+  color: #c52323;
+}
+
+.mot.invalide {
+  transform: translateY(4px);
+}
+
+#reponse {
+  display: block;
+  width: 30rem;
+  height: 5rem;
+  margin: 2rem auto;
+
+  font-size: 3rem;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  color: #16213e;
+
+  background: #ffffff;
+  border: 3px solid #16213e;
+  border-radius: 12px;
+}
+
+#reponse:focus {
+  outline: 4px solid #2378b4;
+  border: 0px;
+}
+
+#message {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 100px;
+}
+
+#message,
+.consigne {
+  margin: 0 auto;
+  font-size: 3rem;
+  text-align: center;
+}
+
+.consigne span {
+  font-size: 5rem;
+}

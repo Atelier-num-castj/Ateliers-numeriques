@@ -1,0 +1,124 @@
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  flex: 1;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.onglets {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.onglet {
+  font: inherit;
+  font-size: 1.2rem;
+  font-weight: 500;
+  padding: 0.6rem 1.5rem;
+  color: #16213e;
+  background: white;
+  border: 3px solid #16213e;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.onglet.actif {
+  color: white;
+  background: #2378b4;
+}
+
+.coche {
+  font-weight: bold;
+  color: #1e8a4c;
+}
+
+.onglet.actif .coche {
+  color: white;
+}
+
+#activite-1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.carte {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  width: fit-content;
+  margin: 1rem auto;
+  padding: 1.5rem 2rem;
+  border: 3px solid #16213e;
+  border-radius: 16px;
+  box-shadow: 0 6px 0 #16213e;
+}
+
+.numero {
+  display: grid;
+  place-items: center;
+  width: 4rem;
+  height: 4rem;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #16213e;
+  background: white;
+  border-radius: 50%;
+}
+
+#ecouter {
+  width: 4rem;
+  height: 4rem;
+  font-size: 2.3rem;
+  border-radius: 100%;
+  border: 2px black solid;
+  box-shadow: 1px 3px 0 #16213e;
+  cursor: pointer;
+}
+
+#recommencer {
+  position: absolute;
+  right: 30px;
+  bottom: 30px;
+}
+
+#message {
+  bottom: 30px;
+}
+
+.consigne,
+.consigne span {
+  font-size: 2.5rem;
+}
+
+.consigne span.consigne-emoji {
+  font-size: 3rem;
+}
+
+#modele {
+  margin: 1rem auto;
+}
+
+#reponse {
+  margin: 1rem auto;
+}

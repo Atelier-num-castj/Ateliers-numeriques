@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Le Calendrier</title>
+    <link rel="stylesheet" href="../../../styles.css" />
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="calendrier.css" />
+    <script src="calendrier.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <img
+        src="../../../assets/logo-CASTJ.png"
+        alt="Logo du centre d'animation"
+      />
+      <div class="header-container">
+        <div class="header-title">
+          <h1>Centre d'animation Saint Jean</h1>
+          <h2>AlphaNum</h2>
+        </div>
+        <nav>
+          <ul>
+            <li>
+              <a href="../../../index.html" class="bouton"
+                >Retour à l'accueil</a
+              >
+            </li>
+            <li>
+              <a href="../../index.html" class="bouton">Retour à l'atelier</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <div class="onglets" role="tablist" aria-label="Activités">
+        <button
+          type="button"
+          role="tab"
+          id="onglet-1"
+          aria-controls="activite-1"
+          aria-selected="true"
+          class="onglet actif"
+        >
+          <span aria-hidden="true">1️⃣</span> Écrire
+          <span class="coche" hidden>✓</span>
+        </button>
+        <button
+          type="button"
+          role="tab"
+          id="onglet-2"
+          aria-controls="activite-2"
+          aria-selected="false"
+          class="onglet"
+        >
+          <span aria-hidden="true">2️⃣</span> Ordre
+          <span class="coche" hidden>✓</span>
+        </button>
+      </div>
+      <section
+        id="activite-1"
+        role="tabpanel"
+        aria-labelledby="onglet-1"
+        hidden
+      >
+        <p class="consigne">
+          <span aria-hidden="true" class="consigne-emoji">✏️</span> Écrire le
+          <span id="consigne-text"></span>
+        </p>
+
+        <div class="carte" id="carte">
+          <span class="numero" id="numero">1</span>
+          <button
+            type="button"
+            id="ecouter"
+            class="bouton"
+            aria-label="Écouter le jour"
+          >
+            🔊
+          </button>
+        </div>
+
+        <div class="modele" id="modele" aria-hidden="true"></div>
+        <input
+          type="text"
+          id="reponse"
+          autocomplete="off"
+          spellcheck="false"
+          aria-label="Écrire le jour"
+        />
+        <p id="message" role="status"></p>
+      </section>
+
+      <section id="activite-2" role="tabpanel" aria-labelledby="onglet-2">
+        <p class="consigne">
+          <span aria-hidden="true">🔀</span> Remettre dans l'ordre
+        </p>
+        <!-- le glisser-déposer viendra ici -->
+      </section>
+      <button type="button" id="recommencer" class="bouton">
+        🔄 Recommencer
+      </button>
+    </main>
+  </body>
+</html>
