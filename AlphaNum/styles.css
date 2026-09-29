@@ -26,7 +26,13 @@ main {
   color: #16213e;
   text-transform: uppercase;
 }
-
+.touche {
+  font-size: 4rem;
+  background: #ffffff;
+  border: 3px solid #16213e;
+  border-radius: 12px;
+  box-shadow: 0 6px 0 #16213e;
+}
 .modele span {
   padding: 0 0.1em;
   color: #5b6675;
