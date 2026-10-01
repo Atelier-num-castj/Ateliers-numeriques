@@ -63,12 +63,12 @@ const MOIS = [
   { nom: "avril", couleur: "#2a9d8f" },
   { nom: "mai", couleur: "#2378b4" },
   { nom: "juin", couleur: "#7b5ea7" },
-  { nom: "juillet", couleur: "#d6336c" },
-  { nom: "aout", couleur: "#e63946" },
-  { nom: "septembre", couleur: "#f4a261" },
-  { nom: "octobre", couleur: "#e9c46a" },
-  { nom: "novembre", couleur: "#2a9d8f" },
-  { nom: "décembre", couleur: "#2378b4" },
+  { nom: "juillet", couleur: "#88ff00" },
+  { nom: "aout", couleur: "#ff7de9" },
+  { nom: "septembre", couleur: "#ff6f1b" },
+  { nom: "octobre", couleur: "#ff206a" },
+  { nom: "novembre", couleur: "#ffdf2b" },
+  { nom: "decembre", couleur: "#8bcfff" },
 ];
 
 const carte = document.getElementById("carte");
@@ -142,8 +142,12 @@ reponse.addEventListener("input", () => {
     setTimeout(() => {
       message.classList.remove("valide");
       indexTableau++;
-      if (indexTableau >= JOURS.length) {
-        validerActivite(2);
+      if (
+        niveau === "jour"
+          ? indexTableau >= JOURS.length
+          : indexTableau >= MOIS.length
+      ) {
+        validerActivite(1);
         indexTableau = 0;
       }
       reponse.disabled = false;
@@ -153,8 +157,62 @@ reponse.addEventListener("input", () => {
   }
 });
 
+// activité ordre
+
+const emplacements = document.getElementById("emplacements");
+const tas = document.getElementById("tas");
+
+function genererEmplacements() {
+  const tableau = niveau === "jour" ? JOURS : MOIS;
+  console.log(tableau);
+  console.log(emplacements);
+
+  emplacements.replaceChildren(
+    ...tableau.map((item, i) => {
+      const bouton = document.createElement("button");
+      const span = document.createElement("span");
+      span.textContent = i + 1;
+      span.className = "numero";
+      bouton.type = "button";
+      bouton.className = "emplacement";
+      bouton.dataset.attendu = item.nom;
+      bouton.style.background = item.couleur;
+      bouton.appendChild(span);
+      return bouton;
+    }),
+  );
+}
+
+function melanger(tableau) {
+  const copie = [...tableau];
+  for (let i = copie.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copie[i], copie[j]] = [copie[j], copie[i]];
+  }
+  return copie;
+}
+
+function genererCartes() {
+  const tableau = niveau === "jour" ? JOURS : MOIS;
+
+  const tableauMelanges = melanger(tableau);
+
+  tas.replaceChildren(
+    ...tableauMelanges.map((item) => {
+      const bouton = document.createElement("button");
+      bouton.type = "button";
+      bouton.className = "carte";
+      bouton.dataset.nom = item.nom;
+      bouton.textContent = item.nom;
+      return bouton;
+    }),
+  );
+}
+
 document.getElementById("ecouter").addEventListener("click", () => {
-  const son = new SpeechSynthesisUtterance(JOURS[indexTableau].nom);
+  const son = new SpeechSynthesisUtterance(
+    niveau === "jour" ? JOURS[indexTableau].nom : MOIS[indexTableau].nom,
+  );
   son.lang = "fr-FR";
   speechSynthesis.cancel();
   speechSynthesis.speak(son);
@@ -163,4 +221,6 @@ document.getElementById("ecouter").addEventListener("click", () => {
 // Au chargement de la page
 afficherTexte();
 afficherCoches();
+genererEmplacements();
+genererCartes();
 afficherActivite(premiereActiviteNonValidee());

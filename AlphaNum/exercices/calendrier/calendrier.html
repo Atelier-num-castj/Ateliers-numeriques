@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="../../../styles.css" />
     <link rel="stylesheet" href="../../styles.css" />
     <link rel="stylesheet" href="calendrier.css" />
+    <link
+      rel="shortcut icon"
+      href="../../../assets/logo-CASTJ.png"
+      type="image/x-icon"
+    />
     <script src="calendrier.js" defer></script>
   </head>
   <body>
@@ -97,7 +102,11 @@
         <p class="consigne">
           <span aria-hidden="true">🔀</span> Remettre dans l'ordre
         </p>
-        <!-- le glisser-déposer viendra ici -->
+        <div class="activite-box">
+          <div class="tas" id="tas"></div>
+          <div class="emplacements" id="emplacements"></div>
+        </div>
+        <p id="message" role="status"></p>
       </section>
       <button type="button" id="recommencer" class="bouton">
         🔄 Recommencer

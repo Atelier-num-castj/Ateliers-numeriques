@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Le chemin de la maison – jeu de souris</title>
+    <link rel="stylesheet" href="deplacer.css" />
+    <link rel="stylesheet" href="../../styles.css" />
+    <link
+      rel="shortcut icon"
+      href="../../assets/logo-CASTJ.png"
+      type="image/x-icon"
+    />
+  </head>
+  <body>
+    <header>
+      <img
+        src="../../../assets/logo-CASTJ.png"
+        alt="Logo du centre d'animation"
+      />
+      <div class="header-container">
+        <div class="header-title">
+          <h1>Centre d'animation Saint Jean</h1>
+          <h2>Déplacer la souris</h2>
+        </div>
+        <nav>
+          <ul>
+            <li>
+              <a href="../../index.html" class="bouton">Retour à l'accueil</a>
+            </li>
+            <li>
+              <a href="../index.html" class="bouton">Retour à l'atelier</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <div class="instructions">
+        <h3>Le chemin vers la maison 🏠</h3>
+        <p class="sub">
+          Apprends à déplacer la souris. Pas besoin de cliquer !
+        </p>
+      </div>
+      <div
+        class="levels"
+        id="levels"
+        role="group"
+        aria-label="Choisir un niveau"
+      >
+        <p>Niveau :</p>
+      </div>
+
+      <div id="msg" role="status" aria-live="polite">
+        <p class="txt" id="msgText"></p>
+        <button type="button" class="primary" id="nextBtn" hidden></button>
+      </div>
+
+      <div class="board">
+        <svg
+          id="scene"
+          viewBox="0 0 800 500"
+          role="img"
+          aria-label="Un chemin qui va du rond de départ jusqu'à la maison"
+        >
+          <rect
+            data-role="bg"
+            x="0"
+            y="0"
+            width="800"
+            height="500"
+            fill="#7cc576"
+          />
+          <g class="deco">
+            <text x="20" y="70">🌳</text>
+            <text x="735" y="480">🌼</text>
+            <text x="20" y="490">🌷</text>
+            <text x="735" y="70">🌳</text>
+            <text x="380" y="480">🌼</text>
+          </g>
+          <path
+            id="trackBorder"
+            class="no-hit"
+            fill="none"
+            stroke="#6b4f2a"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            id="track"
+            data-role="track"
+            fill="none"
+            stroke="#f3dfb0"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            id="dash"
+            class="no-hit"
+            fill="none"
+            stroke="#ffffff"
+            stroke-opacity=".7"
+            stroke-width="4"
+            stroke-dasharray="4 14"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <polyline
+            id="trail"
+            class="no-hit"
+            fill="none"
+            stroke="#e8590c"
+            stroke-width="8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            points=""
+          />
+          <g
+            id="ghosts"
+            class="no-hit"
+            font-size="34"
+            text-anchor="middle"
+            dominant-baseline="central"
+          ></g>
+          <g id="startG">
+            <circle
+              id="startCircle"
+              data-role="start"
+              r="44"
+              fill="#ffffff"
+              stroke="#2f7d4f"
+              stroke-width="7"
+            />
+            <text
+              id="startText"
+              class="no-hit"
+              text-anchor="middle"
+              dominant-baseline="central"
+              font-size="19"
+              font-weight="700"
+              fill="#1f5a37"
+            >
+              DÉPART
+            </text>
+          </g>
+
+          <g id="houseG">
+            <g id="houseInner">
+              <circle
+                data-role="house"
+                r="52"
+                fill="#ffffff"
+                fill-opacity=".45"
+                stroke="#ffffff"
+                stroke-width="4"
+              />
+              <text
+                class="no-hit"
+                text-anchor="middle"
+                dominant-baseline="central"
+                font-size="76"
+              >
+                🏠
+              </text>
+            </g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="stats">
+        <span id="triesEl">Essais : 0</span>
+        <span id="winsEl">Réussites : 0</span>
+      </div>
+    </main>
+  </body>
+  <script src="./deplacer.js"></script>
+</html>

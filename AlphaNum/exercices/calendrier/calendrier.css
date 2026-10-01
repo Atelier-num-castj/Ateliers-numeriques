@@ -12,6 +12,7 @@ main {
   align-items: center;
   gap: 1.5rem;
   flex: 1;
+  padding-top: 7rem;
 }
 
 [hidden] {
@@ -61,7 +62,14 @@ main {
   align-items: center;
 }
 
-.carte {
+.activite-box {
+  display: flex;
+  justify-content: space-between;
+  gap: 10rem;
+}
+
+.carte,
+.emplacement {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -72,6 +80,15 @@ main {
   border: 3px solid #16213e;
   border-radius: 16px;
   box-shadow: 0 6px 0 #16213e;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.emplacement,
+.activite-box .carte {
+  min-width: 15rem;
+  max-height: 2rem;
+  cursor: pointer;
 }
 
 .numero {
@@ -84,6 +101,13 @@ main {
   color: #16213e;
   background: white;
   border-radius: 50%;
+}
+
+.emplacement .numero,
+.activite-box .carte {
+  width: 2rem;
+  height: 2rem;
+  font-size: 1.5rem;
 }
 
 #ecouter {
