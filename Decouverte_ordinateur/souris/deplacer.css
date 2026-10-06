@@ -17,6 +17,7 @@ main {
   max-width: 980px;
   margin: 0 auto;
   padding: 20px 16px 32px;
+  position: relative;
 }
 
 .instructions {
@@ -100,6 +101,7 @@ button.primary {
   border-radius: 18px;
   overflow: hidden;
   background: #7cc576;
+  position: relative;
 }
 svg {
   display: block;
@@ -129,4 +131,31 @@ svg {
   flex-wrap: wrap;
   margin-top: 12px;
   font-size: 1rem;
+}
+
+dialog {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  height: fit-content;
+  width: fit-content;
+  border: 3px solid var(--accent);
+  border-radius: 18px;
+  background: var(--panel);
+  color: var(--ink);
+  padding: 24px 32px;
+  text-align: center;
+  max-width: 90%;
+  font: inherit;
+  box-shadow: 0 0 0 100vmax rgb(0 0 0 / 0.5); /* assombrit le plateau */
+}
+dialog::backdrop {
+  background: rgb(0 0 0 / 0.5);
+}
+dialog h2 {
+  margin: 0 0 8px;
+  font-size: 1.8rem;
+}
+dialog p {
+  margin: 0 0 20px;
 }

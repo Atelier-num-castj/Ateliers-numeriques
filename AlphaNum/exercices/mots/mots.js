@@ -27,7 +27,8 @@ const MOTS = [
 
 const modele = document.getElementById("modele");
 const reponseMot = document.getElementById("reponse");
-const messageMot = document.getElementById("message");
+const compteur = document.getElementById("compteur");
+let score = 0;
 
 let motActuel = modele.textContent;
 let motsRestants = [...MOTS];
@@ -69,7 +70,6 @@ function afficherMot() {
   dernierValide = "";
   reponseMot.value = "";
   reponseMot.maxLength = mot.length;
-  messageMot.textContent = "";
   majLettres();
 }
 
@@ -80,27 +80,26 @@ reponseMot.addEventListener("input", () => {
 
   if (!nom.startsWith(saisie)) {
     reponseMot.value = dernierValide;
-    messageMot.textContent = "✗ Encore";
-    messageMot.classList.add("invalide");
+    reponseMot.classList.add("invalide");
     majLettres();
     setTimeout(() => {
-      messageMot.textContent = "";
-      messageMot.classList.remove("invalide");
-    }, 1000);
+      reponseMot.classList.remove("invalide");
+    }, 400);
     return;
   }
 
   dernierValide = saisie;
   reponseMot.value = saisie;
-  messageMot.textContent = "";
   majLettres();
 
   if (saisie === nom) {
-    messageMot.textContent = "✓ Bravo !";
+    reponseMot.value = "✓ Bravo !";
     reponseMot.disabled = true;
-    messageMot.classList.add("valide");
+    reponseMot.classList.add("valide");
+    score++;
+    compteur.textContent = score;
     setTimeout(() => {
-      messageMot.classList.remove("valide");
+      reponseMot.classList.remove("valide");
       reponseMot.disabled = false;
       afficherMot();
       reponseMot.focus();

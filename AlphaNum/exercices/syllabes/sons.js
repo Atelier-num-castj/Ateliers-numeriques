@@ -122,7 +122,8 @@ const params = new URLSearchParams(window.location.search);
 const niveau = params.get("niveau");
 const son = document.getElementById("modele");
 const reponse = document.getElementById("reponse");
-const message = document.getElementById("message");
+const compteur = document.getElementById("compteur");
+let score = 0;
 
 let sonActuel = "";
 let sonsRestants =
@@ -162,8 +163,6 @@ function afficherSon() {
   );
   dernierValide = "";
   reponse.value = "";
-  reponse.maxLength = s.length;
-  message.textContent = "";
   majLettres();
 }
 
@@ -172,27 +171,27 @@ reponse.addEventListener("input", () => {
 
   if (!sonActuel.startsWith(saisie)) {
     reponse.value = dernierValide;
-    message.textContent = "✗ Encore";
-    message.classList.add("invalide");
+    reponse.classList.add("invalide");
     majLettres();
     setTimeout(() => {
-      message.textContent = "";
-      message.classList.remove("invalide");
-    }, 1000);
+      reponse.classList.remove("invalide");
+    }, 400);
     return;
   }
 
   dernierValide = saisie;
   reponse.value = saisie;
-  message.textContent = "";
   majLettres();
 
   if (saisie === sonActuel) {
-    message.textContent = "✓ Bravo !";
-    message.classList.add("valide");
+    reponse.value = "✓ Bravo !";
     reponse.disabled = true;
+    reponse.classList.add("valide");
+    reponse.disabled = true;
+    score++;
+    compteur.textContent = score;
     setTimeout(() => {
-      message.classList.remove("valide");
+      reponse.classList.remove("valide");
       reponse.disabled = false;
       afficherSon();
       reponse.focus();

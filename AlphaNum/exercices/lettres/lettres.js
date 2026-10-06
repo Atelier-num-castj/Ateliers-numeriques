@@ -23,24 +23,23 @@ reponse.addEventListener("input", () => {
 
   if (saisie === lettreActuelle) {
     touche.classList.add("valide");
-    message.classList.add("valide");
-    message.textContent = "✓ Bravo !";
+    reponse.classList.add("valide");
+    reponse.value = "✓ Bravo !";
     setTimeout(() => {
+      reponse.classList.remove("valide");
       nouvelleLettre();
       reponse.value = "";
       message.textContent = "";
-      message.classList.remove("valide");
       touche.classList.remove("valide");
     }, 1000);
   } else {
     touche.classList.add("invalide");
-    message.classList.add("invalide");
-    message.textContent = "✗ Encore";
+    reponse.classList.add("invalide");
     reponse.value = "";
     setTimeout(() => {
       touche.classList.remove("invalide");
-      message.classList.remove("invalide");
-    }, 1000);
+      reponse.classList.remove("invalide");
+    }, 400);
   }
 });
 

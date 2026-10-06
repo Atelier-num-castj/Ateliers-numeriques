@@ -48,21 +48,6 @@ main {
   border-radius: 6px 6px 0 0;
 }
 
-.valide {
-  color: #85c734;
-}
-
-.mot.valide {
-  transform: translateY(4px);
-}
-.invalide {
-  color: #c52323;
-}
-
-.mot.invalide {
-  transform: translateY(4px);
-}
-
 #reponse {
   display: block;
   width: 30rem;
@@ -85,14 +70,20 @@ main {
   border: 0px;
 }
 
-#message {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 100px;
+#reponse.invalide {
+  background: #f8d7da;
+  outline-color: #c9382a;
+  animation: secoue 0.3s;
 }
 
-#message,
+#reponse.valide {
+  color: #1e8a4c;
+  font-weight: bold;
+  text-align: center;
+  border: 4px solid #1e8a4c;
+  outline: none;
+}
+
 .consigne {
   margin: 0 auto;
   font-size: 3rem;
@@ -101,4 +92,29 @@ main {
 
 .consigne span {
   font-size: 5rem;
+}
+
+.emplacement.invalide {
+  animation: secoue 0.3s;
+}
+
+@keyframes secoue {
+  25% {
+    transform: translateX(-6px);
+  }
+  75% {
+    transform: translateX(6px);
+  }
+}
+
+button:disabled {
+  opacity: 1;
+  color: #16213e;
+}
+
+.score {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #16213e;
+  text-align: center;
 }

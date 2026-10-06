@@ -87,6 +87,8 @@ const nextBtn = $("#nextBtn");
 const levelsBox = $("#levels");
 const triesEl = $("#triesEl");
 const winsEl = $("#winsEl");
+const winDialog = $("#winDialog");
+const winNextBtn = $("#winNextBtn");
 
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)");
 
@@ -127,6 +129,8 @@ const loadLevel = (index) => {
     start: [sx, sy],
     end: [ex, ey],
   } = LEVELS[index];
+
+  winDialog.close();
 
   game.level = index;
   game.phase = "idle";
@@ -198,6 +202,10 @@ const winRun = () => {
   const isLast = game.level === LEVELS.length - 1;
   nextBtn.textContent = isLast ? "Recommencer le niveau 1" : "Niveau suivant";
   nextBtn.hidden = false;
+  winNextBtn.textContent = nextBtn.textContent;
+  setTimeout(() => {
+    if (game.phase === "won") winDialog.show();
+  }, 600);
 
   animate(
     houseInner,
@@ -208,9 +216,6 @@ const winRun = () => {
     ],
     500,
   );
-  setTimeout(() => {
-    loadLevel(isLast ? 0 : game.level + 1);
-  }, 4000);
 };
 
 const followTrail = (clientX, clientY) => {
@@ -250,6 +255,11 @@ svg.addEventListener("pointerleave", () => failRun(MESSAGES.leftGame));
 nextBtn.addEventListener("click", () => {
   const isLast = game.level === LEVELS.length - 1;
   loadLevel(isLast ? 0 : game.level + 1);
+});
+
+winNextBtn.addEventListener("click", () => {
+  winDialog.close();
+  nextBtn.click();
 });
 
 levelsBox.append(

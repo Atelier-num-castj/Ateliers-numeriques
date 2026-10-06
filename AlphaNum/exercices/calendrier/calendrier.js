@@ -44,6 +44,14 @@ document.getElementById("recommencer").addEventListener("click", () => {
   CLES.forEach((cle) => localStorage.removeItem(cle));
   afficherCoches();
   afficherActivite(1);
+
+  indexTableau = 0;
+  reponse.disabled = false;
+  afficherTexte();
+
+  genererCartes();
+  genererEmplacements();
+  carteSelectionnee = null;
 });
 
 const JOURS = [
@@ -75,7 +83,6 @@ const carte = document.getElementById("carte");
 const numero = document.getElementById("numero");
 const modele = document.getElementById("modele");
 const reponse = document.getElementById("reponse");
-const message = document.getElementById("message");
 const consigneActivité = document.getElementById("consigne-text");
 const consigne = niveau;
 
@@ -108,8 +115,6 @@ function afficherTexte() {
   );
   dernierValide = "";
   reponse.value = "";
-  reponse.maxLength = texte.nom.length;
-  message.textContent = "";
   majLettres();
 }
 
@@ -120,27 +125,24 @@ reponse.addEventListener("input", () => {
 
   if (!nom.startsWith(saisie)) {
     reponse.value = dernierValide;
-    message.textContent = "✗ Encore";
-    message.classList.add("invalide");
+    reponse.classList.add("invalide");
     majLettres();
     setTimeout(() => {
-      message.textContent = "";
-      message.classList.remove("invalide");
-    }, 1000);
+      reponse.classList.remove("invalide");
+    }, 400);
     return;
   }
 
   dernierValide = saisie;
   reponse.value = saisie;
-  message.textContent = "";
   majLettres();
 
   if (saisie === nom) {
-    message.textContent = "✓ Bravo !";
+    reponse.value = "✓ Bravo !";
     reponse.disabled = true;
-    message.classList.add("valide");
+    reponse.classList.add("valide");
     setTimeout(() => {
-      message.classList.remove("valide");
+      reponse.classList.remove("valide");
       indexTableau++;
       if (
         niveau === "jour"
@@ -159,25 +161,27 @@ reponse.addEventListener("input", () => {
 
 // activité ordre
 
-const emplacements = document.getElementById("emplacements");
+const emplacement = document.getElementById("emplacements");
 const tas = document.getElementById("tas");
 
 function genererEmplacements() {
   const tableau = niveau === "jour" ? JOURS : MOIS;
   console.log(tableau);
-  console.log(emplacements);
 
-  emplacements.replaceChildren(
+  emplacement.replaceChildren(
     ...tableau.map((item, i) => {
       const bouton = document.createElement("button");
-      const span = document.createElement("span");
-      span.textContent = i + 1;
-      span.className = "numero";
+      const numero = document.createElement("span");
+      const nom = document.createElement("span");
+      numero.textContent = i + 1;
+      numero.className = "numero";
+      nom.className = "nom";
       bouton.type = "button";
       bouton.className = "emplacement";
       bouton.dataset.attendu = item.nom;
       bouton.style.background = item.couleur;
-      bouton.appendChild(span);
+      bouton.appendChild(numero);
+      bouton.appendChild(nom);
       return bouton;
     }),
   );
@@ -224,3 +228,53 @@ afficherCoches();
 genererEmplacements();
 genererCartes();
 afficherActivite(premiereActiviteNonValidee());
+
+tas.addEventListener("click", (event) => {
+  const carte = event.target.closest(".carte");
+  if (!carte) return;
+
+  if (carteSelectionnee) {
+    carteSelectionnee.classList.remove("selectionnee");
+  }
+
+  if (carteSelectionnee === carte) {
+    carteSelectionnee = null;
+  } else {
+    carteSelectionnee = carte;
+    carte.classList.add("selectionnee");
+  }
+});
+
+const emplacements = document.getElementById("emplacements");
+
+emplacements.addEventListener("click", (event) => {
+  const emplacement = event.target.closest(".emplacement");
+  if (!emplacement) return;
+  if (emplacement.classList.contains("rempli")) return;
+  if (!carteSelectionnee) return;
+
+  if (carteSelectionnee.dataset.nom === emplacement.dataset.attendu) {
+    emplacement.querySelector(".nom").textContent = emplacement.dataset.attendu;
+    emplacement.classList.add("rempli");
+
+    carteSelectionnee.remove();
+    carteSelectionnee = null;
+
+    verifierFin();
+  } else {
+    emplacement.classList.add("invalide");
+    setTimeout(() => emplacement.classList.remove("invalide"), 400);
+
+    carteSelectionnee.classList.remove("selectionnee");
+    carteSelectionnee = null;
+  }
+});
+
+let carteSelectionnee = null;
+
+function verifierFin() {
+  const resteDesCartes = document.querySelectorAll(".carte").length > 0;
+  if (!resteDesCartes) {
+    validerActivite(1);
+  }
+}

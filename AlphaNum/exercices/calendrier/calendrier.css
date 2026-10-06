@@ -146,3 +146,8 @@ main {
 #reponse {
   margin: 1rem auto;
 }
+
+.carte.selectionnee {
+  outline: 4px solid #f18d20;
+  outline-offset: 2px;
+}
