@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jeux - Memory</title>
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="./memory.css" />
+    <link
+      rel="shortcut icon"
+      href="../../assets/logo-CASTJ.png"
+      type="image/x-icon"
+    />
+  </head>
+  <body>
+    <header>
+      <img src="../../assets/logo-CASTJ.png" alt="Logo du centre d'animation" />
+      <div class="header-container">
+        <div class="header-title">
+          <h1>Centre d'animation Saint Jean</h1>
+        </div>
+        <nav>
+          <ul>
+            <li>
+              <a href="../../index.html" class="bouton">Retour à l'accueil</a>
+            </li>
+            <li>
+              <a href="../index.html" class="bouton">Retour à l'atelier</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main class="accueil-container">
+      <h2>Memory</h2>
+      <div class="trait"></div>
+      <div class="option-jeu">
+        <div>
+          <label for="theme">Thème :</label>
+          <select id="theme">
+            <option value="animaux">Animaux 🐱</option>
+            <option value="fruits">Fruits 🍉</option>
+            <option value="nourriture">Nourriture 🍔</option>
+            <option value="transports">Transports 🚲</option>
+            <option value="nature">Nature 🌸</option>
+            <option value="sport">Sport ⚽</option>
+            <option value="meteo">Météo 🌈</option>
+            <option value="couleurs">Couleurs 🟠</option>
+            <option value="corps">Corps humain 🦷</option>
+            <option value="vetements">Vêtements 👒</option>
+            <option value="maison">Maison 🛋️</option>
+            <option value="ecole">École 📖</option>
+          </select>
+        </div>
+        <div>
+          <label for="mode">Mode :</label>
+          <select id="mode">
+            <option value="images">Images</option>
+            <option value="mots">Image + Mot</option>
+          </select>
+        </div>
+        <div>
+          <label for="niveau">Niveau :</label>
+          <select id="niveau">
+            <option value="facile">Facile</option>
+            <option value="moyen">Moyen</option>
+            <option value="difficile">Difficile</option>
+          </select>
+        </div>
+      </div>
+
+      <p id="reglages"></p>
+      <p id="info"></p>
+      <div id="jeu"></div>
+      <button id="recommencer">Recommencer</button>
+    </main>
+  </body>
+  <script src="./memory.js"></script>
+</html>

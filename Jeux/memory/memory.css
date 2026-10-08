@@ -1,0 +1,91 @@
+/* ===== STYLE : change les couleurs et les tailles ici ===== */
+body {
+  text-align: center;
+}
+button {
+  padding: 8px 14px;
+  margin: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* La grille : repeat(4, 80px) = 4 colonnes de 80px */
+#jeu {
+  display: grid;
+  grid-template-columns: repeat(4, 90px);
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.option-jeu {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+/* Une carte cachée (dos bleu) */
+.carte {
+  width: 90px;
+  height: 90px;
+  font-size: 32px;
+  border: none;
+  border-radius: 10px;
+  background: #2378b4;
+  color: white;
+  cursor: pointer;
+}
+
+/* Une carte retournée (fond blanc) */
+.carte.visible {
+  background: white;
+  color: black;
+  border: 2px solid #2378b4;
+}
+
+/* Une paire trouvée (fond vert) */
+.carte.trouvee {
+  background: #c8f0d8;
+}
+
+/* Le texte des mots est plus petit que les images */
+.carte.mot.visible {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+#recommencer {
+  display: inline-block;
+  padding: 0.6rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: white;
+  text-decoration: none;
+  background: #2378b4;
+  border: 2px solid white;
+  border-radius: 10px;
+  box-shadow: 1px 1px 0px 0 white;
+}
+
+#recommencer:hover {
+  background-color: #f18d20;
+}
+
+select {
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-size: 1.1rem;
+}
+select {
+  appearance: none;
+  padding: 8px 36px 8px 12px;
+  font-size: 16px;
+  border: 2px solid #2378b4;
+  border-radius: 8px;
+  background-color: white;
+  cursor: pointer;
+
+  /* Le chevron */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%233d5a80' stroke-width='2'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}

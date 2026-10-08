@@ -5,6 +5,10 @@
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
+body {
+  background: #f6f4ef;
+}
+
 ul {
   list-style: none;
 }

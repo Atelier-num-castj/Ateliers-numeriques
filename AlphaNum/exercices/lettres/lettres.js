@@ -3,6 +3,8 @@ const lettres = "abcdefghijklmnopqrstuvwxyz";
 const touche = document.getElementById("modele");
 const reponse = document.getElementById("reponse");
 const message = document.getElementById("message");
+const compteur = document.getElementById("compteur");
+let score = 0;
 
 let lettreActuelle = touche.textContent;
 document.addEventListener("click", () => {
@@ -25,6 +27,8 @@ reponse.addEventListener("input", () => {
     touche.classList.add("valide");
     reponse.classList.add("valide");
     reponse.value = "✓ Bravo !";
+    score++;
+    compteur.textContent = score;
     setTimeout(() => {
       reponse.classList.remove("valide");
       nouvelleLettre();
