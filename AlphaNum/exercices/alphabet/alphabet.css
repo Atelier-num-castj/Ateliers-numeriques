@@ -1,0 +1,209 @@
+/* ---------- Couleurs (à modifier ici) ---------- */
+:root {
+  --encre: #12263f;
+  --bleu: #2378b4;
+  --orange: #f18d20;
+  --orange-pale: #f5b36e;
+  --vert: #1b7a45;
+  --vert-pale: #d6f0e1;
+  --rouge: #b3261e;
+}
+
+/* ---------- Page ---------- */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--encre);
+  font-family: Verdana, "Trebuchet MS", sans-serif;
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+h1 {
+  font-size: 2.2rem;
+}
+
+h2 {
+  font-size: 1.4rem;
+  margin: 0 0 0.6rem;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ---------- Boîtes blanches ---------- */
+section {
+  background: #fff;
+  border: 3px solid var(--encre);
+  border-radius: 20px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1rem;
+}
+
+#jeu {
+  min-height: 235px;
+}
+
+#fin {
+  background: var(--vert-pale);
+  border-color: var(--vert);
+  text-align: center;
+}
+
+/* ---------- Boutons ---------- */
+button {
+  font: inherit;
+  font-weight: bold;
+  cursor: pointer;
+  background: #fff;
+  color: var(--bleu);
+  border: 3px solid var(--bleu);
+  border-radius: 14px;
+  padding: 0.5rem 1.1rem;
+  margin: 0 0.4rem 0.6rem 0;
+}
+
+select {
+  font: inherit;
+  font-weight: bold;
+  color: var(--bleu);
+  background: #fff;
+  border: 3px solid var(--bleu);
+  border-radius: 14px;
+  padding: 0.5rem 1.1rem;
+  margin: 0 0.4rem 0.6rem 0;
+  cursor: pointer;
+}
+
+button:focus-visible {
+  outline: 5px solid var(--orange);
+  outline-offset: 3px;
+}
+
+/* Bouton choisi (niveau, aide) */
+.actif {
+  background: var(--bleu);
+  border-color: var(--bleu);
+  color: #fff;
+}
+
+/* ---------- Consigne ---------- */
+#consigne p {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.cible {
+  display: inline-block;
+  min-width: 3rem;
+  padding: 0.3rem 0.8rem;
+  background: var(--orange);
+  border: 4px solid var(--encre);
+  border-radius: 16px;
+  font-size: 2.4rem;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.consigne {
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.consigne span {
+  font-size: 2.4rem;
+}
+#message {
+  min-height: 2rem;
+  font-weight: bold;
+  color: var(--vert);
+}
+
+/* ---------- Lettres trouvées ---------- */
+#lettres-trouves,
+#pile {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.lettre-trouve {
+  width: 3.6rem;
+  height: 3.6rem;
+  display: grid;
+  place-items: center;
+  border: 3px dashed #7d93ab;
+  border-radius: 12px;
+  font-size: 2.1rem;
+  font-weight: bold;
+}
+
+.lettre-trouve.ok {
+  border: 3px solid var(--vert);
+  background: var(--vert-pale);
+  color: var(--vert);
+}
+
+.lettre-trouve.prochaine {
+  border-color: var(--encre);
+  background: var(--orange-pale);
+}
+
+/* ---------- Tuiles à cliquer ---------- */
+.tuile {
+  width: 5.4rem;
+  height: 5.4rem;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  color: var(--encre);
+  border: 4px solid var(--encre);
+  border-radius: 18px;
+  font-size: 3.4rem;
+  line-height: 1;
+  box-shadow: 0 5px 0 var(--encre);
+}
+
+.tuile:hover {
+  background: var(--orange-pale);
+}
+
+.tuile.faux {
+  border-color: var(--rouge);
+  animation: secoue 0.35s;
+}
+
+@keyframes secoue {
+  25% {
+    transform: translateX(-8px);
+  }
+  75% {
+    transform: translateX(8px);
+  }
+}
+
+/* ---------- Petits écrans ---------- */
+@media (max-width: 520px) {
+  .tuile {
+    width: 4.4rem;
+    height: 4.4rem;
+    font-size: 2.8rem;
+  }
+  .lettre-trouve {
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.7rem;
+  }
+}

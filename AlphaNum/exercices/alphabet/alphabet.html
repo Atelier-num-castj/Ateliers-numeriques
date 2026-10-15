@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="../../../styles.css" />
+    <link rel="stylesheet" href="./alphabet.css" />
+    <link
+      rel="shortcut icon"
+      href="../../../assets/logo-CASTJ.png"
+      type="image/x-icon"
+    />
+    <script src="./alphabet.js" defer></script>
+    <title>Alphabet</title>
+  </head>
+  <body>
+    <header>
+      <img
+        src="../../../assets/logo-CASTJ.png"
+        alt="Logo du centre d'animation"
+      />
+      <div class="header-title">
+        <h1>Centre d'animation Saint Jean</h1>
+        <h2>AlphaNum</h2>
+      </div>
+      <div class="bas-header">
+        <nav>
+          <ul>
+            <li>
+              <a href="../../../index.html" class="bouton"
+                >Retour à l'accueil</a
+              >
+            </li>
+            <li>
+              <a href="../../index.html" class="bouton">Retour à l'atelier</a>
+            </li>
+          </ul>
+        </nav>
+        <h3>Alphabet</h3>
+      </div>
+    </header>
+    <main>
+      <h3>Le jeu de l'alphabet</h3>
+
+      <div class="barre">
+        <button class="btn" data-niveau="0">Niveau 1 : A à M</button>
+        <button class="btn" data-niveau="1">Niveau 2 : A à Z</button>
+      </div>
+      <div class="barre">
+        <button class="btn sec" id="bouton-aide">Aide</button>
+        <select class="btn sec" id="bouton-casse">
+          <option value="majuscules">Majuscules</option>
+          <option value="minuscules">Minuscules</option>
+        </select>
+      </div>
+
+      <section class="carte" id="jeu">
+        <div class="consigne" id="consigne"></div>
+        <p id="message"></p>
+        <h2>Les lettres trouvées</h2>
+        <div class="lettres-trouves" id="lettres-trouves"></div>
+      </section>
+
+      <section class="carte" id="zonePile">
+        <h2>Cliquez sur la bonne lettre</h2>
+        <div class="pile" id="pile"></div>
+      </section>
+
+      <section class="carte bravo" id="fin" hidden>
+        <h2>Bravo !</h2>
+        <p>Vous avez remis toutes les lettres dans l'ordre.</p>
+        <button class="btn" id="bouton-rejouer">Rejouer</button>
+        <button class="btn sec" id="bouton-suivant">Niveau suivant</button>
+      </section>
+    </main>
+  </body>
+</html>

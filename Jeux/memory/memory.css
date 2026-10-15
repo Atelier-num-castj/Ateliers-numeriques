@@ -18,6 +18,15 @@ button {
   margin-top: 20px;
 }
 
+.memory-container {
+  margin: 2rem auto 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
+  max-width: 80%;
+}
 .option-jeu {
   display: flex;
   gap: 15px;
