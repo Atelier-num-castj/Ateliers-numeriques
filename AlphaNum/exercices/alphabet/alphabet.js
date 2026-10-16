@@ -76,6 +76,7 @@ function remplirActivite() {
   pile.forEach((lettre) => {
     const bouton = document.createElement("button");
     bouton.className = "tuile";
+    bouton.dataset.lettre = lettre;
     bouton.textContent = casseLettres(lettre);
     bouton.addEventListener("click", () => choisir(lettre, bouton));
     $("pile").appendChild(bouton);
@@ -113,6 +114,17 @@ document.querySelectorAll("[data-niveau]").forEach((b) =>
     demarrer();
   }),
 );
+
+document.addEventListener("keydown", (e) => {
+  if (e.repeat || e.ctrlKey || e.altKey || e.metaKey) return;
+  if (document.activeElement.tagName === "SELECT") return;
+
+  const lettre = e.key.toUpperCase();
+  if (lettre.length !== 1 || !ALPHABET.includes(lettre)) return;
+
+  const bouton = document.querySelector(`.tuile[data-lettre="${lettre}"]`);
+  if (bouton) choisir(lettre, bouton);
+});
 
 $("bouton-aide").addEventListener("click", (e) => {
   aide = !aide;
