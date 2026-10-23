@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Apprendre à Copier / Coller</title>
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="shortcut icon"
+      href="../../assets/logo-CASTJ.png"
+      type="image/x-icon"
+    />
+  </head>
+  <body>
+    <header>
+      <img
+        src="../../assets/Logo-CASTJ-blanc.png"
+        alt="Logo du centre d'animation"
+      />
+      <div class="header-title">
+        <h1>Centre d'animation Saint Jean</h1>
+        <h2>Découvrir l'ordinateur</h2>
+      </div>
+      <div class="bas-header">
+        <nav>
+          <ul>
+            <li>
+              <a href="../../index.html" class="bouton">Retour à l'accueil</a>
+            </li>
+            <li>
+              <a href="../index.html" class="bouton">Retour à l'atelier</a>
+            </li>
+          </ul>
+        </nav>
+        <h3>Copier / Coller</h3>
+      </div>
+    </header>
+    <main class="jeu">
+      <!-- Côté gauche : la conversation -->
+      <section class="telephone">
+        <div class="entete">
+          <div class="avatar" id="avatar"></div>
+          <div class="infos-contact">
+            <div class="nom" id="nom-contact"></div>
+            <div class="numero" id="numero-contact"></div>
+            <div class="statut" id="statut-contact"></div>
+          </div>
+        </div>
+
+        <div class="messages" id="messages"></div>
+
+        <div class="saisie">
+          <input
+            type="text"
+            id="zone-saisie"
+            placeholder="Écrire un message"
+            readonly
+          />
+          <button type="button" class="envoyer">➤</button>
+        </div>
+      </section>
+
+      <!-- Côté droit : la fiche à remplir -->
+      <section class="panneau">
+        <nav id="pagination"></nav>
+
+        <h1 id="titre"></h1>
+        <p id="consigne"></p>
+
+        <div
+          id="jauge"
+          role="progressbar"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+        >
+          <div id="jauge-remplissage"></div>
+        </div>
+        <p id="score">0 %</p>
+
+        <div id="formulaire"></div>
+
+        <p id="message"></p>
+        <button type="button" id="bouton-valider" disabled>Valider</button>
+      </section>
+    </main>
+
+    <script src="script.js" type="module"></script>
+  </body>
+</html>
