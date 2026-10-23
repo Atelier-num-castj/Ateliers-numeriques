@@ -99,6 +99,8 @@ nav .bouton {
 
 nav .bouton:hover {
   background: #f18d20;
+  box-shadow: 1px 1px 0px 0 #f18d20;
+  border: 2px solid #f18d20;
 }
 
 nav .bouton:active {
