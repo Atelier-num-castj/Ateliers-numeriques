@@ -20,23 +20,6 @@ main {
   position: relative;
 }
 
-.instructions {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1.5rem;
-}
-
-h3 {
-  font-size: clamp(1.6rem, 4vw, 2.2rem);
-  margin: 0 0 4px;
-}
-.sub {
-  margin: 0 0 16px;
-  font-size: 1rem;
-}
-
 .levels {
   display: flex;
   flex-wrap: wrap;

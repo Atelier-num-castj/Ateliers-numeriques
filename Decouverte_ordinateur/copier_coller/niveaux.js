@@ -1,6 +1,6 @@
 export const niveaux = [
   {
-    titre: "Mission 1 : la fiche contact",
+    titre: "Exercice 1 : la fiche contact",
     consigne:
       "Copie les informations de la conversation, puis colle-les dans la fiche.",
     contact: { nom: "Camille", numero: "06 12 34 56 78", statut: "en ligne" },
@@ -48,7 +48,7 @@ export const niveaux = [
     ],
   },
   {
-    titre: "Mission 2 : le colis",
+    titre: "Exercice 2 : le colis",
     consigne: "Note les informations du livreur dans la fiche de suivi.",
     contact: { numero: "+33 7 98 76 54 32", statut: "en ligne" },
     messages: [
@@ -94,7 +94,7 @@ export const niveaux = [
     ],
   },
   {
-    titre: "Mission 3 : la soirée",
+    titre: "Exercice 3 : la soirée",
     consigne: "Note les informations de l'invitation.",
     contact: { nom: "Steve", numero: "06 98 76 54 32", statut: "en ligne" },
     messages: [

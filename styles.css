@@ -17,6 +17,7 @@ ul {
   height: 2px;
   width: 70%;
   background-color: #f5b36e;
+  margin: 0 auto;
 }
 
 input,
@@ -190,4 +191,23 @@ nav .bouton:active {
 .rubrique:active {
   box-shadow: 0 2px 0 #16213e;
   transform: translateY(3px);
+}
+
+.instructions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-top: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.instructions h3 {
+  font-size: 1.5rem;
+}
+.instructions p {
+  font-size: 1.1rem;
+  text-align: center;
+  line-height: 1.7rem;
 }

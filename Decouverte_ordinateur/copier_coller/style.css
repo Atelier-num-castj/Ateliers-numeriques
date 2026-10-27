@@ -28,7 +28,7 @@ body {
   flex-wrap: wrap; /* sur petit écran, les deux blocs passent l'un sous l'autre */
   justify-content: center;
   align-items: flex-start;
-  gap: 1.5rem;
+  gap: 5rem;
   padding: 1.5rem 1rem;
 }
 

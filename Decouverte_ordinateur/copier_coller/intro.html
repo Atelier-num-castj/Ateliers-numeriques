@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Apprendre à Sélectionner</title>
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="./intro.css" />
+    <link rel="stylesheet" href="./style.css" />
+    <link
+      rel="shortcut icon"
+      href="../../assets/logo-CASTJ.png"
+      type="image/x-icon"
+    />
+  </head>
+  <body>
+    <header>
+      <img
+        src="../../assets/Logo-CASTJ-blanc.png"
+        alt="Logo du centre d'animation"
+      />
+      <div class="header-title">
+        <h1>Centre d'animation Saint Jean</h1>
+        <h2>Découvrir l'ordinateur</h2>
+      </div>
+      <div class="bas-header">
+        <nav>
+          <ul>
+            <li>
+              <a href="../../index.html" class="bouton">Retour à l'accueil</a>
+            </li>
+            <li>
+              <a href="../index.html" class="bouton">Retour à l'atelier</a>
+            </li>
+          </ul>
+        </nav>
+        <h3>Copier / Coller</h3>
+      </div>
+    </header>
+    <main class="intro">
+      <div class="instructions">
+        <h3 class="sous-titre">Sélectionner du texte</h3>
+        <div class="trait"></div>
+        <p>
+          Avant de copier, il faut <strong>sélectionner</strong> le texte. Il y
+          a 3 techniques :
+        </p>
+      </div>
+      <ul class="techniques">
+        <li>
+          <span class="icone">👆👆</span><strong>Double-clic</strong> : un mot
+        </li>
+        <li>
+          <span class="icone">👆👆👆</span><strong>Triple-clic</strong> : toute
+          la phrase
+        </li>
+        <li>
+          <span class="icone">🖱️</span><strong>Glisser</strong> : exactement ce
+          que tu veux. Clique au début, reste appuyé, glisse jusqu'à la fin.
+        </li>
+      </ul>
+      <p class="mobile">📱 Sur téléphone : appuie longtemps sur le texte.</p>
+
+      <h4 class="sous-titre">À toi !</h4>
+      <div class="trait"></div>
+      <div class="exercices">
+        <div class="exercice" data-cible="croissant">
+          <p class="consigne">
+            <span class="statut"></span> Double-clic : sélectionne
+            <strong>croissant</strong>
+          </p>
+          <p class="phrase">Je prends un croissant et un café.</p>
+        </div>
+
+        <div class="exercice" data-cible="Rendez-vous à 18h devant le cinéma">
+          <p class="consigne">
+            <span class="statut"></span> Triple-clic : sélectionne
+            <strong>toute la phrase</strong>
+          </p>
+          <p class="phrase">Rendez-vous à 18h devant le cinéma</p>
+        </div>
+
+        <div class="exercice" data-cible="06 12 34 56 78">
+          <p class="consigne">
+            <span class="statut"></span> Glisser : sélectionne
+            <strong>seulement le numéro</strong>
+          </p>
+          <p class="phrase">Appelle-moi au 06 12 34 56 78 ce soir</p>
+        </div>
+      </div>
+
+      <p id="bravo" class="bravo" hidden>
+        🎉 Bravo ! Tu sais sélectionner du texte.
+      </p>
+
+      <a class="lien-jeu" href="index.html">Passer au copier-coller →</a>
+    </main>
+
+    <script src="intro.js"></script>
+  </body>
+</html>
