@@ -1,35 +1,34 @@
+/* =========================================================
+   style.css — exercice Copier / Coller (conversation WhatsApp)
+   Chargé APRÈS ../../styles.css
+   ---------------------------------------------------------
+   Les couleurs propres au faux WhatsApp commencent par --wa-
+   pour ne pas se mélanger avec celles du site (--bleu, --fond…)
+   ========================================================= */
 :root {
-  --entete: #008069;
-  --entete-texte: #ffffff;
-  --fond: #efeae2;
-  --bulle-recue: #ffffff;
-  --bulle-envoyee: #d9fdd3;
-  --texte: #111b21;
-  --texte-leger: #667781;
-  --coches: #53bdeb;
-  --accent: #4caf50;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  background: #e9edef;
-  font-family: system-ui, sans-serif;
-  color: var(--texte);
+  --wa-vert: #008069;
+  --wa-fond: #efeae2;
+  --wa-bulle-recue: #ffffff;
+  --wa-bulle-envoyee: #d9fdd3;
+  --wa-texte: #111b21;
+  --wa-texte-leger: #667781;
+  --wa-coches: #53bdeb;
 }
 
 /* ----- Mise en page générale ----- */
+.copier-coller {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1rem 2rem;
+}
+
 .jeu {
-  min-height: 100vh;
   display: flex;
   flex-wrap: wrap; /* sur petit écran, les deux blocs passent l'un sous l'autre */
   justify-content: center;
   align-items: flex-start;
   gap: 5rem;
-  padding: 1.5rem 1rem;
+  padding: 1.5rem 0;
 }
 
 /* ----- Le téléphone (conversation) ----- */
@@ -38,10 +37,11 @@ body {
   height: min(620px, 80vh);
   display: flex;
   flex-direction: column;
-  background: var(--fond);
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
   overflow: hidden;
+  color: var(--wa-texte);
+  background: var(--wa-fond);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgb(0 0 0 / 0.25);
 }
 
 .entete {
@@ -49,85 +49,87 @@ body {
   align-items: center;
   gap: 0.75rem;
   padding: 0.6rem 0.9rem;
-  background: var(--entete);
-  color: var(--entete-texte);
+  color: var(--blanc);
+  background: var(--wa-vert);
 }
 
 .avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: #cfd8dc;
-  color: #455a64;
-  font-weight: bold;
   display: grid;
   place-items: center;
+  width: 40px;
+  height: 40px;
+  font-weight: bold;
+  color: #455a64;
+  background: var(--bordure);
+  border-radius: 50%;
 }
 
-.nom {
+.infos-contact .nom {
   font-weight: 600;
 }
-.statut {
+
+.infos-contact .statut {
   font-size: 0.75rem;
   opacity: 0.85;
 }
-.numero {
+
+.infos-contact .numero {
   font-size: 0.8rem;
   opacity: 0.9;
 }
 
 .messages {
   flex: 1;
-  overflow-y: auto;
-  padding: 1rem 0.75rem;
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
+  padding: 1rem 0.75rem;
+  overflow-y: auto;
   user-select: text;
 }
 
 .bulle {
   max-width: 80%;
   padding: 0.4rem 0.6rem 0.3rem;
-  border-radius: 8px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.13);
   font-size: 0.95rem;
   line-height: 1.35;
   overflow-wrap: anywhere;
+  border-radius: 8px;
+  box-shadow: 0 1px 1px rgb(0 0 0 / 0.13);
 }
 
 .recu {
   align-self: flex-start;
-  background: var(--bulle-recue);
+  background: var(--wa-bulle-recue);
   border-top-left-radius: 0;
 }
 
 .envoye {
   align-self: flex-end;
-  background: var(--bulle-envoyee);
+  background: var(--wa-bulle-envoyee);
   border-top-right-radius: 0;
 }
 
 .meta {
   margin-top: 0.1rem;
-  text-align: right;
   font-size: 0.7rem;
-  color: var(--texte-leger);
+  text-align: right;
+  color: var(--wa-texte-leger);
   user-select: none; /* l'heure ne doit pas être copiée avec le texte */
 }
 
 .coches {
-  color: var(--coches);
+  color: var(--wa-coches);
 }
 
 .separateur {
   align-self: center;
   margin: 0.5rem 0;
   padding: 0.2rem 0.7rem;
-  border-radius: 8px;
-  background: #ffffffcc;
-  color: var(--texte-leger);
   font-size: 0.75rem;
+  color: var(--wa-texte-leger);
+  background: #ffffffcc;
+  border-radius: 8px;
   user-select: none;
 }
 
@@ -142,21 +144,20 @@ body {
 .saisie input {
   flex: 1;
   padding: 0.6rem 0.9rem;
+  font-size: 1rem;
   border: none;
   border-radius: 20px;
-  font-size: 1rem;
   outline: none;
-  text-transform: none;
 }
 
 .envoyer {
   width: 40px;
   height: 40px;
+  font-size: 1rem;
+  color: var(--blanc);
+  background: var(--wa-vert);
   border: none;
   border-radius: 50%;
-  background: var(--entete);
-  color: var(--entete-texte);
-  font-size: 1rem;
   cursor: pointer;
 }
 
@@ -165,28 +166,14 @@ body {
   flex: 1 1 320px;
   max-width: 420px;
   padding: 1.25rem;
-  background: #ffffff;
+  background: var(--blanc);
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--ombre);
 }
 
 .panneau h2 {
   margin: 0 0 0.5rem;
   font-size: 1.3rem;
-}
-
-#jauge {
-  height: 20px;
-  border-radius: 10px;
-  background: #ddd;
-  overflow: hidden;
-}
-
-#jauge-remplissage {
-  height: 100%;
-  width: 0;
-  background: var(--accent);
-  transition: width 0.4s;
 }
 
 #score {
@@ -197,6 +184,7 @@ body {
 .champ {
   margin-bottom: 1rem;
 }
+
 .champ label {
   display: block;
   margin-bottom: 0.25rem;
@@ -206,32 +194,22 @@ body {
 .champ input {
   width: 100%;
   padding: 0.6rem;
-  border: 2px solid #cfd8dc;
-  border-radius: 8px;
   font-size: 1rem;
-  text-transform: none;
+  border: 2px solid var(--bordure);
+  border-radius: 8px;
 }
 
 .champ input:focus {
   outline: none;
-  border-color: var(--entete);
+  border-color: var(--wa-vert);
 }
 
 #message {
   min-height: 1.5rem;
   font-weight: 600;
 }
-.succes {
-  color: green;
-}
-.astuce {
-  color: darkorange;
-}
-.erreur {
-  color: crimson;
-}
 
-/* ----- Pagination ----- */
+/* ----- Pagination (numéros des exercices) ----- */
 #pagination {
   display: flex;
   flex-wrap: wrap;
@@ -242,22 +220,22 @@ body {
 #pagination button {
   width: 2.4rem;
   height: 2.4rem;
-  border: 2px solid #cfd8dc;
-  border-radius: 50%;
-  background: #ffffff;
   font-weight: bold;
+  background: var(--blanc);
+  border: 2px solid var(--bordure);
+  border-radius: 50%;
   cursor: pointer;
 }
 
 #pagination button.fait {
-  border-color: var(--accent);
-  color: var(--accent);
+  color: var(--vert);
+  border-color: var(--vert);
 }
 
 #pagination button.actif {
-  background: var(--entete);
-  border-color: var(--entete);
-  color: #ffffff;
+  color: var(--blanc);
+  background: var(--wa-vert);
+  border-color: var(--wa-vert);
 }
 
 /* ----- Bouton Valider ----- */
@@ -265,16 +243,16 @@ body {
   width: 100%;
   margin-top: 0.5rem;
   padding: 0.8rem;
-  border: none;
-  border-radius: 10px;
-  background: var(--entete);
-  color: #ffffff;
   font-size: 1rem;
   font-weight: bold;
+  color: var(--blanc);
+  background: var(--wa-vert);
+  border: none;
+  border-radius: 10px;
   cursor: pointer;
 }
 
 #bouton-valider:disabled {
-  background: #cfd8dc;
+  background: var(--bordure);
   cursor: not-allowed;
 }

@@ -20,7 +20,7 @@ function nouvelleLettre() {
 }
 
 reponse.addEventListener("input", () => {
-  const saisie = reponse.value;
+  const saisie = reponse.value.toLowerCase();
 
   if (saisie === lettreActuelle) {
     touche.classList.add("valide");

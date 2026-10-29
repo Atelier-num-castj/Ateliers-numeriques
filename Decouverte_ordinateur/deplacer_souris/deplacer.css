@@ -1,75 +1,71 @@
-:root {
-  --ink: #2b2a26;
-  --panel: #ffffff;
-  --line: #e2dccb;
-  --accent: #f18d20;
-  --accent-ink: #ffffff;
-  --bad: #b3401f;
-  --ok-bg: #dff3e4;
-  --info-bg: #ffd09e;
-}
+/* =========================================================
+   deplacer.css — « Le chemin vers la maison »
+   Chargé APRÈS ../../styles.css
+   ========================================================= */
 
-[hidden] {
-  display: none !important;
-}
-
+/* Couleurs propres à ce jeu (les autres viennent du site) */
 main {
+  --ligne: #e2dccb; /* bordure beige des boutons et du plateau */
+  --fond-info: #ffd09e; /* bandeau de message orange clair */
+
+  position: relative;
   max-width: 980px;
   margin: 0 auto;
   padding: 20px 16px 32px;
-  position: relative;
 }
 
+/* ----- Choix du niveau ----- */
 .levels {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 8px;
   margin: 0 0 12px;
-  align-items: center;
 }
 
-button {
-  font: inherit;
-  font-weight: 700;
-  border: 2px solid var(--line);
-  background: var(--panel);
-  color: var(--ink);
-  border-radius: 12px;
-  padding: 8px 16px;
-  min-height: 48px;
+/* Tous les boutons du jeu (niveaux, « Niveau suivant ») */
+main button {
   min-width: 48px;
+  min-height: 48px; /* assez grand pour viser facilement */
+  padding: 8px 16px;
+  font-weight: 700;
+  color: var(--encre);
+  background: var(--blanc);
+  border: 2px solid var(--ligne);
+  border-radius: var(--arrondi);
   cursor: pointer;
 }
-button:hover {
-  border-color: var(--accent);
-}
-button:focus-visible {
-  outline: 3px solid var(--accent);
-  outline-offset: 2px;
-}
-button[aria-current="true"] {
-  background: var(--accent);
-  color: var(--accent-ink);
-  border-color: var(--accent);
-}
-button.primary {
-  background: var(--accent);
-  color: var(--accent-ink);
-  border-color: var(--accent);
+
+main button:hover {
+  border-color: var(--orange);
 }
 
+main button:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 2px;
+}
+
+/* Niveau en cours, et bouton principal */
+main button[aria-current="true"],
+main button.primary {
+  color: var(--blanc);
+  background: var(--orange);
+  border-color: var(--orange);
+}
+
+/* ----- Le bandeau de message ----- */
 #msg {
-  border-radius: 14px;
-  padding: 12px 16px;
-  margin: 0 0 12px;
-  font-size: 1.25rem;
-  font-weight: 700;
-  min-height: 3.2em;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 12px;
-  flex-wrap: wrap;
-  background: var(--info-bg);
+  min-height: 3.2em;
+  margin: 0 0 12px;
+  padding: 12px 16px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  background: var(--fond-info);
+  border-radius: 14px;
 }
 
 #msg .txt {
@@ -77,63 +73,71 @@ button.primary {
 }
 
 #msg.ok {
-  background: var(--ok-bg);
+  background: var(--vert-pale);
 }
 
 #msg.bad {
-  color: var(--bad);
+  color: var(--rouge);
 }
+
+/* ----- Le plateau de jeu (dessin SVG) ----- */
 .board {
-  border: 3px solid var(--line);
-  border-radius: 18px;
+  position: relative;
   overflow: hidden;
   background: #7cc576;
-  position: relative;
+  border: 3px solid var(--ligne);
+  border-radius: 18px;
 }
+
 svg {
   display: block;
   width: 100%;
   height: auto;
   touch-action: none;
   user-select: none;
-  -webkit-user-select: none;
 }
+
 .deco {
-  pointer-events: none;
   font-size: 44px;
+  pointer-events: none;
 }
+
+/* Éléments que la souris « traverse » sans les toucher */
 .no-hit {
   pointer-events: none;
 }
+
 #startCircle {
   transition: fill 0.15s;
 }
+
 #houseInner {
   transform-box: fill-box;
   transform-origin: center;
 }
+
 .stats {
   display: flex;
-  gap: 16px;
   flex-wrap: wrap;
+  gap: 16px;
   margin-top: 12px;
   font-size: 1rem;
 }
 
+/* ----- La fenêtre « Bravo » ----- */
 dialog {
   position: absolute;
   inset: 0;
-  margin: auto;
-  height: fit-content;
   width: fit-content;
-  border: 3px solid var(--accent);
-  border-radius: 18px;
-  background: var(--panel);
-  color: var(--ink);
+  max-width: 90%;
+  height: fit-content;
+  margin: auto;
   padding: 24px 32px;
   text-align: center;
-  max-width: 90%;
-  font: inherit;
+  color: var(--encre);
+  background: var(--blanc);
+  border: 3px solid var(--orange);
+  border-radius: 18px;
   box-shadow: 0 0 0 100vmax rgb(0 0 0 / 0.5); /* assombrit le plateau */
 }
 
@@ -141,6 +145,7 @@ dialog h2 {
   margin: 0 0 8px;
   font-size: 1.8rem;
 }
+
 dialog p {
   margin: 0 0 20px;
 }

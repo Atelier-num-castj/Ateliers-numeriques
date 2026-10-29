@@ -1,53 +1,30 @@
-/* ---------- Couleurs (à modifier ici) ---------- */
-:root {
-  --encre: #12263f;
-  --bleu: #2378b4;
-  --orange: #f18d20;
-  --orange-pale: #f5b36e;
-  --vert: #1b7a45;
-  --vert-pale: #d6f0e1;
-  --rouge: #b3261e;
-}
+/* =========================================================
+   alphabet.css — exercice « Le jeu de l'alphabet »
+   Chargé APRÈS ../../../styles.css et ../../styles.css
+   Les couleurs viennent de :root dans ../../../styles.css
+   ========================================================= */
 
-/* ---------- Page ---------- */
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  color: var(--encre);
-  font-family: Verdana, "Trebuchet MS", sans-serif;
-  font-size: 1.25rem;
-  line-height: 1.5;
-}
-
+/* Tout ce qui est dans main est un peu plus grand que le reste */
 main {
   max-width: 960px;
   margin: 0 auto;
   padding: 1rem;
+  font-size: 1.25rem;
+  line-height: 1.5;
 }
 
-h1 {
-  font-size: 2.2rem;
-}
-
-h2 {
-  font-size: 1.4rem;
+main h2 {
   margin: 0 0 0.6rem;
+  font-size: 1.4rem;
 }
 
-[hidden] {
-  display: none !important;
-}
-
-/* ---------- Boîtes blanches ---------- */
-section {
-  background: #fff;
+/* ---------- Les boîtes blanches ---------- */
+.carte {
+  margin-bottom: 1rem;
+  padding: 1rem 1.2rem;
+  background: var(--blanc);
   border: 3px solid var(--encre);
   border-radius: 20px;
-  padding: 1rem 1.2rem;
-  margin-bottom: 1rem;
 }
 
 #jeu {
@@ -55,83 +32,74 @@ section {
 }
 
 #fin {
+  text-align: center;
   background: var(--vert-pale);
   border-color: var(--vert);
-  text-align: center;
 }
 
-/* ---------- Boutons ---------- */
-button {
-  font: inherit;
-  font-weight: bold;
-  cursor: pointer;
-  background: #fff;
-  color: var(--bleu);
-  border: 3px solid var(--bleu);
-  border-radius: 14px;
-  padding: 0.5rem 1.1rem;
+/* ---------- Boutons et liste déroulante ---------- */
+main button,
+main select {
   margin: 0 0.4rem 0.6rem 0;
-}
-
-select {
-  font: inherit;
+  padding: 0.5rem 1.1rem;
   font-weight: bold;
   color: var(--bleu);
-  background: #fff;
+  background: var(--blanc);
   border: 3px solid var(--bleu);
   border-radius: 14px;
-  padding: 0.5rem 1.1rem;
-  margin: 0 0.4rem 0.6rem 0;
   cursor: pointer;
 }
 
-button:focus-visible {
+main button:focus-visible,
+main select:focus-visible {
   outline: 5px solid var(--orange);
   outline-offset: 3px;
 }
 
 /* Bouton choisi (niveau, aide) */
-.actif {
+main button.actif {
+  color: var(--blanc);
   background: var(--bleu);
-  border-color: var(--bleu);
-  color: #fff;
 }
 
-/* ---------- Consigne ---------- */
-#consigne p {
-  margin: 0;
+/* ---------- La consigne ---------- */
+.consigne {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+}
+
+.consigne p {
   font-size: 1.5rem;
   font-weight: bold;
 }
 
+/* La lettre à chercher, dans une pastille orange */
 .cible {
   display: inline-block;
   min-width: 3rem;
   padding: 0.3rem 0.8rem;
-  background: var(--orange);
-  border: 4px solid var(--encre);
-  border-radius: 16px;
   font-size: 2.4rem;
   line-height: 1.1;
   text-align: center;
+  background: var(--orange);
+  border: 4px solid var(--encre);
+  border-radius: 16px;
 }
 
-.consigne {
-  min-height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+/* .consigne span vaut 5rem dans ../../styles.css : on le réduit ici */
 .consigne span {
   font-size: 2.4rem;
 }
+
 #message {
   min-height: 2rem;
   font-weight: bold;
   color: var(--vert);
 }
 
-/* ---------- Lettres trouvées ---------- */
+/* ---------- Les lettres trouvées ---------- */
 #lettres-trouves,
 #pile {
   display: flex;
@@ -140,67 +108,59 @@ button:focus-visible {
 }
 
 .lettre-trouve {
-  width: 3.6rem;
-  height: 3.6rem;
   display: grid;
   place-items: center;
-  border: 3px dashed #7d93ab;
-  border-radius: 12px;
+  width: 3.6rem;
+  height: 3.6rem;
   font-size: 2.1rem;
   font-weight: bold;
+  border: 3px dashed #7d93ab;
+  border-radius: var(--arrondi);
 }
 
 .lettre-trouve.ok {
-  border: 3px solid var(--vert);
-  background: var(--vert-pale);
   color: var(--vert);
+  background: var(--vert-pale);
+  border: 3px solid var(--vert);
 }
 
 .lettre-trouve.prochaine {
-  border-color: var(--encre);
   background: var(--orange-pale);
+  border-color: var(--encre);
 }
 
-/* ---------- Tuiles à cliquer ---------- */
-.tuile {
+/* ---------- Les tuiles à cliquer ---------- */
+main button.tuile {
   width: 5.4rem;
   height: 5.4rem;
   margin: 0;
   padding: 0;
-  background: #fff;
-  color: var(--encre);
-  border: 4px solid var(--encre);
-  border-radius: 18px;
   font-size: 3.4rem;
   line-height: 1;
+  color: var(--encre);
+  background: var(--blanc);
+  border: 4px solid var(--encre);
+  border-radius: 18px;
   box-shadow: 0 5px 0 var(--encre);
 }
 
-.tuile:hover {
+main button.tuile:hover {
   background: var(--orange-pale);
 }
 
-.tuile.faux {
+main button.tuile.faux {
   border-color: var(--rouge);
-  animation: secoue 0.35s;
-}
-
-@keyframes secoue {
-  25% {
-    transform: translateX(-8px);
-  }
-  75% {
-    transform: translateX(8px);
-  }
+  animation: secoue 0.35s; /* @keyframes secoue : dans ../../../styles.css */
 }
 
 /* ---------- Petits écrans ---------- */
 @media (max-width: 520px) {
-  .tuile {
+  main button.tuile {
     width: 4.4rem;
     height: 4.4rem;
     font-size: 2.8rem;
   }
+
   .lettre-trouve {
     width: 3rem;
     height: 3rem;

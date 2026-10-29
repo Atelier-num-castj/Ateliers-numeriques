@@ -1,3 +1,5 @@
+import { melanger } from "../../outils.js";
+
 // ===== 1. TES PAIRES : ajoute, enlève ou change les lignes =====
 // "image" peut être un emoji OU le nom d'un fichier (ex: "chat.png").
 // Il faut au moins autant de paires que le plus grand niveau (ici 10).
@@ -179,14 +181,7 @@ let bloque = false; // true pendant que 2 cartes différentes sont visibles
 let coups = 0; // nombre de coups joués
 let trouvees = 0; // nombre de paires trouvées
 
-// ===== 5. MÉLANGER UNE LISTE =====
-function melanger(liste) {
-  liste.sort(function () {
-    return Math.random() - 0.5;
-  });
-}
-
-// ===== 6. AFFICHER LE CONTENU D'UNE CARTE =====
+// ===== 4. AFFICHER LE CONTENU D'UNE CARTE =====
 // Si le contenu contient un point (ex: "chat.png"), on affiche une vraie image.
 // Sinon on affiche du texte (emoji ou mot).
 function afficher(bouton, contenu) {
@@ -197,7 +192,7 @@ function afficher(bouton, contenu) {
   }
 }
 
-// ===== 7. LANCER UNE PARTIE =====
+// ===== 5. LANCER UNE PARTIE =====
 document.getElementById("theme").addEventListener("change", function () {
   themeActuel = this.value;
   lancer();
@@ -222,23 +217,21 @@ function lancer() {
   document.getElementById("info").textContent = "Coups : 0";
 
   // On mélange les paires et on garde seulement le nombre voulu
-  let choisies = themes[themeActuel].slice();
-
-  melanger(choisies);
-  choisies = choisies.slice(0, nbPaires);
+  // melanger() renvoie une copie : la liste du thème reste intacte
+  const choisies = melanger(themes[themeActuel]).slice(0, nbPaires);
 
   // On fabrique la liste des cartes : 2 cartes par paire
-  const cartes = [];
+  const paquet = [];
   for (let i = 0; i < choisies.length; i++) {
-    cartes.push({ id: i, contenu: choisies[i].image, estMot: false });
+    paquet.push({ id: i, contenu: choisies[i].image, estMot: false });
 
-    if (modeActuel == "images") {
-      cartes.push({ id: i, contenu: choisies[i].image, estMot: false });
+    if (modeActuel === "images") {
+      paquet.push({ id: i, contenu: choisies[i].image, estMot: false });
     } else {
-      cartes.push({ id: i, contenu: choisies[i].mot, estMot: true });
+      paquet.push({ id: i, contenu: choisies[i].mot, estMot: true });
     }
   }
-  melanger(cartes);
+  const cartes = melanger(paquet);
 
   // On dessine les cartes dans la page
   const jeu = document.getElementById("jeu");
@@ -262,7 +255,7 @@ function lancer() {
   });
 }
 
-// ===== 8. QUAND ON CLIQUE SUR UNE CARTE =====
+// ===== 6. QUAND ON CLIQUE SUR UNE CARTE =====
 function cliquer(bouton, carte) {
   // On ignore le clic si on attend ou si la carte est déjà retournée
   if (bloque || bouton.classList.contains("visible")) {
@@ -274,7 +267,7 @@ function cliquer(bouton, carte) {
   bouton.classList.add("visible");
 
   // Si c'est la première carte, on la garde en mémoire et on s'arrête
-  if (premiere == null) {
+  if (premiere === null) {
     premiere = { bouton: bouton, carte: carte };
     return;
   }
@@ -283,13 +276,13 @@ function cliquer(bouton, carte) {
   coups++;
   document.getElementById("info").textContent = "Coups : " + coups;
 
-  if (premiere.carte.id == carte.id) {
+  if (premiere.carte.id === carte.id) {
     // Bonne paire !
     premiere.bouton.classList.add("trouvee");
     bouton.classList.add("trouvee");
     trouvees++;
     premiere = null;
-    if (trouvees == nbPaires) {
+    if (trouvees === nbPaires) {
       document.getElementById("info").textContent =
         "🎉 Bravo ! Gagné en " + coups + " coups";
     }
@@ -311,5 +304,5 @@ function cliquer(bouton, carte) {
 document.getElementById("recommencer").addEventListener("click", function () {
   lancer();
 });
-// ===== 9. ON LANCE LA PREMIÈRE PARTIE AU CHARGEMENT =====
+// ===== 7. ON LANCE LA PREMIÈRE PARTIE AU CHARGEMENT =====
 lancer();

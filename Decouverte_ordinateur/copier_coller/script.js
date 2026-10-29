@@ -136,7 +136,7 @@ function verifier(element, champ, event) {
       if (colle) {
         afficher("Bravo ! Copier-coller réussi.", "succes");
       } else {
-        afficher("C'est bien, mais il aurait fallu copier-coller !", "astuce");
+        afficher("C'est bien, mais il aurait fallu copier-coller !", "attention");
       }
     }
   } else {
@@ -167,7 +167,7 @@ function mettreAJourJauge() {
       "Terminé : " +
         pourcentage +
         " %. Valide, ou recommence pour viser 100 %.",
-      "astuce",
+      "attention",
     );
   }
 }

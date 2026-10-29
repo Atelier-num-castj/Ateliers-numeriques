@@ -39,66 +39,69 @@
         <h3>Copier / Coller</h3>
       </div>
     </header>
-    <section class="instructions">
-      <h3 class="sous-titre">Copier / Coller</h3>
-      <div class="trait"></div>
-      <p>
-        On va maintenant apprendre à copier et coller du texte
-        <br />
-        Pour réussir ces exercices il faut copier les informations de la
-        conversation WhatsApp à gauche dans le questionnaire de droite
-      </p>
-    </section>
-    <main class="jeu">
-      <!-- Côté gauche : la conversation -->
-      <section class="telephone">
-        <div class="entete">
-          <div class="avatar" id="avatar"></div>
-          <div class="infos-contact">
-            <div class="nom" id="nom-contact"></div>
-            <div class="numero" id="numero-contact"></div>
-            <div class="statut" id="statut-contact"></div>
+    <main class="copier-coller">
+      <section class="instructions">
+        <h3 class="sous-titre">Copier / Coller</h3>
+        <div class="trait"></div>
+        <p>
+          On va maintenant apprendre à copier et coller du texte
+          <br />
+          Pour réussir ces exercices il faut copier les informations de la
+          conversation WhatsApp à gauche dans le questionnaire de droite
+        </p>
+      </section>
+      <div class="jeu">
+        <!-- Côté gauche : la conversation -->
+        <section class="telephone">
+          <div class="entete">
+            <div class="avatar" id="avatar"></div>
+            <div class="infos-contact">
+              <div class="nom" id="nom-contact"></div>
+              <div class="numero" id="numero-contact"></div>
+              <div class="statut" id="statut-contact"></div>
+            </div>
           </div>
-        </div>
 
-        <div class="messages" id="messages"></div>
+          <div class="messages" id="messages"></div>
 
-        <div class="saisie">
-          <input
-            type="text"
-            id="zone-saisie"
-            placeholder="Écrire un message"
-            readonly
-          />
-          <button type="button" class="envoyer">➤</button>
-        </div>
-      </section>
+          <div class="saisie">
+            <input
+              type="text"
+              id="zone-saisie"
+              placeholder="Écrire un message"
+              readonly
+            />
+            <button type="button" class="envoyer">➤</button>
+          </div>
+        </section>
 
-      <!-- Côté droit : la fiche à remplir -->
-      <section class="panneau">
-        <nav id="pagination"></nav>
+        <!-- Côté droit : la fiche à remplir -->
+        <section class="panneau">
+          <nav id="pagination"></nav>
 
-        <h2 id="titre"></h2>
-        <p id="consigne"></p>
+          <h2 id="titre"></h2>
+          <p id="consigne"></p>
 
-        <div
-          id="jauge"
-          role="progressbar"
-          aria-valuemin="0"
-          aria-valuemax="100"
-          aria-valuenow="0"
-        >
-          <div id="jauge-remplissage"></div>
-        </div>
-        <p id="score">0 %</p>
+          <div
+            id="jauge"
+            class="jauge"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+          >
+            <div id="jauge-remplissage" class="jauge-remplissage"></div>
+          </div>
+          <p id="score">0 %</p>
 
-        <div id="formulaire"></div>
+          <div id="formulaire"></div>
 
-        <p id="message"></p>
-        <button type="button" id="bouton-valider" disabled>Valider</button>
-      </section>
+          <p id="message"></p>
+          <button type="button" id="bouton-valider" disabled>Valider</button>
+        </section>
+      </div>
+      <a class="lien-jeu" href="./couper.html">Passer au couper-coller →</a>
     </main>
-    <a href="./couper.html">Passer à couper</a>
 
     <script src="script.js" type="module"></script>
   </body>

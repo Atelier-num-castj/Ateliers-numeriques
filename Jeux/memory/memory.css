@@ -1,99 +1,89 @@
-/* ===== STYLE : change les couleurs et les tailles ici ===== */
-body {
-  text-align: center;
-}
-button {
-  padding: 8px 14px;
-  margin: 4px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-#jeu {
-  display: grid;
-  grid-template-columns: repeat(4, 90px);
-  gap: 10px;
-  justify-content: center;
-  margin-top: 20px;
-}
+/* =========================================================
+   memory.css — jeu de Memory
+   Chargé APRÈS ../../styles.css
+   Le bouton « Recommencer » utilise la classe .bouton du site.
+   ========================================================= */
 
 .memory-container {
-  margin: 2rem auto 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 0.8rem;
   max-width: 80%;
+  margin: 2rem auto;
+  text-align: center;
 }
+
+/* ----- Les réglages : thème, mode, niveau ----- */
 .option-jeu {
   display: flex;
-  gap: 15px;
   flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
 }
+
+select {
+  appearance: none; /* on enlève le style du navigateur… */
+  padding: 8px 36px 8px 12px;
+  font-size: 16px;
+  background-color: var(--blanc);
+  border: 2px solid var(--bleu);
+  border-radius: 8px;
+  cursor: pointer;
+
+  /* … et on redessine la petite flèche (chevron) */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%233d5a80' stroke-width='2'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+select:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 2px;
+}
+
+/* ----- La grille de cartes ----- */
+/* Le nombre de colonnes est changé par memory.js selon le niveau */
+#jeu {
+  display: grid;
+  grid-template-columns: repeat(4, 90px);
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
 /* Une carte cachée (dos bleu) */
 .carte {
   width: 90px;
   height: 90px;
   font-size: 32px;
+  color: var(--blanc);
+  background: var(--bleu);
   border: none;
   border-radius: 10px;
-  background: #2378b4;
-  color: white;
   cursor: pointer;
+}
+
+.carte:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 2px;
 }
 
 /* Une carte retournée (fond blanc) */
 .carte.visible {
-  background: white;
-  color: black;
-  border: 2px solid #2378b4;
+  color: var(--encre);
+  background: var(--blanc);
+  border: 2px solid var(--bleu);
 }
 
 /* Une paire trouvée (fond vert) */
 .carte.trouvee {
-  background: #c8f0d8;
+  background: var(--vert-pale);
 }
 
 /* Le texte des mots est plus petit que les images */
 .carte.mot.visible {
   font-size: 14px;
   font-weight: bold;
-}
-
-#recommencer {
-  display: inline-block;
-  padding: 0.6rem 1.5rem;
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: white;
-  text-decoration: none;
-  background: #2378b4;
-  border: 2px solid white;
-  border-radius: 10px;
-  box-shadow: 1px 1px 0px 0 white;
-}
-
-#recommencer:hover {
-  background-color: #f18d20;
-}
-
-select {
-  padding: 5px 10px;
-  border-radius: 10px;
-  font-size: 1.1rem;
-}
-select {
-  appearance: none;
-  padding: 8px 36px 8px 12px;
-  font-size: 16px;
-  border: 2px solid #2378b4;
-  border-radius: 8px;
-  background-color: white;
-  cursor: pointer;
-
-  /* Le chevron */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%233d5a80' stroke-width='2'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
 }

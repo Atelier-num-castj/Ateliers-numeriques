@@ -1,5 +1,11 @@
-/* ----- Consignes ----- */
+/* =========================================================
+   couper.css — exercice Couper / Coller (liste de courses)
+   Chargé APRÈS ../../styles.css
+   (kbd, .mobile, .succes/.attention/.erreur et la jauge
+   sont dans ../../styles.css)
+   ========================================================= */
 
+/* ----- Consignes ----- */
 .consignes {
   display: flex;
   flex-direction: column;
@@ -7,43 +13,48 @@
   width: min(900px, calc(100% - 2rem));
   margin: 1rem auto 0;
   padding: 1rem 1.25rem;
+  background: var(--blanc);
   border-radius: 16px;
-  background: #ffffff;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--ombre);
 }
 
 .consignes h4 {
   margin: 0 0 0.5rem;
   font-size: 1.2rem;
 }
+
 .consignes ol {
   padding-left: 1.4rem;
   line-height: 1.9;
 }
 
+/* Encadré jaune « 💡 astuce » */
 .astuce {
   padding: 0.6rem 0.9rem;
+  background: var(--jaune-pale);
   border-radius: 10px;
-  background: #fff3cd;
 }
 
-.mobile {
-  color: #667781;
-  font-size: 0.9rem;
+/* ----- Score et messages ----- */
+.barre-etat {
+  width: min(900px, calc(100% - 2rem));
+  margin: 1rem auto 0;
+  text-align: center;
 }
 
-/* les touches du clavier */
-kbd {
-  display: inline-block;
-  padding: 0.1rem 0.5rem;
-  border: 1px solid #b0bec5;
-  border-bottom-width: 3px;
-  border-radius: 6px;
-  background: #f7f9fa;
-  font-family: inherit;
-  font-size: 0.9em;
+#score {
+  margin: 0.4rem 0 0;
+  font-size: 1.1rem;
+  font-weight: bold;
 }
 
+#message {
+  min-height: 1.6rem;
+  margin: 0.3rem 0 0;
+  font-weight: 600;
+}
+
+/* ----- Zone de jeu ----- */
 .jeu {
   display: flex;
   flex-wrap: wrap;
@@ -57,9 +68,9 @@ kbd {
 .liste {
   flex: 0 1 260px;
   padding: 1rem;
+  background: var(--blanc);
   border-radius: 16px;
-  background: #ffffff;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--ombre);
 }
 
 .liste h4 {
@@ -75,18 +86,19 @@ kbd {
 .article {
   width: 100%;
   padding: 0.6rem 0.8rem;
-  border: 2px solid #cfd8dc;
-  border-radius: 10px;
-  background: #f7f9fa;
   font-size: 1.1rem;
+  background: #f7f9fa;
+  border: 2px solid var(--bordure);
+  border-radius: 10px;
 }
 
+/* Article coupé : il ne reste qu'un emplacement vide */
 .article.vide {
-  border-style: dashed;
   background: transparent;
+  border-style: dashed;
 }
 
-/* ----- Les postIts (à droite) ----- */
+/* ----- Les post-its (à droite) ----- */
 #postIts {
   flex: 1 1 420px;
   max-width: 640px;
@@ -98,9 +110,9 @@ kbd {
 .postIt {
   position: relative;
   padding: 1.4rem 1rem 1rem;
+  background: var(--papier); /* couleur donnée par couper.js */
   border-radius: 4px;
-  background: var(--papier);
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 3px 8px rgb(0 0 0 / 0.2);
   transform: rotate(-1.2deg);
 }
 
@@ -108,7 +120,7 @@ kbd {
   transform: rotate(1deg);
 }
 
-/* le morceau de scotch */
+/* Le morceau de scotch */
 .postIt::before {
   content: "";
   position: absolute;
@@ -116,12 +128,11 @@ kbd {
   left: 50%;
   width: 70px;
   height: 22px;
-  background: rgba(255, 255, 255, 0.6);
+  background: rgb(255 255 255 / 0.6);
   transform: translateX(-50%) rotate(-3deg);
 }
 
 .postIt h4 {
-  margin: 0;
   font-size: 1.2rem;
 }
 
@@ -134,21 +145,23 @@ kbd {
 
 .compteur {
   padding: 0.1rem 0.7rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.7);
   font-weight: bold;
+  background: rgb(255 255 255 / 0.7);
+  border-radius: 999px;
 }
 
 .compteur.complet {
-  background: #4caf50;
-  color: #ffffff;
+  color: var(--blanc);
+  background: var(--vert);
 }
 
-/* les lignes de cahier */
+/* Les lignes de cahier dans le post-it */
 .postIt textarea {
   width: 100%;
   height: 9rem;
   padding: 0 0.5rem;
+  font-size: 1.1rem;
+  line-height: 2rem;
   border: none;
   outline: none;
   resize: none;
@@ -157,53 +170,8 @@ kbd {
     to bottom,
     transparent 0,
     transparent calc(2rem - 1px),
-    rgba(0, 0, 0, 0.2) calc(2rem - 1px),
-    rgba(0, 0, 0, 0.2) 2rem
+    rgb(0 0 0 / 0.2) calc(2rem - 1px),
+    rgb(0 0 0 / 0.2) 2rem
   );
   background-attachment: local;
-  font-size: 1.1rem;
-  line-height: 2rem;
-}
-/* ----- Compteur et messages ----- */
-.barre-etat {
-  width: min(900px, calc(100% - 2rem));
-  margin: 1rem auto 0;
-  text-align: center;
-}
-
-#message {
-  min-height: 1.6rem;
-  margin: 0.3rem 0 0;
-  font-weight: 600;
-}
-
-.succes {
-  color: green;
-}
-.attention {
-  color: darkorange;
-}
-.erreur {
-  color: crimson;
-}
-
-/* ----- Jauge ----- */
-#jauge {
-  height: 20px;
-  border-radius: 10px;
-  background: #ddd;
-  overflow: hidden;
-}
-
-#jauge-remplissage {
-  height: 100%;
-  width: 0;
-  background: #4caf50;
-  transition: width 0.4s;
-}
-
-#score {
-  margin: 0.4rem 0 0;
-  font-size: 1.1rem;
-  font-weight: bold;
 }

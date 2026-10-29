@@ -1,34 +1,83 @@
-* {
+/* =========================================================
+   styles.css — la feuille COMMUNE à tout le site
+   ---------------------------------------------------------
+   Ordre de chargement dans chaque page (du plus général
+   au plus précis) :
+     1. ce fichier            → couleurs, header, boutons…
+     2. le CSS de la rubrique → ex. AlphaNum/styles.css
+     3. le CSS de l'exercice  → ex. alphabet.css
+   Le dernier chargé gagne en cas de conflit : c'est pour ça
+   que l'exercice vient toujours en dernier.
+   ========================================================= */
+
+/* ---------- 1. Les couleurs et réglages du site ----------
+   On les écrit UNE fois ici. Partout ailleurs on utilise
+   var(--bleu) au lieu de #2378b4 : pour changer une couleur
+   sur tout le site, on ne la modifie qu'ici. */
+:root {
+  --bleu: #2378b4;
+  --orange: #f18d20;
+  --orange-pale: #f5b36e;
+  --encre: #16213e; /* texte principal, bordures foncées */
+  --texte-leger: #5d6877;
+  --vert: #1e8a4c;
+  --vert-pale: #d6f0e1;
+  --rouge: #c9382a;
+  --rouge-pale: #f8d7da;
+  --jaune-pale: #fff3cd;
+  --fond: #f6f4ef;
+  --blanc: #ffffff;
+  --bordure: #cfd8dc;
+
+  --police: Verdana, Geneva, Tahoma, sans-serif;
+  --arrondi: 12px;
+  --ombre: 0 4px 20px rgb(0 0 0 / 0.12);
+}
+
+/* ---------- 2. Remise à zéro ---------- */
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 body {
-  background: #f6f4ef;
+  font-family: var(--police);
+  color: var(--encre);
+  background: var(--fond);
+}
+
+/* Les champs et boutons n'héritent pas de la police par défaut :
+   on le leur demande. */
+button,
+input,
+select,
+textarea {
+  font: inherit;
 }
 
 ul {
   list-style: none;
 }
 
-.trait {
-  height: 2px;
-  width: 70%;
-  background-color: #f5b36e;
-  margin: 0 auto;
+/* L'attribut hidden doit toujours cacher, même si un autre
+   style met display: flex sur l'élément. */
+[hidden] {
+  display: none !important;
 }
 
+/* ---------- 3. Le header (identique sur toutes les pages) ---------- */
 header {
-  color: white;
-  width: 100%;
-  background: #2378b4;
+  position: relative;
   display: flex;
   flex-direction: column;
-  padding: 1rem;
   gap: 0.5rem;
-  position: relative;
+  width: 100%;
+  padding: 1rem;
+  color: var(--blanc);
+  background: var(--bleu);
 }
 
 .header-petit {
@@ -36,111 +85,151 @@ header {
 }
 
 header img {
-  height: 6rem;
   position: absolute;
   top: 50%;
   left: 50%;
+  height: 6rem;
   transform: translate(-50%, -50%);
 }
 
 header h1,
 header h2,
 header h3 {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 500;
-  text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.header-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-nav a {
-  color: white;
-  font-size: 1.3rem;
-  text-decoration: none;
-}
-
-nav {
-  margin-top: 0.4rem;
-  display: flex;
-  align-items: center;
-}
-
-nav ul {
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-}
-
-nav .bouton {
-  display: inline-block;
-  padding: 0.6rem 1.5rem;
-
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   font-weight: 500;
-  color: white;
-  text-decoration: none;
-
-  background: #2378b4;
-  border: 2px solid white;
-  border-radius: 10px;
-  box-shadow: 1px 1px 0px 0 white;
+  text-align: center;
 }
 
-nav .bouton:hover {
-  background: #f18d20;
-  box-shadow: 1px 1px 0px 0 #f18d20;
-  border: 2px solid #f18d20;
-}
-
-nav .bouton:active {
-  box-shadow: 0 1px 0 white;
-  transform: translateY(3px);
-}
-
+.header-title,
 .bas-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
+nav {
+  display: flex;
+  align-items: center;
+  margin-top: 0.4rem;
+}
+
+nav ul {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Sur petit écran, le logo ne tient plus au milieu :
+   on le remet dans le flux, en haut, centré. */
+@media (max-width: 700px) {
+  header img {
+    position: static;
+    order: -1; /* passe en premier dans la colonne */
+    align-self: center;
+    height: 4rem;
+    transform: none;
+  }
+
+  .header-title,
+  .bas-header {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+}
+
+/* ---------- 4. Les boutons ---------- */
+/* .bouton marche sur un <a> comme sur un <button> */
+.bouton {
+  display: inline-block;
+  padding: 0.6rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--blanc);
+  text-decoration: none;
+  background: var(--bleu);
+  border: 2px solid var(--blanc);
+  border-radius: 10px;
+  box-shadow: 1px 1px 0 0 var(--blanc);
+  cursor: pointer;
+}
+
+.bouton:hover {
+  background: var(--orange);
+  border-color: var(--orange);
+  box-shadow: 1px 1px 0 0 var(--orange);
+}
+
+.bouton:active {
+  box-shadow: 0 1px 0 var(--blanc);
+  transform: translateY(3px);
+}
+
+/* Contour bien visible quand on navigue au clavier (touche Tab) */
+.bouton:focus-visible,
+.rubrique:focus-visible,
+.lien-jeu:focus-visible {
+  outline: 4px solid var(--orange);
+  outline-offset: 3px;
+}
+
+/* Grand lien « passer à l'exercice suivant » */
+.lien-jeu {
+  display: block;
+  margin-top: 1.5rem;
+  padding: 0.9rem;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  color: var(--blanc);
+  background: var(--bleu);
+  border-radius: 10px;
+}
+
+.lien-jeu:hover {
+  background: var(--orange);
+}
+
+/* ---------- 5. Pages d'accueil des rubriques ---------- */
 .accueil-container {
-  margin: 2rem auto 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 0.8rem;
   max-width: 80%;
+  margin: 2rem auto 0;
 }
 
 .accueil-container h2,
 .sous-titre {
-  font-weight: 500;
-  color: white;
-  background-color: #f18d20;
-  border-radius: 1rem;
-  padding: 0.5rem 1rem;
   width: fit-content;
   margin: 0 auto;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  color: var(--blanc);
+  background: var(--orange);
+  border-radius: 1rem;
+}
+
+.trait {
+  width: 70%;
+  height: 2px;
+  margin: 0 auto;
+  background: var(--orange-pale);
 }
 
 .rubrique-container p {
-  text-align: center;
   font-size: 1.1rem;
+  text-align: center;
 }
 
 .rubriques {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem;
   justify-content: center;
+  gap: 1.5rem;
   padding: 2rem;
 }
 
@@ -148,20 +237,17 @@ nav .bouton:active {
   display: flex;
   flex-direction: column;
   align-items: center;
-
   width: 13rem;
   height: 16rem;
-
-  text-decoration: none;
-  color: #16213e;
   font-size: 1.2rem;
   font-weight: 500;
   text-align: center;
-
-  background: white;
-  border: 3px solid #2378b4;
+  text-decoration: none;
+  color: var(--encre);
+  background: var(--blanc);
+  border: 3px solid var(--bleu);
   border-radius: 16px;
-  box-shadow: 0 5px 0 #2378b4;
+  box-shadow: 0 5px 0 var(--bleu);
 }
 
 .rubrique img {
@@ -173,7 +259,6 @@ nav .bouton:active {
 
 .rubrique span {
   flex: 1;
-  text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -184,25 +269,93 @@ nav .bouton:active {
 }
 
 .rubrique:active {
-  box-shadow: 0 2px 0 #16213e;
+  box-shadow: 0 2px 0 var(--encre);
   transform: translateY(3px);
 }
 
+/* ---------- 6. Bloc de consignes en haut d'un exercice ---------- */
 .instructions {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
   gap: 0.8rem;
-  margin-top: 0.8rem;
-  margin-bottom: 0.8rem;
+  margin: 0.8rem 0;
 }
 
 .instructions h3 {
   font-size: 1.5rem;
 }
+
 .instructions p {
   font-size: 1.1rem;
-  text-align: center;
   line-height: 1.7rem;
+  text-align: center;
+}
+
+/* Petite note pour les téléphones */
+.mobile {
+  font-size: 0.9rem;
+  color: var(--texte-leger);
+}
+
+/* Une touche du clavier dessinée : <kbd>Entrée</kbd> */
+kbd {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  font-family: inherit;
+  font-size: 0.9em;
+  background: #f7f9fa;
+  border: 1px solid #b0bec5;
+  border-bottom-width: 3px;
+  border-radius: 6px;
+}
+
+/* ---------- 7. Retours à l'élève (messages, jauge) ---------- */
+.succes {
+  color: var(--vert);
+}
+
+.attention {
+  color: #b35c00; /* orange foncé : plus lisible que l'orange vif */
+}
+
+.erreur {
+  color: var(--rouge);
+}
+
+/* La jauge de progression :
+   <div class="jauge"><div class="jauge-remplissage"></div></div> */
+.jauge {
+  height: 20px;
+  overflow: hidden;
+  background: #ddd;
+  border-radius: 10px;
+}
+
+.jauge-remplissage {
+  width: 0;
+  height: 100%;
+  background: var(--vert);
+  transition: width 0.4s;
+}
+
+/* Petite secousse quand la réponse est fausse */
+@keyframes secoue {
+  25% {
+    transform: translateX(-6px);
+  }
+  75% {
+    transform: translateX(6px);
+  }
+}
+
+/* Si la personne a demandé moins d'animations dans son système */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

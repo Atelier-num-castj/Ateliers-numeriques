@@ -1,95 +1,28 @@
+/* =========================================================
+   AlphaNum/styles.css — commun aux exercices de clavier
+   (lettres, sons, mots, calendrier, alphabet)
+   Chargé APRÈS ../../../styles.css
+   ========================================================= */
+
+/* La page prend toute la hauteur de l'écran, le contenu au centre.
+   min-height (et pas height) : si le contenu est plus grand,
+   la page peut s'allonger au lieu de déborder.
+   dvh = hauteur réelle visible, même sur téléphone. */
 body {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100dvh;
 }
 
 main {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1.5rem;
-  flex: 1;
 }
 
-.modele {
-  width: 9rem;
-  height: 9rem;
-  margin: 2rem auto;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 3rem;
-  font-weight: bold;
-  color: #16213e;
-  text-transform: uppercase;
-}
-
-input,
-.touche {
-  text-transform: uppercase;
-}
-
-.touche {
-  font-size: 4rem;
-  background: #ffffff;
-  border: 3px solid #16213e;
-  border-radius: 12px;
-  box-shadow: 0 6px 0 #16213e;
-}
-.modele span {
-  padding: 0 0.1em;
-  color: #5b6675;
-}
-
-.modele .fait {
-  color: #1e8a4c;
-}
-
-.modele .courante {
-  color: #16213e;
-  background: #f18d20;
-  border-radius: 6px 6px 0 0;
-}
-
-#reponse {
-  display: block;
-  width: 30rem;
-  height: 5rem;
-  margin: 2rem auto;
-
-  font-size: 3rem;
-  font-weight: bold;
-  text-align: center;
-  text-transform: uppercase;
-  color: #16213e;
-
-  background: #ffffff;
-  border: 3px solid #16213e;
-  border-radius: 12px;
-}
-
-#reponse:focus {
-  outline: 4px solid #2378b4;
-  border: 0px;
-}
-
-#reponse.invalide {
-  background: #f8d7da;
-  outline-color: #c9382a;
-  animation: secoue 0.3s;
-}
-
-#reponse.valide {
-  color: #1e8a4c;
-  font-weight: bold;
-  text-align: center;
-  border: 4px solid #1e8a4c;
-  outline: none;
-}
-
+/* ---------- La consigne en gros ---------- */
 .consigne {
   margin: 0 auto;
   font-size: 3rem;
@@ -100,27 +33,86 @@ input,
   font-size: 5rem;
 }
 
-.emplacement.invalide {
+/* ---------- Le modèle à recopier ---------- */
+.modele {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 9rem; /* carré pour une lettre, plus large pour un mot */
+  max-width: 100%;
+  height: 9rem;
+  margin: 2rem auto;
+  /* 3rem sur ordinateur, plus petit sur téléphone pour les mots longs */
+  font-size: clamp(1.4rem, 8vw, 3rem);
+  font-weight: bold;
+  color: var(--encre);
+  text-transform: uppercase;
+}
+
+.modele span {
+  padding: 0 0.1em;
+  color: var(--texte-leger);
+}
+
+/* lettre déjà tapée */
+.modele .fait {
+  color: var(--vert);
+}
+
+/* prochaine lettre à taper */
+.modele .courante {
+  color: var(--encre);
+  background: var(--orange);
+  border-radius: 6px 6px 0 0;
+}
+
+/* Le modèle dessiné comme une touche de clavier (exercice Lettres) */
+.touche {
+  font-size: 4rem;
+  text-transform: uppercase;
+  background: var(--blanc);
+  border: 3px solid var(--encre);
+  border-radius: var(--arrondi);
+  box-shadow: 0 6px 0 var(--encre);
+}
+
+/* ---------- Le champ où l'on tape ---------- */
+#reponse {
+  display: block;
+  /* 30rem maximum, mais jamais plus large que l'écran */
+  width: min(30rem, 90vw);
+  height: 5rem;
+  margin: 2rem auto;
+  font-size: 3rem;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--encre);
+  background: var(--blanc);
+  border: 3px solid var(--encre);
+  border-radius: var(--arrondi);
+}
+
+#reponse:focus {
+  outline: 4px solid var(--bleu);
+  border-color: transparent;
+}
+
+#reponse.invalide {
+  background: var(--rouge-pale);
+  outline-color: var(--rouge);
   animation: secoue 0.3s;
 }
 
-@keyframes secoue {
-  25% {
-    transform: translateX(-6px);
-  }
-  75% {
-    transform: translateX(6px);
-  }
+#reponse.valide {
+  color: var(--vert);
+  border: 4px solid var(--vert);
+  outline: none;
 }
 
-button:disabled {
-  opacity: 1;
-  color: #16213e;
-}
-
+/* ---------- Le score ---------- */
 .score {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #16213e;
   text-align: center;
 }

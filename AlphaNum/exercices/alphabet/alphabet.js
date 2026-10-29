@@ -1,3 +1,5 @@
+import { melanger } from "../../../outils.js";
+
 const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const TAILLES = [13, 26];
 
@@ -10,15 +12,6 @@ let aide = false;
 
 const $ = (id) => document.getElementById(id);
 const casseLettres = (l) => (majuscule ? l : l.toLowerCase());
-
-function melanger(liste) {
-  const t = [...liste];
-  for (let i = t.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [t[i], t[j]] = [t[j], t[i]];
-  }
-  return t;
-}
 
 function demarrer() {
   const n = TAILLES[niveau];

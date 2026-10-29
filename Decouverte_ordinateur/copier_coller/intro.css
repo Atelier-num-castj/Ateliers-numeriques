@@ -1,27 +1,20 @@
-:root {
-  --reussi: #4caf50;
-}
-
-body {
-  margin: 0;
-  background: #e9edef;
-  font-family: system-ui, sans-serif;
-  color: #111b21;
-}
+/* =========================================================
+   intro.css — « Sélectionner du texte » (avant le copier/coller)
+   Chargé APRÈS ../../styles.css
+   ========================================================= */
 
 .intro {
-  max-width: 70%;
-  margin: 0 auto;
-  padding: 1.5rem 1rem 3rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  /* 900px maximum, mais toute la largeur sur un petit écran */
+  width: min(900px, 100%);
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
 }
 
-/* ----- Explication ----- */
+/* ----- Les 3 techniques ----- */
 .techniques {
-  list-style: none;
-  padding: 0;
   display: grid;
   gap: 0.6rem;
   margin-bottom: 0.6rem;
@@ -29,44 +22,41 @@ body {
 
 .techniques li {
   padding: 0.8rem 1rem;
-  border-radius: 12px;
-  background: #ffffff;
+  background: var(--blanc);
+  border-radius: var(--arrondi);
 }
 
 .icone {
   display: inline-block;
   min-width: 3.2rem;
 }
-.mobile {
-  color: #667781;
-  font-size: 0.9rem;
-}
 
-/* ----- Exercices ----- */
+/* ----- Les exercices ----- */
 .intro h4 {
   font-size: 1.5rem;
-  text-align: center;
-  width: 180px;
 }
+
 .exercice {
   margin-bottom: 1rem;
   padding: 1rem;
-  border: 3px solid #cfd8dc;
-  border-radius: 12px;
-  background: #ffffff;
+  background: var(--blanc);
+  border: 3px solid var(--bordure);
+  border-radius: var(--arrondi);
   transition:
     border-color 0.3s,
     background 0.3s;
 }
 
 .exercice.reussi {
-  border-color: var(--reussi);
-  background: #e8f5e9;
+  background: var(--vert-pale);
+  border-color: var(--vert);
 }
 
+/* La case à cocher dessinée avant chaque consigne */
 .statut::before {
   content: "⬜";
 }
+
 .reussi .statut::before {
   content: "✅";
 }
@@ -76,34 +66,17 @@ body {
 }
 
 .phrase {
-  margin: 0;
   padding: 0.6rem 0.8rem;
-  border-radius: 10px;
-  background: #e8f0fe;
   font-size: 1.1rem;
+  background: #e8f0fe;
+  border-radius: 10px;
 }
 
-/* ----- Bravo et lien ----- */
+/* ----- Bravo ----- */
 .bravo {
   padding: 1rem;
-  border-radius: 12px;
-  background: #e8f5e9;
   font-weight: bold;
   text-align: center;
-}
-
-.lien-jeu {
-  display: block;
-  margin-top: 1.5rem;
-  padding: 0.9rem;
-  border-radius: 10px;
-  background: #2378b4;
-  color: #ffffff;
-  font-weight: bold;
-  text-align: center;
-  text-decoration: none;
-}
-
-.lien-jeu:hover {
-  background: #f18d20;
+  background: var(--vert-pale);
+  border-radius: var(--arrondi);
 }

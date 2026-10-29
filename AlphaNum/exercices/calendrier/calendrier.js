@@ -1,3 +1,5 @@
+import { melanger, sansAccents, parler } from "../../../outils.js";
+
 const onglets = document.querySelectorAll('[role="tab"]');
 const panneaux = document.querySelectorAll('[role="tabpanel"]');
 const params = new URLSearchParams(window.location.search);
@@ -68,24 +70,24 @@ const JOURS = [
 
 const MOIS = [
   { nom: "janvier", couleur: "#e63946" },
-  { nom: "fevrier", couleur: "#f4a261" },
+  { nom: "février", couleur: "#f4a261" },
   { nom: "mars", couleur: "#e9c46a" },
   { nom: "avril", couleur: "#2a9d8f" },
   { nom: "mai", couleur: "#2378b4" },
   { nom: "juin", couleur: "#7b5ea7" },
   { nom: "juillet", couleur: "#88ff00" },
-  { nom: "aout", couleur: "#ff7de9" },
+  { nom: "août", couleur: "#ff7de9" },
   { nom: "septembre", couleur: "#ff6f1b" },
   { nom: "octobre", couleur: "#ff206a" },
   { nom: "novembre", couleur: "#ffdf2b" },
-  { nom: "decembre", couleur: "#8bcfff" },
+  { nom: "décembre", couleur: "#8bcfff" },
 ];
 
 const carte = document.getElementById("carte");
 const numero = document.getElementById("numero");
 const modele = document.getElementById("modele");
 const reponse = document.getElementById("reponse");
-const consigneActivité = document.getElementById("consigne-text");
+const consigneActivite = document.getElementById("consigne-text");
 const consigne = niveau;
 
 document.addEventListener("click", () => {
@@ -94,6 +96,7 @@ document.addEventListener("click", () => {
 
 let indexTableau = 0;
 let dernierValide = "";
+let carteSelectionnee = null; // carte choisie dans l'activité « ordre »
 
 function majLettres() {
   const nb = reponse.value.length;
@@ -104,7 +107,7 @@ function majLettres() {
 }
 
 function afficherTexte() {
-  consigneActivité.textContent = consigne;
+  consigneActivite.textContent = consigne;
   const texte = niveau === "jour" ? JOURS[indexTableau] : MOIS[indexTableau];
   carte.style.background = texte.couleur;
   numero.textContent = indexTableau + 1;
@@ -124,8 +127,11 @@ reponse.addEventListener("input", () => {
   const nom =
     niveau === "jour" ? JOURS[indexTableau].nom : MOIS[indexTableau].nom;
   const saisie = reponse.value.toLowerCase();
+  // Le début du mot attendu, de la même longueur que ce qui est tapé
+  const debutAttendu = nom.slice(0, saisie.length);
 
-  if (!nom.startsWith(saisie)) {
+  // On compare SANS les accents : taper "fe" est accepté pour "fé"
+  if (sansAccents(saisie) !== sansAccents(debutAttendu)) {
     reponse.value = dernierValide;
     reponse.classList.add("invalide");
     majLettres();
@@ -135,11 +141,12 @@ reponse.addEventListener("input", () => {
     return;
   }
 
-  dernierValide = saisie;
-  reponse.value = saisie;
+  // On affiche la bonne orthographe : "fe" devient "fé"
+  dernierValide = debutAttendu;
+  reponse.value = debutAttendu;
   majLettres();
 
-  if (saisie === nom) {
+  if (debutAttendu === nom) {
     reponse.value = "✓ Bravo !";
     reponse.disabled = true;
     reponse.classList.add("valide");
@@ -188,15 +195,6 @@ function genererEmplacements() {
   );
 }
 
-function melanger(tableau) {
-  const copie = [...tableau];
-  for (let i = copie.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [copie[i], copie[j]] = [copie[j], copie[i]];
-  }
-  return copie;
-}
-
 function genererCartes() {
   const tableau = niveau === "jour" ? JOURS : MOIS;
 
@@ -215,12 +213,7 @@ function genererCartes() {
 }
 
 document.getElementById("ecouter").addEventListener("click", () => {
-  const son = new SpeechSynthesisUtterance(
-    niveau === "jour" ? JOURS[indexTableau].nom : MOIS[indexTableau].nom,
-  );
-  son.lang = "fr-FR";
-  speechSynthesis.cancel();
-  speechSynthesis.speak(son);
+  parler(niveau === "jour" ? JOURS[indexTableau].nom : MOIS[indexTableau].nom);
 });
 
 // Au chargement de la page
@@ -271,7 +264,6 @@ emplacements.addEventListener("click", (event) => {
   }
 });
 
-let carteSelectionnee = null;
 
 function verifierFin() {
   const resteDesCartes = document.querySelectorAll("#tas .carte").length > 0;
