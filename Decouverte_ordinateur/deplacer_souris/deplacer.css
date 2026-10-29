@@ -27,10 +27,7 @@ main {
   margin: 0 0 12px;
   align-items: center;
 }
-.levels span {
-  font-size: 1rem;
-  margin-right: 4px;
-}
+
 button {
   font: inherit;
   font-weight: 700;
@@ -79,6 +76,13 @@ button.primary {
   flex: 1 1 220px;
 }
 
+#msg.ok {
+  background: var(--ok-bg);
+}
+
+#msg.bad {
+  color: var(--bad);
+}
 .board {
   border: 3px solid var(--line);
   border-radius: 18px;
@@ -132,9 +136,7 @@ dialog {
   font: inherit;
   box-shadow: 0 0 0 100vmax rgb(0 0 0 / 0.5); /* assombrit le plateau */
 }
-dialog::backdrop {
-  background: rgb(0 0 0 / 0.5);
-}
+
 dialog h2 {
   margin: 0 0 8px;
   font-size: 1.8rem;

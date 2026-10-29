@@ -72,42 +72,29 @@
         hidden
       >
         <p class="consigne">
-          <span aria-hidden="true" class="consigne-emoji">✏️</span> Écrire le
+          <span aria-hidden="true" class="consigne-emoji">✏️</span> Écris le
           <span id="consigne-text"></span>
         </p>
 
         <div class="carte" id="carte">
           <span class="numero" id="numero">1</span>
-          <button
-            type="button"
-            id="ecouter"
-            class="bouton"
-            aria-label="Écouter le jour"
-          >
-            🔊
-          </button>
+          <button type="button" id="ecouter" class="bouton">🔊</button>
         </div>
 
         <div class="modele" id="modele" aria-hidden="true"></div>
-        <input
-          type="text"
-          id="reponse"
-          autocomplete="off"
-          spellcheck="false"
-          aria-label="Écrire le jour"
-        />
+        <input type="text" id="reponse" autocomplete="off" spellcheck="false" />
         <p id="message" role="status"></p>
       </section>
 
       <section id="activite-2" role="tabpanel" aria-labelledby="onglet-2">
         <p class="consigne">
-          <span aria-hidden="true">🔀</span> Remettre dans l'ordre
+          <span aria-hidden="true">🔀</span> Remets dans l'ordre
         </p>
         <div class="activite-box">
           <div class="tas" id="tas"></div>
           <div class="emplacements" id="emplacements"></div>
         </div>
-        <p id="message" role="status"></p>
+        <p id="message-ordre" role="status"></p>
       </section>
       <button type="button" id="recommencer" class="bouton">
         🔄 Recommencer

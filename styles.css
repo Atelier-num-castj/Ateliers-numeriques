@@ -20,11 +20,6 @@ ul {
   margin: 0 auto;
 }
 
-input,
-.touche {
-  text-transform: uppercase;
-}
-
 header {
   color: white;
   width: 100%;

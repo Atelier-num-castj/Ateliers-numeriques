@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Apprendre à Couper / Coller</title>
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./couper.css" />
+    <link
+      rel="shortcut icon"
+      href="../../assets/logo-CASTJ.png"
+      type="image/x-icon"
+    />
+  </head>
+  <body>
+    <header>
+      <img
+        src="../../assets/Logo-CASTJ-blanc.png"
+        alt="Logo du centre d'animation"
+      />
+      <div class="header-title">
+        <h1>Centre d'animation Saint Jean</h1>
+        <h2>Découvrir l'ordinateur</h2>
+      </div>
+      <div class="bas-header">
+        <nav>
+          <ul>
+            <li>
+              <a href="../../index.html" class="bouton">Retour à l'accueil</a>
+            </li>
+            <li>
+              <a href="../index.html" class="bouton">Retour à l'atelier</a>
+            </li>
+          </ul>
+        </nav>
+        <h3>Couper / Coller</h3>
+      </div>
+    </header>
+    <main>
+      <div class="instructions">
+        <h3 class="sous-titre">Couper / Coller</h3>
+        <div class="trait"></div>
+      </div>
+      <section class="consignes">
+        <p>Pour cet exercice on va ranger la liste de courses.</p>
+        <h4>Comment faire ?</h4>
+        <p>
+          Prends les articles de la liste et range-les sur le bon post-it.
+          <br />
+          Tu as appris à copier et coller. Maintenant tu vas apprendre à couper
+          et coller. <br />
+          <strong>Couper</strong>, c'est <strong>déplacer</strong> : l'article
+          quitte la liste et arrive sur le post-it.
+        </p>
+
+        <ol>
+          <li>
+            👆👆👆 Fais un <strong>triple-clic</strong> sur un article ou
+            sélectionne en glissant avec la souris.
+          </li>
+          <li>
+            ✂️ Fais un clique droit pour accéder au menu et choisis
+            <strong>couper</strong>.
+          </li>
+          <li>
+            📋 Fais un clique droit dans le bon post it pour accéder au menu et
+            choisis
+            <strong>coller</strong>.
+          </li>
+          <li>↵ Appuie sur <kbd>Entrée</kbd> pour aller à la ligne.</li>
+        </ol>
+
+        <p class="astuce">
+          💡 Un article = une ligne. Sans <kbd>Entrée</kbd>, les articles se
+          collent les uns aux autres !
+        </p>
+        <p class="mobile">
+          <!-- 💻 Sur Mac : <kbd>⌘</kbd> + <kbd>X</kbd> et <kbd>⌘</kbd> + <kbd>V</kbd>. -->
+          📱 Sur téléphone : appuie longtemps sur le texte, puis choisis «
+          Couper » ou « Coller ».
+        </p>
+      </section>
+      <div class="barre-etat">
+        <div
+          id="jauge"
+          role="progressbar"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+        >
+          <div id="jauge-remplissage"></div>
+        </div>
+        <p id="score">0 %</p>
+        <p id="message"></p>
+      </div>
+      <div class="jeu">
+        <section class="liste" aria-label="Ma liste">
+          <h4>Ma liste</h4>
+          <div id="articles"></div>
+        </section>
+
+        <section id="postIts"></section>
+      </div>
+    </main>
+
+    <script src="./couper.js"></script>
+  </body>
+</html>

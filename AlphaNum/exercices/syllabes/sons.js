@@ -136,7 +136,8 @@ document.addEventListener("click", () => {
 
 function nouveauSon() {
   if (sonsRestants.length === 0) {
-    sonsRestants = [...sonsSimples];
+    sonsRestants =
+      niveau === "complexes" ? [...sonsComplexes] : [...sonsSimples];
   }
   const index = Math.floor(Math.random() * sonsRestants.length);
   sonActuel = sonsRestants[index];

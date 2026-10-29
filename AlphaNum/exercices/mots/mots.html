@@ -16,7 +16,7 @@
   <body>
     <header>
       <img
-        src="/assets/Logo-CASTJ-blanc.png"
+        src="../../../assets/Logo-CASTJ-blanc.png"
         alt="Logo du centre d'animation"
       />
       <div class="header-title">
@@ -26,7 +26,11 @@
       <div class="bas-header">
         <nav>
           <ul>
-            <li><a href="/index.html" class="bouton">Retour à l'accueil</a></li>
+            <li>
+              <a href="../../../index.html" class="bouton"
+                >Retour à l'accueil</a
+              >
+            </li>
             <li>
               <a href="../../index.html" class="bouton">Retour à l'atelier</a>
             </li>
@@ -36,7 +40,7 @@
       </div>
     </header>
     <main>
-      <p class="consigne"><span aria-hidden="true">⌨️</span>Ecrire le mot :</p>
+      <p class="consigne"><span aria-hidden="true">⌨️</span>Ecris le mot :</p>
       <div class="modele" id="modele"></div>
       <input
         type="text"
@@ -44,7 +48,6 @@
         autocomplete="off"
         spellcheck="false"
         autofocus
-        aria-label="Écrire la lettre"
       />
       <p class="score">Score : <span class="compteur" id="compteur"></span></p>
     </main>

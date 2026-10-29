@@ -9,7 +9,6 @@ button {
   cursor: pointer;
 }
 
-/* La grille : repeat(4, 80px) = 4 colonnes de 80px */
 #jeu {
   display: grid;
   grid-template-columns: repeat(4, 90px);

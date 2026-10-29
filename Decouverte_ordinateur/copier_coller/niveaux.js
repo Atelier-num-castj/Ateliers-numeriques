@@ -81,7 +81,7 @@ export const niveaux = [
     elements: [
       {
         id: "livreur",
-        etiquette: "Entreprise de livraison",
+        etiquette: "Nom du colis",
         attendu: "Superposte",
       },
       { id: "suivi", etiquette: "Numéro de suivi", attendu: "FR458-923-771" },
@@ -118,32 +118,32 @@ export const niveaux = [
       },
       {
         de: "contact",
-        texte: "Tu viens toute seule ?",
+        texte: "Tu viens avec quelqu'un ?",
         heure: "18:46",
       },
-      { de: "moi", texte: "Non je serais avec mon frère", heure: "18:50" },
+      { de: "moi", texte: "Oui, avec mon frère", heure: "18:50" },
       {
         de: "contact",
         texte: "Génial avec lequel ?",
         heure: "18:51",
       },
-      { de: "moi", texte: "Mon grand frère Sammy", heure: "18:50" },
+      { de: "moi", texte: "Mon grand frère Sammy", heure: "18:52" },
       {
         de: "contact",
         texte: "J'ai hâte de vous voir !",
-        heure: "18:51",
+        heure: "18:53",
       },
-      { de: "moi", texte: "Moi aussi !", heure: "18:52" },
+      { de: "moi", texte: "Moi aussi !", heure: "18:54" },
       {
         de: "moi",
         texte: "Tu veux que je ramène quelque chose à manger ?",
-        heure: "18:52",
+        heure: "18:55",
       },
       {
         de: "contact",
         texte:
           "On a prévu de faire des Pizzas, tu peux en prendre une 4 fromages",
-        heure: "18:53",
+        heure: "18:56",
       },
     ],
     elements: [

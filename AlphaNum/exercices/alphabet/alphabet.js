@@ -48,11 +48,11 @@ function remplirActivite() {
   lettreSuivante.textContent = casseLettres(ALPHABET[suivant]);
 
   if (aide) {
-    consigne.append("Cherchez la lettre : ", lettreSuivante);
+    consigne.append("Cherche la lettre : ", lettreSuivante);
   } else if (suivant === 0) {
-    consigne.append("Cherchez la lettre : ", lettreSuivante);
+    consigne.append("Cherche la lettre : ", lettreSuivante);
   } else {
-    consigne.textContent = "Cherchez la lettre suivante";
+    consigne.textContent = "Cherche la lettre suivante";
   }
 
   $("consigne").appendChild(consigne);

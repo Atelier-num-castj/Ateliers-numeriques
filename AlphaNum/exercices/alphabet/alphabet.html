@@ -44,12 +44,12 @@
       <h3>Le jeu de l'alphabet</h3>
 
       <div class="barre">
-        <button class="btn" data-niveau="0">Niveau 1 : A à M</button>
-        <button class="btn" data-niveau="1">Niveau 2 : A à Z</button>
+        <button data-niveau="0">Niveau 1 : A à M</button>
+        <button data-niveau="1">Niveau 2 : A à Z</button>
       </div>
       <div class="barre">
-        <button class="btn sec" id="bouton-aide">Aide</button>
-        <select class="btn sec" id="bouton-casse">
+        <button id="bouton-aide">Aide</button>
+        <select id="bouton-casse">
           <option value="majuscules">Majuscules</option>
           <option value="minuscules">Minuscules</option>
         </select>
@@ -63,15 +63,15 @@
       </section>
 
       <section class="carte" id="zonePile">
-        <h2>Cliquez sur la bonne lettre</h2>
+        <h2>Clique sur la bonne lettre</h2>
         <div class="pile" id="pile"></div>
       </section>
 
       <section class="carte bravo" id="fin" hidden>
         <h2>Bravo !</h2>
-        <p>Vous avez remis toutes les lettres dans l'ordre.</p>
-        <button class="btn" id="bouton-rejouer">Rejouer</button>
-        <button class="btn sec" id="bouton-suivant">Niveau suivant</button>
+        <p>Tu as remis toutes les lettres dans l'ordre.</p>
+        <button id="bouton-rejouer">Rejouer</button>
+        <button id="bouton-suivant">Niveau suivant</button>
       </section>
     </main>
   </body>

@@ -2,7 +2,6 @@ const lettres = "abcdefghijklmnopqrstuvwxyz";
 
 const touche = document.getElementById("modele");
 const reponse = document.getElementById("reponse");
-const message = document.getElementById("message");
 const compteur = document.getElementById("compteur");
 let score = 0;
 
@@ -33,7 +32,6 @@ reponse.addEventListener("input", () => {
       reponse.classList.remove("valide");
       nouvelleLettre();
       reponse.value = "";
-      message.textContent = "";
       touche.classList.remove("valide");
     }, 1000);
   } else {

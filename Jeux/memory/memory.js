@@ -219,7 +219,6 @@ function lancer() {
   coups = 0;
   trouvees = 0;
   nbPaires = niveaux[niveauActuel];
-  console.log(niveaux[niveauActuel]);
   document.getElementById("info").textContent = "Coups : 0";
 
   // On mélange les paires et on garde seulement le nombre voulu

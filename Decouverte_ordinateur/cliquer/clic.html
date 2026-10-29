@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Apprendre à cliquer</title>
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="./styles.css" />
+    <link
+      rel="shortcut icon"
+      href="../../assets/logo-CASTJ.png"
+      type="image/x-icon"
+    />
+  </head>
+  <body>
+    <header>
+      <img
+        src="../../assets/Logo-CASTJ-blanc.png"
+        alt="Logo du centre d'animation"
+      />
+      <div class="header-title">
+        <h1>Centre d'animation Saint Jean</h1>
+        <h2>Découvrir l'ordinateur</h2>
+      </div>
+      <div class="bas-header">
+        <nav>
+          <ul>
+            <li>
+              <a href="../../index.html" class="bouton">Retour à l'accueil</a>
+            </li>
+            <li>
+              <a href="../index.html" class="bouton">Retour à l'atelier</a>
+            </li>
+          </ul>
+        </nav>
+        <h3>Déplacer la souris</h3>
+      </div>
+    </header>
+    <main>
+      <div class="instructions">
+        <h3 class="sous-titre">Apprendre à cliquer</h3>
+        <div class="trait"></div>
+      </div>
+      <ol id="steps"></ol>
+      <div class="brief">
+        <svg
+          id="mouse"
+          width="82"
+          height="112"
+          viewBox="0 0 86 120"
+          aria-hidden="true"
+        ></svg>
+        <div>
+          <h4 id="title"></h4>
+          <p id="rule"></p>
+        </div>
+      </div>
+      <div class="bar"><span id="round"></span><span id="count"></span></div>
+      <div id="area"></div>
+      <div id="msg" role="status"></div>
+    </main>
+    <script>
+      var COL = {
+          left: "var(--left)",
+          right: "var(--right)",
+          double: "var(--dbl)",
+        },
+        LAB = { left: "Gauche", right: "Droit", double: "Double" };
+      var LV = [
+        {
+          n: "Clic gauche",
+          a: "left",
+          c: "var(--left)",
+          t: "Le clic gauche",
+          r: "Placez le pointeur sur le cercle bleu, puis appuyez une fois sur le bouton gauche de la souris.",
+          rounds: [
+            [120, 4, 0, "Grandes cibles, immobiles"],
+            [90, 5, 0.7, "Cibles moyennes, lentes"],
+            [64, 6, 1.5, "Petites cibles, rapides"],
+          ],
+        },
+        {
+          n: "Clic droit",
+          a: "right",
+          c: "var(--right)",
+          t: "Le clic droit",
+          r: "Placez le pointeur sur le cercle orange, puis appuyez une fois sur le bouton droit de la souris.",
+          rounds: [
+            [120, 4, 0, "Grandes cibles, immobiles"],
+            [90, 5, 0.7, "Cibles moyennes, lentes"],
+            [64, 6, 1.5, "Petites cibles, rapides"],
+          ],
+        },
+        {
+          n: "Double clic",
+          a: "double",
+          c: "var(--dbl)",
+          t: "Le double clic",
+          r: "Placez le pointeur sur le cercle vert, puis appuyez deux fois rapidement sur le bouton gauche, sans bouger la souris.",
+          rounds: [
+            [130, 3, 0, "Grandes cibles, immobiles"],
+            [100, 4, 0.5, "Cibles moyennes, lentes"],
+            [80, 5, 1.1, "Petites cibles, rapides"],
+          ],
+        },
+        {
+          n: "Mélange",
+          a: "mix",
+          c: "var(--mix)",
+          t: "Les trois clics mélangés",
+          r: "Chaque cercle indique le clic à faire : « Gauche », « Droit » ou « Double ».",
+          rounds: [
+            [104, 6, 0.8, "Cibles moyennes"],
+            [84, 8, 1.4, "Cibles plus petites et rapides"],
+          ],
+        },
+      ];
+      var $ = function (i) {
+          return document.getElementById(i);
+        },
+        area = $("area"),
+        msg = $("msg");
+      var li = 0,
+        ri = 0,
+        hit = 0,
+        cur = null,
+        errs = 0,
+        done = [];
+      area.addEventListener("contextmenu", function (e) {
+        e.preventDefault();
+      });
+      function say(t, k) {
+        msg.textContent = t;
+        msg.className = k || "";
+      }
+      function steps() {
+        $("steps").innerHTML = LV.map(function (l, i) {
+          return (
+            '<li style="--c:' +
+            l.c +
+            '" class="' +
+            (i === li ? "on" : "") +
+            (done.indexOf(i) > -1 ? " done" : "") +
+            '">' +
+            l.n +
+            "</li>"
+          );
+        }).join("");
+      }
+      function mouse(a) {
+        var c = LV[li].c,
+          L = a === "left" || a === "double",
+          R = a === "right";
+        $("mouse").innerHTML =
+          '<rect x="6" y="6" width="74" height="108" rx="37" fill="var(--field)" stroke="var(--muted)" stroke-width="3"/>' +
+          '<path d="M6 46V43a37 37 0 0 1 37-37v40z" fill="' +
+          (L ? c : "none") +
+          '" stroke="var(--muted)" stroke-width="3"/>' +
+          '<path d="M80 46V43A37 37 0 0 0 43 6v40z" fill="' +
+          (R ? c : "none") +
+          '" stroke="var(--muted)" stroke-width="3"/>' +
+          (a === "double"
+            ? '<text x="20" y="35" font-size="22" font-weight="600" fill="#fff">×2</text>'
+            : "") +
+          (a === "mix"
+            ? '<text x="31" y="34" font-size="24" font-weight="600" fill="var(--muted)">?</text>'
+            : "");
+      }
+      function screen(h, p, label, fn) {
+        area.innerHTML =
+          '<div class="center"><h3>' +
+          h +
+          "</h3><p>" +
+          p +
+          '</p><button class="btn" id="go" style="--c:' +
+          LV[li].c +
+          '">' +
+          label +
+          "</button></div>";
+        $("go").onclick = fn;
+        $("go").focus();
+      }
+      function intro() {
+        cur = null;
+        errs = 0;
+        steps();
+        mouse(LV[li].a);
+        $("title").textContent = LV[li].t;
+        $("rule").textContent = LV[li].r;
+        $("round").textContent = "";
+        $("count").textContent = "";
+        say("");
+        screen(
+          LV[li].t,
+          "Trois manches, avec des cibles de plus en plus petites et rapides. Les erreurs ne sont pas pénalisantes.",
+          "Commencer",
+          function () {
+            ri = 0;
+            round();
+          },
+        );
+      }
+      if (false) {
+      }
+      function round() {
+        var R = LV[li].rounds[ri];
+        hit = 0;
+        $("round").textContent =
+          "Manche " + (ri + 1) + " sur " + LV[li].rounds.length + " · " + R[3];
+        $("count").textContent = "Cible 0 sur " + R[1];
+        area.innerHTML = "";
+        say("");
+        spawn();
+      }
+      function spawn() {
+        var R = LV[li].rounds[ri],
+          a =
+            LV[li].a === "mix"
+              ? ["left", "right", "double"][Math.floor(Math.random() * 3)]
+              : LV[li].a;
+        var s = R[0],
+          W = area.clientWidth,
+          H = area.clientHeight,
+          b = document.createElement("button"),
+          g = Math.random() * 6.28;
+        b.type = "button";
+        b.className = "tg";
+        b.style.cssText = "width:" + s + "px;height:" + s + "px;--c:" + COL[a];
+        if (LV[li].a === "mix") {
+          b.textContent = LAB[a];
+          if (s < 90) b.style.fontSize = "14px";
+        }
+        cur = {
+          el: b,
+          a: a,
+          s: s,
+          ok: false,
+          sp: R[2],
+          x: Math.random() * (W - s),
+          y: Math.random() * (H - s),
+          vx: Math.cos(g) * R[2],
+          vy: Math.sin(g) * R[2],
+        };
+        b.style.left = cur.x + "px";
+        b.style.top = cur.y + "px";
+        b.addEventListener("click", function (e) {
+          if (cur.ok || cur.el !== b) return;
+          if (a === "left") {
+            win();
+            return;
+          }
+          if (a === "double") {
+            if (e.detail >= 2) {
+              win();
+              return;
+            }
+            b.classList.add("half");
+            say(
+              "Un seul clic détecté. Cliquez deux fois, plus rapidement.",
+              "warn",
+            );
+            return;
+          }
+          err("C’était le bouton gauche. Ici, utilisez le bouton droit.");
+        });
+        b.addEventListener("contextmenu", function (e) {
+          e.preventDefault();
+          if (cur.ok || cur.el !== b) return;
+          if (a === "right") win();
+          else
+            err(
+              a === "left"
+                ? "C’était le bouton droit. Ici, utilisez le bouton gauche."
+                : "C’était le bouton droit. Ici, faites un double clic avec le bouton gauche.",
+            );
+        });
+        area.appendChild(b);
+      }
+      function err(t) {
+        errs++;
+        var b = cur.el;
+        b.classList.remove("shake");
+        void b.offsetWidth;
+        b.classList.add("shake");
+        say(t, "warn");
+      }
+      function win() {
+        cur.ok = true;
+        cur.el.classList.add("gone");
+        hit++;
+        var R = LV[li].rounds[ri];
+        $("count").textContent = "Cible " + hit + " sur " + R[1];
+        say("Bien.", "ok");
+        setTimeout(function () {
+          area.innerHTML = "";
+          if (hit < R[1]) spawn();
+          else endRound();
+        }, 280);
+      }
+      function endRound() {
+        ri++;
+        cur = null;
+        say("");
+        if (ri < LV[li].rounds.length)
+          return screen(
+            "Manche terminée",
+            "La prochaine manche est un peu plus difficile.",
+            "Manche suivante",
+            round,
+          );
+        done.push(li);
+        steps();
+        var e =
+            errs === 0
+              ? "Aucune erreur."
+              : errs === 1
+                ? "1 erreur."
+                : errs + " erreurs.",
+          fin = li === LV.length - 1;
+        screen(
+          fin ? "Exercice terminé" : "Niveau terminé",
+          e +
+            (fin
+              ? " Vous maîtrisez le clic gauche, le clic droit et le double clic."
+              : " Vous pouvez passer au niveau suivant."),
+          fin ? "Recommencer" : "Niveau suivant",
+          function () {
+            if (fin) {
+              done = [];
+              li = 0;
+            } else li++;
+            intro();
+          },
+        );
+      }
+      function loop() {
+        var c = cur;
+        if (c && !c.ok && c.sp) {
+          var W = area.clientWidth,
+            H = area.clientHeight;
+          c.x += c.vx;
+          c.y += c.vy;
+          if (c.x < 0 || c.x > W - c.s) c.vx *= -1;
+          if (c.y < 0 || c.y > H - c.s) c.vy *= -1;
+          c.x = Math.max(0, Math.min(W - c.s, c.x));
+          c.y = Math.max(0, Math.min(H - c.s, c.y));
+          c.el.style.left = c.x + "px";
+          c.el.style.top = c.y + "px";
+        }
+        requestAnimationFrame(loop);
+      }
+      intro();
+      loop();
+    </script>
+  </body>
+</html>

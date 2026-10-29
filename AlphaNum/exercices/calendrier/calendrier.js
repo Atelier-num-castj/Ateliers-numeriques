@@ -18,8 +18,10 @@ onglets.forEach((onglet, i) => {
   onglet.addEventListener("click", () => afficherActivite(i + 1));
 });
 
-const CLES = ["activite-1", "activite-2"];
-
+const CLES = [
+  `calendrier-${niveau}-activite-1`,
+  `calendrier-${niveau}-activite-2`,
+];
 function afficherCoches() {
   onglets.forEach((onglet, i) => {
     const validee = localStorage.getItem(CLES[i]) === "valide";
@@ -166,7 +168,6 @@ const tas = document.getElementById("tas");
 
 function genererEmplacements() {
   const tableau = niveau === "jour" ? JOURS : MOIS;
-  console.log(tableau);
 
   emplacement.replaceChildren(
     ...tableau.map((item, i) => {
@@ -273,8 +274,8 @@ emplacements.addEventListener("click", (event) => {
 let carteSelectionnee = null;
 
 function verifierFin() {
-  const resteDesCartes = document.querySelectorAll(".carte").length > 0;
+  const resteDesCartes = document.querySelectorAll("#tas .carte").length > 0;
   if (!resteDesCartes) {
-    validerActivite(1);
+    validerActivite(2);
   }
 }
