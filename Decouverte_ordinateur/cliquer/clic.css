@@ -1,0 +1,284 @@
+/* =========================================================
+   clic.css — exercice « Apprendre à cliquer »
+   Chargé APRÈS ../../styles.css
+   ========================================================= */
+
+/* ---------- 1. Une couleur par type de clic ----------
+   Tout élément qui a data-bouton="…" reçoit sa couleur
+   dans la variable --couleur. Ses enfants en héritent :
+   la souris, l'onglet du niveau et les cibles s'en servent. */
+[data-bouton="gauche"] {
+  --couleur: var(--bleu);
+}
+[data-bouton="droit"] {
+  --couleur: var(--orange);
+}
+[data-bouton="double"] {
+  --couleur: var(--vert);
+}
+[data-bouton="melange"] {
+  --couleur: var(--violet);
+}
+
+/* ---------- 2. La page ---------- */
+.clic {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem 2rem;
+}
+
+/* ---------- 3. Les onglets des niveaux ---------- */
+.niveaux {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.8rem;
+  list-style: none;
+}
+
+.niveaux button {
+  padding: 0.6rem 1.2rem;
+  font-weight: bold;
+  color: var(--texte-leger);
+  background: var(--blanc);
+  border: 3px solid var(--bordure);
+  border-radius: var(--arrondi);
+  cursor: pointer;
+}
+
+/* Survol : on devine la couleur du niveau */
+.niveaux button:hover {
+  color: var(--encre);
+  border-color: var(--couleur);
+}
+
+/* Navigation au clavier (touche Tab) */
+.niveaux button:focus-visible {
+  outline: 3px solid var(--couleur);
+  outline-offset: 3px;
+}
+
+/* Niveau en cours : bordure et ombre de sa couleur */
+.niveaux button.actif {
+  color: var(--encre);
+  border-color: var(--couleur);
+  box-shadow: 0 4px 0 var(--couleur);
+}
+
+/* Niveau terminé : une coche verte devant */
+.niveaux button.fait::before {
+  content: "✓ ";
+  color: var(--vert);
+}
+
+/* ---------- 4. La consigne avec la souris ---------- */
+.consigne {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem 1.5rem;
+  background: var(--blanc);
+  border: 3px solid var(--encre);
+  border-radius: 16px;
+}
+
+.consigne h4 {
+  margin-bottom: 0.3rem;
+  font-size: 1.4rem;
+}
+
+.consigne p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* Le dessin de la souris */
+.souris {
+  flex-shrink: 0; /* ne rétrécit jamais */
+  width: 70px;
+}
+
+.souris-corps,
+.souris-gauche,
+.souris-droit {
+  fill: #eef1f5;
+  stroke: var(--encre);
+  stroke-width: 3;
+}
+
+/* On colorie le bon bouton selon data-bouton */
+.souris[data-bouton="gauche"] .souris-gauche,
+.souris[data-bouton="double"] .souris-gauche,
+.souris[data-bouton="droit"] .souris-droit,
+.souris[data-bouton="melange"] .souris-gauche,
+.souris[data-bouton="melange"] .souris-droit {
+  fill: var(--couleur);
+}
+
+/* Le « ×2 » n'apparaît que pour le double clic */
+.souris-x2 {
+  display: none;
+  font-size: 22px;
+  font-weight: bold;
+  fill: var(--blanc);
+}
+
+.souris[data-bouton="double"] .souris-x2 {
+  display: block;
+}
+
+/* ---------- 5. Le plateau de jeu ---------- */
+.plateau {
+  padding: 1rem;
+  background: var(--blanc);
+  border: 3px solid var(--bleu);
+  border-radius: 16px;
+  box-shadow: 0 6px 0 var(--bleu); /* même effet que les cartes de l'accueil */
+}
+
+.barre-manche {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+  font-weight: bold;
+  color: var(--texte-leger);
+}
+
+/* La zone où apparaissent les cibles */
+.zone {
+  position: relative; /* les cibles se placent par rapport à elle */
+  height: min(420px, 60vh);
+  overflow: hidden;
+  user-select: none; /* un double clic ne sélectionne pas de texte */
+  border-radius: var(--arrondi);
+  /* fond à petits points, discret */
+  background-color: var(--fond);
+  background-image: radial-gradient(var(--bordure) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+/* L'écran entre deux manches, posé par-dessus la zone */
+.ecran {
+  position: absolute;
+  inset: 0; /* = top, right, bottom, left à 0 : couvre toute la zone */
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  text-align: center;
+  background: rgb(255 255 255 / 0.92);
+}
+
+.ecran h3 {
+  font-size: 1.6rem;
+}
+
+.ecran p {
+  max-width: 45ch; /* environ 45 caractères par ligne : plus facile à lire */
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* ---------- 6. Les cibles ---------- */
+.cible {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  /* --taille est donnée par clic.js selon la manche */
+  width: var(--taille);
+  height: var(--taille);
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  /* Des anneaux comme une cible de fléchettes.
+     closest-side : 100 % = le bord du cercle.
+     Les 2 % d'écart entre deux couleurs adoucissent les bords. */
+  background: radial-gradient(
+    circle closest-side,
+    var(--couleur) 0 18%,
+    var(--blanc) 20% 36%,
+    var(--couleur) 38% 56%,
+    var(--blanc) 58% 74%,
+    var(--couleur) 76%
+  );
+  box-shadow: 0 5px 0 rgb(0 0 0 / 0.25);
+  animation: apparition 0.2s ease-out;
+}
+
+/* Survol : un halo de la couleur de la cible */
+.cible:hover {
+  box-shadow:
+    0 5px 0 rgb(0 0 0 / 0.25),
+    0 0 0 6px color-mix(in srgb, var(--couleur) 35%, transparent);
+}
+
+/* Niveau Mélange : une petite souris au centre de la cible.
+   :has(.souris) veut dire « une cible qui contient une souris ».
+   Le centre devient un grand rond blanc pour bien voir le dessin. */
+.cible:has(.souris) {
+  background: radial-gradient(
+    circle closest-side,
+    var(--blanc) 0 58%,
+    var(--couleur) 60% 74%,
+    var(--blanc) 76% 86%,
+    var(--couleur) 88%
+  );
+}
+
+.cible .souris {
+  width: auto;
+  height: 50%;
+}
+
+/* Double clic : un seul clic a été détecté */
+.cible.moitie {
+  box-shadow:
+    0 5px 0 rgb(0 0 0 / 0.25),
+    0 0 0 8px color-mix(in srgb, var(--couleur) 50%, transparent);
+}
+
+/* Bon clic : la cible grossit et disparaît */
+.cible.touchee {
+  pointer-events: none;
+  animation: disparition 0.25s ease-in forwards;
+}
+
+@keyframes apparition {
+  from {
+    scale: 0.6;
+    opacity: 0;
+  }
+}
+
+@keyframes disparition {
+  to {
+    scale: 1.3;
+    opacity: 0;
+  }
+}
+
+/* ---------- 7. Le message sous la zone ---------- */
+.message {
+  min-height: 1.8rem;
+  margin-top: 0.8rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* ---------- 8. Petits écrans ---------- */
+@media (max-width: 560px) {
+  .consigne {
+    flex-direction: column;
+    text-align: center;
+  }
+}
