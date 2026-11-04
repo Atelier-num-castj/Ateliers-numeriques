@@ -275,9 +275,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  /* safe : si le contenu dépasse, il n'est pas coupé en haut */
+  justify-content: safe center;
   gap: 1rem;
   padding: 1.5rem;
+  overflow-y: auto; /* si l'écran est petit, on peut faire défiler */
   text-align: center;
   background: rgb(255 255 255 / 0.92);
 }
@@ -290,6 +292,41 @@
   max-width: 45ch; /* environ 45 caractères par ligne : plus facile à lire */
   font-size: 1.1rem;
   line-height: 1.6;
+}
+
+/* Les boutons de l'écran, côte à côte */
+.ecran-boutons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* L'écran de fin : une carte par clic, de la couleur du clic */
+.recap {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.8rem;
+  width: 100%;
+  max-width: 720px;
+}
+
+.recap li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.7rem 0.9rem;
+  text-align: left;
+  line-height: 1.4;
+  background: var(--blanc);
+  border: 3px solid var(--couleur);
+  border-radius: var(--arrondi);
+  box-shadow: 0 4px 0 var(--couleur);
+}
+
+/* Le nom du clic (le <strong> placé directement dans la carte) */
+.recap li > strong {
+  font-size: 1.1rem;
 }
 
 /* ---------- 6. Les cibles ---------- */
@@ -382,7 +419,8 @@
     justify-self: start;
   }
 
-  .usages {
+  .usages,
+  .recap {
     grid-template-columns: 1fr;
   }
 }

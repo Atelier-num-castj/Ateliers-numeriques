@@ -13,6 +13,7 @@ import { espacesInsecables } from "../../outils.js";
 //   description : note pour l'animateur, pas affichée à l'écran
 // usages : les exemples de « À quoi ça sert ? » (les mots entre ** sont en gras)
 // astuce : la phrase après « 💡 Astuce : »
+// resume : l'usage principal, rappelé sur l'écran de fin
 const NIVEAUX = [
   {
     nom: "Clic gauche",
@@ -31,6 +32,7 @@ const NIVEAUX = [
     ],
     astuce:
       "c'est le clic le plus utilisé. Quand on te dit « clique », c'est le clic gauche.",
+    resume: "Ouvrir un **lien**, appuyer sur un **bouton**",
     manches: [
       {
         taille: 120,
@@ -66,6 +68,7 @@ const NIVEAUX = [
     ],
     astuce:
       "le clic droit ne fait rien de grave tout seul : il ouvre seulement un menu. Si tu ne sais pas quoi faire, essaie-le.",
+    resume: "Ouvrir un **menu** : copier, coller, enregistrer…",
     manches: [
       {
         taille: 120,
@@ -104,6 +107,7 @@ const NIVEAUX = [
     ],
     astuce:
       "sur Internet, un seul clic suffit presque toujours. Le double clic sert surtout sur le bureau et dans les dossiers.",
+    resume: "Ouvrir un **dossier** ou un **fichier**",
     manches: [
       // Cibles immobiles : pendant un double clic, la souris ne doit pas bouger.
       // La difficulté vient de la taille et du nombre de cibles.
@@ -164,6 +168,8 @@ const message = document.getElementById("message");
 const listeUsages = document.getElementById("usages");
 const texteAstuce = document.getElementById("astuce");
 const explication = document.querySelector(".explication");
+const recap = document.getElementById("recap");
+const lienSuivant = document.getElementById("activite-suivante");
 
 // ---------- 3. L'état du jeu ----------
 // Ces variables changent pendant la partie (d'où let, et pas const)
@@ -246,6 +252,11 @@ function afficherConsigne() {
 // Affiche l'écran par-dessus la zone de jeu.
 // « action » est la fonction lancée quand on clique sur le bouton.
 function afficherEcran(titre, texte, texteBouton, action) {
+  // Le récapitulatif et le lien « Activité suivante » ne servent qu'à la fin :
+  // on les cache ici, afficherFin() les montrera
+  recap.hidden = true;
+  lienSuivant.hidden = true;
+
   ecranTitre.textContent = titre;
   ecranTexte.textContent = texte;
   ecranBouton.textContent = texteBouton;
@@ -443,31 +454,57 @@ function terminerManche() {
   niveauxFaits.add(numeroNiveau);
   afficherOnglets();
 
-  // 3. C'était le dernier niveau
-  if (numeroNiveau === NIVEAUX.length - 1) {
-    afficherEcran(
-      "Tu as réussi tous les niveaux !",
-      "Tu sais faire le clic gauche, le clic droit et le double clic.",
-      "Recommencer",
-      () => {
-        niveauxFaits.clear();
-        numeroNiveau = 0;
-        presenterNiveau();
-      },
-    );
+  // 3. Les 3 niveaux sont réussis, dans n'importe quel ordre
+  if (niveauxFaits.size === NIVEAUX.length) {
+    afficherFin();
     return;
   }
 
-  // 4. Sinon, on propose le niveau suivant
+  // 4. Sinon, on propose le premier niveau pas encore réussi
+  const suivant = NIVEAUX.findIndex((_, index) => !niveauxFaits.has(index));
+
   afficherEcran(
     `${niveau.nom} : réussi !`,
-    "Tu peux passer au niveau suivant.",
+    `Prochaine étape : ${NIVEAUX[suivant].titre.toLowerCase()}.`,
     "Niveau suivant",
     () => {
-      numeroNiveau++;
+      numeroNiveau = suivant;
       presenterNiveau();
     },
   );
+}
+
+// L'écran de fin : bravo, récapitulatif des 3 clics,
+// « Recommencer » ou « Activité suivante »
+function afficherFin() {
+  afficherEcran(
+    "Bravo, tu as réussi tous les niveaux !",
+    "Voici ce que tu as appris :",
+    "Recommencer",
+    () => {
+      niveauxFaits.clear();
+      numeroNiveau = 0;
+      presenterNiveau();
+    },
+  );
+
+  // Une carte par clic, de la couleur du clic (grâce à data-bouton)
+  const cartes = NIVEAUX.map((niveau) => {
+    const nom = document.createElement("strong");
+    nom.textContent = niveau.nom;
+
+    const resume = document.createElement("span");
+    resume.append(...texteAvecGras(niveau.resume));
+
+    const carte = document.createElement("li");
+    carte.dataset.bouton = niveau.clic;
+    carte.append(nom, resume);
+    return carte;
+  });
+  recap.replaceChildren(...cartes);
+
+  recap.hidden = false;
+  lienSuivant.hidden = false;
 }
 
 // Un seul écouteur sur la zone, pour toutes les cibles

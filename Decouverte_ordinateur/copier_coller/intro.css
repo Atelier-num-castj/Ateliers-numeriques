@@ -68,7 +68,7 @@
 .phrase {
   padding: 0.6rem 0.8rem;
   font-size: 1.1rem;
-  background: #e8f0fe;
+  background: var(--bleu-pale);
   border-radius: 10px;
 }
 

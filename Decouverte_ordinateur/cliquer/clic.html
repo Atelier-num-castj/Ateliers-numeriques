@@ -102,7 +102,21 @@
           <div class="ecran" id="ecran">
             <h3 id="ecran-titre"></h3>
             <p id="ecran-texte"></p>
-            <button type="button" class="bouton" id="ecran-bouton"></button>
+
+            <!-- Le récapitulatif des 3 clics : affiché seulement à la fin du jeu -->
+            <ul class="recap" id="recap" hidden></ul>
+
+            <div class="ecran-boutons">
+              <button type="button" class="bouton" id="ecran-bouton"></button>
+              <!-- Lien vers l'activité suivante : affiché seulement à la fin du jeu -->
+              <a
+                class="bouton"
+                id="activite-suivante"
+                href="../deplacer_souris/deplacer.html"
+                hidden
+                >Activité suivante →</a
+              >
+            </div>
           </div>
         </div>
 

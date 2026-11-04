@@ -16,6 +16,7 @@
    sur tout le site, on ne la modifie qu'ici. */
 :root {
   --bleu: #2378b4;
+  --bleu-pale: #e8f0fe;
   --orange: #f18d20;
   --orange-pale: #f5b36e;
   --encre: #16213e; /* texte principal, bordures foncées */
@@ -292,6 +293,36 @@ nav ul {
   font-size: 1.1rem;
   line-height: 1.7rem;
   text-align: center;
+}
+
+/* ----- Consignes ----- */
+.consignes {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: min(900px, calc(100% - 2rem));
+  margin: 1rem auto 0;
+  padding: 1rem 1.25rem;
+  background: var(--blanc);
+  border-radius: 16px;
+  box-shadow: var(--ombre);
+}
+
+.consignes h4 {
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+}
+
+.consignes ol {
+  padding-left: 1.4rem;
+  line-height: 1.9;
+}
+
+/* Encadré jaune « 💡 astuce » */
+.astuce {
+  padding: 0.6rem 0.9rem;
+  background: var(--jaune-pale);
+  border-radius: 10px;
 }
 
 /* Petite note pour les téléphones */
