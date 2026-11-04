@@ -47,33 +47,47 @@
       <!-- Les 4 niveaux (Clic gauche, Clic droit…) : créés par clic.js -->
       <ol class="niveaux" id="niveaux" aria-label="Les niveaux"></ol>
 
-      <!-- La consigne du niveau, avec le dessin de la souris -->
-      <div class="consigne">
-        <!-- data-bouton dit quel bouton colorier : gauche, droit, double ou melange -->
-        <svg
-          class="souris"
-          id="souris"
-          data-bouton="gauche"
-          viewBox="0 0 86 120"
-          aria-hidden="true"
-        >
-          <rect
-            class="souris-corps"
-            x="6"
-            y="6"
-            width="74"
-            height="108"
-            rx="37"
-          />
-          <path class="souris-gauche" d="M6 46V43a37 37 0 0 1 37-37v40z" />
-          <path class="souris-droit" d="M80 46V43A37 37 0 0 0 43 6v40z" />
-          <text class="souris-x2" x="16" y="35">×2</text>
-        </svg>
-        <div>
+      <!-- L'explication du niveau.
+           <details> se replie et se déplie tout seul, sans JS.
+           « open » = déplié au chargement de la page. -->
+      <details class="explication" open>
+        <!-- <summary> : la partie TOUJOURS visible, même repliée.
+             Cliquer dessus replie ou déplie le reste. -->
+        <summary>
+          <!-- data-bouton dit quel bouton colorier : gauche, droit ou double -->
+          <svg
+            class="souris"
+            id="souris"
+            data-bouton="gauche"
+            viewBox="0 0 86 120"
+            aria-hidden="true"
+          >
+            <rect
+              class="souris-corps"
+              x="6"
+              y="6"
+              width="74"
+              height="108"
+              rx="37"
+            />
+            <path class="souris-gauche" d="M6 46V43a37 37 0 0 1 37-37v40z" />
+            <path class="souris-droit" d="M80 46V43A37 37 0 0 0 43 6v40z" />
+            <text class="souris-x2" x="16" y="35">×2</text>
+          </svg>
           <h4 id="consigne-titre"></h4>
-          <p id="consigne-texte"></p>
+          <span class="consigne-texte" id="consigne-texte"></span>
+          <span class="replier"></span>
+        </summary>
+
+        <!-- La partie qui se replie -->
+        <div class="explication-detail">
+          <h5>À quoi ça sert ?</h5>
+          <ul class="usages" id="usages"></ul>
+          <p class="astuce">
+            <strong>💡 Astuce :</strong> <span id="astuce"></span>
+          </p>
         </div>
-      </div>
+      </details>
 
       <!-- Le plateau de jeu -->
       <section class="plateau">
@@ -95,23 +109,5 @@
         <p class="message" id="message" role="status"></p>
       </section>
     </main>
-
-    <!-- Modèle de petite souris, copié par clic.js dans les cibles du Mélange.
-         Un <template> n'est jamais affiché : c'est un « moule » pour le JS. -->
-    <template id="modele-souris">
-      <svg class="souris" viewBox="0 0 86 120" aria-hidden="true">
-        <rect
-          class="souris-corps"
-          x="6"
-          y="6"
-          width="74"
-          height="108"
-          rx="37"
-        />
-        <path class="souris-gauche" d="M6 46V43a37 37 0 0 1 37-37v40z" />
-        <path class="souris-droit" d="M80 46V43A37 37 0 0 0 43 6v40z" />
-        <text class="souris-x2" x="16" y="35">×2</text>
-      </svg>
-    </template>
   </body>
 </html>

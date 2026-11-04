@@ -1,3 +1,5 @@
+import { espacesInsecables } from "../../outils.js";
+
 // =========================================================
 // clic.js — exercice « Apprendre à cliquer »
 // =========================================================
@@ -8,6 +10,9 @@
 //   taille  : diamètre des cibles en pixels
 //   nombre  : combien de cibles à toucher pour finir la manche
 //   vitesse : déplacement en pixels par image (0 = la cible ne bouge pas)
+//   description : note pour l'animateur, pas affichée à l'écran
+// usages : les exemples de « À quoi ça sert ? » (les mots entre ** sont en gras)
+// astuce : la phrase après « 💡 Astuce : »
 const NIVEAUX = [
   {
     nom: "Clic gauche",
@@ -15,6 +20,17 @@ const NIVEAUX = [
     titre: "Le clic gauche",
     consigne:
       "Mets le pointeur sur le rond bleu, puis appuie une fois sur le bouton gauche de la souris.",
+    usages: [
+      { picto: "🔗", texte: "Ouvrir un **lien** sur Internet" },
+      {
+        picto: "🔘",
+        texte: "Appuyer sur un **bouton** : « Valider », « Envoyer »…",
+      },
+      { picto: "✏️", texte: "Cliquer dans une **case** pour écrire dedans" },
+      { picto: "📄", texte: "**Choisir** un fichier ou une icône" },
+    ],
+    astuce:
+      "c'est le clic le plus utilisé. Quand on te dit « clique », c'est le clic gauche.",
     manches: [
       {
         taille: 120,
@@ -42,6 +58,14 @@ const NIVEAUX = [
     titre: "Le clic droit",
     consigne:
       "Mets le pointeur sur le rond orange, puis appuie une fois sur le bouton droit de la souris.",
+    usages: [
+      { picto: "📋", texte: "Ouvrir un **menu** avec plus de choix" },
+      { picto: "✂️", texte: "**Copier**, **couper** et **coller**" },
+      { picto: "🖼️", texte: "**Enregistrer** une image" },
+      { picto: "🗑️", texte: "**Renommer** ou **supprimer** un fichier" },
+    ],
+    astuce:
+      "le clic droit ne fait rien de grave tout seul : il ouvre seulement un menu. Si tu ne sais pas quoi faire, essaie-le.",
     manches: [
       {
         taille: 120,
@@ -69,8 +93,20 @@ const NIVEAUX = [
     titre: "Le double clic",
     consigne:
       "Mets le pointeur sur le rond vert, puis appuie deux fois très vite sur le bouton gauche, sans bouger la souris.",
+    usages: [
+      { picto: "📁", texte: "Ouvrir un **dossier**" },
+      {
+        picto: "📄",
+        texte: "Ouvrir un **fichier** : une photo, un document…",
+      },
+      { picto: "🖥️", texte: "Lancer un **programme** depuis le bureau" },
+      { picto: "🔤", texte: "Sélectionner un **mot** dans un texte" },
+    ],
+    astuce:
+      "sur Internet, un seul clic suffit presque toujours. Le double clic sert surtout sur le bureau et dans les dossiers.",
     manches: [
-      // Cibles un peu plus grandes : le double clic est plus difficile
+      // Cibles immobiles : pendant un double clic, la souris ne doit pas bouger.
+      // La difficulté vient de la taille et du nombre de cibles.
       {
         taille: 130,
         nombre: 10,
@@ -79,37 +115,21 @@ const NIVEAUX = [
       },
       {
         taille: 100,
-        nombre: 10,
-        vitesse: 0.5,
-        description: "Cibles moyennes, lentes",
+        nombre: 15,
+        vitesse: 0,
+        description: "Cibles moyennes, immobiles",
       },
       {
         taille: 80,
-        nombre: 10,
-        vitesse: 1.1,
-        description: "Petites cibles, rapides",
-      },
-    ],
-  },
-  {
-    nom: "Mélange",
-    clic: "melange",
-    titre: "Les trois clics mélangés",
-    consigne:
-      "Chaque rond te dit quel clic faire : « Gauche », « Droit » ou « Double ».",
-    manches: [
-      { taille: 104, nombre: 15, vitesse: 0.8, description: "Cibles moyennes" },
-      {
-        taille: 84,
-        nombre: 15,
-        vitesse: 1.4,
-        description: "Cibles plus petites et rapides",
+        nombre: 20,
+        vitesse: 0,
+        description: "Petites cibles, immobiles",
       },
       {
-        taille: 70,
-        nombre: 15,
-        vitesse: 1.8,
-        description: "Cibles très petites et rapides",
+        taille: 60,
+        nombre: 20,
+        vitesse: 0,
+        description: "Toutes petites cibles, immobiles",
       },
     ],
   },
@@ -141,7 +161,9 @@ const ecranBouton = document.getElementById("ecran-bouton");
 const texteManche = document.getElementById("manche");
 const texteCompteur = document.getElementById("compteur");
 const message = document.getElementById("message");
-const modeleSouris = document.getElementById("modele-souris");
+const listeUsages = document.getElementById("usages");
+const texteAstuce = document.getElementById("astuce");
+const explication = document.querySelector(".explication");
 
 // ---------- 3. L'état du jeu ----------
 // Ces variables changent pendant la partie (d'où let, et pas const)
@@ -179,12 +201,46 @@ function afficherOnglets() {
   listeNiveaux.replaceChildren(...onglets);
 }
 
-// Met à jour la souris, le titre et la consigne du niveau en cours
+// Transforme "Ouvrir un **lien**" en : "Ouvrir un " + <strong>lien</strong>.
+// On découpe le texte à chaque ** : un morceau sur deux est en gras.
+// Renvoie une liste de morceaux à ajouter avec append() ou replaceChildren().
+function texteAvecGras(texte) {
+  return espacesInsecables(texte)
+    .split("**")
+    .map((morceau, index) => {
+      if (index % 2 === 0) return morceau; // morceaux 0, 2, 4… : texte normal
+
+      const gras = document.createElement("strong");
+      gras.textContent = morceau; // morceaux 1, 3, 5… : en gras
+      return gras;
+    });
+}
+
+// Met à jour l'explication du niveau en cours :
+// souris, titre, consigne, exemples et astuce
 function afficherConsigne() {
   const niveau = NIVEAUX[numeroNiveau];
   souris.dataset.bouton = niveau.clic;
   consigneTitre.textContent = niveau.titre;
-  consigneTexte.textContent = niveau.consigne;
+  consigneTexte.textContent = espacesInsecables(niveau.consigne);
+
+  // « À quoi ça sert ? » : un <li> par exemple, avec son pictogramme
+  const usages = niveau.usages.map(({ picto, texte }) => {
+    const pictogramme = document.createElement("span");
+    pictogramme.className = "picto";
+    pictogramme.setAttribute("aria-hidden", "true"); // décoratif
+    pictogramme.textContent = picto;
+
+    const description = document.createElement("span");
+    description.append(...texteAvecGras(texte));
+
+    const usage = document.createElement("li");
+    usage.append(pictogramme, description);
+    return usage;
+  });
+  listeUsages.replaceChildren(...usages);
+
+  texteAstuce.replaceChildren(...texteAvecGras(niveau.astuce));
 }
 
 // Affiche l'écran par-dessus la zone de jeu.
@@ -195,7 +251,7 @@ function afficherEcran(titre, texte, texteBouton, action) {
   ecranBouton.textContent = texteBouton;
   ecranBouton.onclick = action;
   ecran.hidden = false;
-  ecranBouton.focus(); // on peut valider directement avec Entrée
+  ecranBouton.focus({ preventScroll: true }); // on peut valider directement avec Entrée
 }
 
 function afficherCompteur() {
@@ -211,13 +267,14 @@ function afficherMessage(texte, type = "") {
 // Présente le niveau en cours : onglets, consigne, écran « Commencer »
 function presenterNiveau() {
   const niveau = niveauEnCours();
+  explication.open = true; // nouveau niveau : on montre l'explication dépliée
   afficherOnglets();
   afficherConsigne();
   texteManche.textContent = "";
   texteCompteur.textContent = "";
   afficherEcran(
     niveau.titre,
-    `${niveau.manches.length} manches, avec des cibles de plus en plus petites et rapides. Les erreurs ne comptent pas, prends ton temps.`,
+    `${niveau.manches.length} manches. Les erreurs ne comptent pas, prends ton temps.`,
     "Commencer",
     () => {
       numeroManche = 0;
@@ -251,38 +308,21 @@ function demarrerManche() {
   const niveau = niveauEnCours();
   ciblesTouchees = 0;
   ecran.hidden = true;
-  texteManche.textContent = `Manche ${numeroManche + 1} sur ${niveau.manches.length} · ${mancheEnCours().description}`;
+  texteManche.textContent = `Manche ${numeroManche + 1} sur ${niveau.manches.length}`;
   afficherCompteur();
   afficherMessage(""); // efface le message de la manche précédente
   creerCible();
 }
 
-// Le clic demandé : celui du niveau, ou un au hasard pour le Mélange
-function choisirClic() {
-  const clic = niveauEnCours().clic;
-  if (clic !== "melange") return clic;
-
-  const clics = ["gauche", "droit", "double"];
-  return clics[Math.floor(Math.random() * clics.length)];
-}
-
 function creerCible() {
   const { taille, vitesse } = mancheEnCours();
-  const clic = choisirClic();
+  const { clic } = niveauEnCours(); // le clic demandé dans ce niveau
 
   const cible = document.createElement("button");
   cible.type = "button";
   cible.className = "cible";
   cible.dataset.bouton = clic; // donne la couleur (CSS section 1)
   cible.style.setProperty("--taille", `${taille}px`);
-
-  // Au Mélange, on dessine dans la cible une petite souris
-  // avec le bon bouton colorié : compréhensible même sans savoir lire
-  if (niveauEnCours().clic === "melange") {
-    const petiteSouris = modeleSouris.content.firstElementChild.cloneNode(true);
-    petiteSouris.dataset.bouton = clic; // le CSS colorie le bon bouton
-    cible.append(petiteSouris);
-  }
 
   // Une position au hasard, sans dépasser de la zone
   const x = Math.random() * (zone.clientWidth - taille);

@@ -16,9 +16,6 @@
 [data-bouton="double"] {
   --couleur: var(--vert);
 }
-[data-bouton="melange"] {
-  --couleur: var(--violet);
-}
 
 /* ---------- 2. La page ---------- */
 .clic {
@@ -74,25 +71,128 @@
   color: var(--vert);
 }
 
-/* ---------- 4. La consigne avec la souris ---------- */
-.consigne {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  padding: 1rem 1.5rem;
+/* ---------- 4. L'explication du niveau ---------- */
+.explication {
+  overflow: hidden; /* les fonds intérieurs suivent les coins arrondis */
   background: var(--blanc);
   border: 3px solid var(--encre);
   border-radius: 16px;
 }
 
-.consigne h4 {
-  margin-bottom: 0.3rem;
+/* La partie toujours visible : une grille de 3 colonnes et 2 lignes
+   ┌────────┬──────────────┬──────────┐
+   │ souris │ titre        │ replier  │
+   │ souris │ consigne     │ replier  │
+   └────────┴──────────────┴──────────┘ */
+.explication summary {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas:
+    "souris titre replier"
+    "souris texte replier";
+  align-items: center;
+  column-gap: 1.5rem;
+  padding: 1rem 1.5rem;
+  list-style: none; /* enlève le petit triangle ▶ du navigateur */
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Le même triangle, pour Safari */
+.explication summary::-webkit-details-marker {
+  display: none;
+}
+
+.explication summary:focus-visible {
+  outline: 4px solid var(--orange);
+  outline-offset: -4px;
+}
+
+.explication .souris {
+  grid-area: souris;
+}
+
+.explication h4 {
+  grid-area: titre;
+  align-self: end;
   font-size: 1.4rem;
 }
 
-.consigne p {
+.consigne-texte {
+  grid-area: texte;
+  align-self: start;
   font-size: 1.1rem;
   line-height: 1.6;
+}
+
+/* « Masquer / Afficher l'explication » : le texte vient du CSS,
+   et change selon que <details> a l'attribut open ou pas */
+.replier {
+  grid-area: replier;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.95rem;
+  font-weight: bold;
+  white-space: nowrap; /* reste sur une seule ligne */
+  color: var(--bleu);
+  border: 2px solid var(--bleu);
+  border-radius: 999px;
+}
+
+.replier::after {
+  content: "Afficher l'explication ▾";
+}
+
+.explication[open] .replier::after {
+  content: "Masquer l'explication ▴";
+}
+
+.explication summary:hover .replier {
+  color: var(--blanc);
+  background: var(--bleu);
+}
+
+/* La partie qui se replie */
+.explication-detail {
+  padding: 1rem 1.5rem 1.2rem;
+  border-top: 2px dashed var(--bordure);
+}
+
+.explication-detail h5 {
+  margin-bottom: 0.6rem;
+  font-size: 1.15rem;
+}
+
+/* Les 4 exemples : une grille de 2 colonnes (1 seule sur téléphone) */
+.usages {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.usages li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.8rem;
+  font-size: 1.05rem;
+  line-height: 1.4;
+  background: var(--fond);
+  border-radius: var(--arrondi);
+}
+
+/* Le pictogramme devant chaque exemple (créé par clic.js) */
+.usages .picto {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.astuce {
+  padding: 0.7rem 1rem;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  background: var(--jaune-pale);
+  border-radius: var(--arrondi);
 }
 
 /* Le dessin de la souris */
@@ -112,9 +212,7 @@
 /* On colorie le bon bouton selon data-bouton */
 .souris[data-bouton="gauche"] .souris-gauche,
 .souris[data-bouton="double"] .souris-gauche,
-.souris[data-bouton="droit"] .souris-droit,
-.souris[data-bouton="melange"] .souris-gauche,
-.souris[data-bouton="melange"] .souris-droit {
+.souris[data-bouton="droit"] .souris-droit {
   fill: var(--couleur);
 }
 
@@ -156,10 +254,17 @@
   overflow: hidden;
   user-select: none; /* un double clic ne sélectionne pas de texte */
   border-radius: var(--arrondi);
-  /* fond à petits points, discret */
-  background-color: var(--fond);
-  background-image: radial-gradient(var(--bordure) 1.5px, transparent 1.5px);
-  background-size: 24px 24px;
+  /* Ciel et collines : 3 couches de fond empilées, séparées par des virgules.
+     La PREMIÈRE écrite est AU-DESSUS des autres. */
+  background:
+    /* 1. Les collines : collées en bas, sur 45 % de la hauteur */
+    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 200' preserveAspectRatio='none'><path d='M0 110 C150 50 300 150 450 100 S700 40 800 90 V200 H0Z' fill='%23cfe9cf'/><path d='M0 155 C200 100 350 185 550 140 S750 120 800 140 V200 H0Z' fill='%23a9d8ad'/></svg>")
+      bottom / 100% 45% no-repeat,
+    /* 2. Les nuages : un petit dessin répété à l'horizontale */
+    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='420' height='160'><g fill='white' opacity='.9'><ellipse cx='80' cy='50' rx='46' ry='16'/><ellipse cx='110' cy='40' rx='30' ry='18'/><ellipse cx='310' cy='100' rx='40' ry='13'/><ellipse cx='335' cy='92' rx='24' ry='14'/></g></svg>")
+      0 0 / 420px 160px repeat-x,
+    /* 3. Le ciel : du bleu en haut vers presque blanc */
+    linear-gradient(#cfe8fa, #eef7fd 70%);
 }
 
 /* L'écran entre deux manches, posé par-dessus la zone */
@@ -221,24 +326,6 @@
     0 0 0 6px color-mix(in srgb, var(--couleur) 35%, transparent);
 }
 
-/* Niveau Mélange : une petite souris au centre de la cible.
-   :has(.souris) veut dire « une cible qui contient une souris ».
-   Le centre devient un grand rond blanc pour bien voir le dessin. */
-.cible:has(.souris) {
-  background: radial-gradient(
-    circle closest-side,
-    var(--blanc) 0 58%,
-    var(--couleur) 60% 74%,
-    var(--blanc) 76% 86%,
-    var(--couleur) 88%
-  );
-}
-
-.cible .souris {
-  width: auto;
-  height: 50%;
-}
-
 /* Double clic : un seul clic a été détecté */
 .cible.moitie {
   box-shadow:
@@ -277,8 +364,25 @@
 
 /* ---------- 8. Petits écrans ---------- */
 @media (max-width: 560px) {
-  .consigne {
-    flex-direction: column;
-    text-align: center;
+  /* La grille passe sur 3 lignes : souris + titre, consigne, bouton */
+  .explication summary {
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "souris titre"
+      "texte texte"
+      "replier replier";
+    row-gap: 0.6rem;
+  }
+
+  .explication h4 {
+    align-self: center;
+  }
+
+  .replier {
+    justify-self: start;
+  }
+
+  .usages {
+    grid-template-columns: 1fr;
   }
 }

@@ -45,3 +45,15 @@ export function parler(texte) {
   speechSynthesis.cancel(); // arrête une lecture déjà en cours
   speechSynthesis.speak(voix);
 }
+
+/**
+ * Typographie française : met une espace insécable avant : ; ! ? »
+ * et après «, pour qu'ils ne se retrouvent jamais seuls en début
+ * ou en fin de ligne.
+ * \u00a0 est le code de l'espace insécable (invisible à l'écran).
+ */
+export function espacesInsecables(texte) {
+  return texte
+    .replace(/ ([:;!?»])/g, "\u00a0$1")
+    .replace(/« /g, "«\u00a0");
+}
