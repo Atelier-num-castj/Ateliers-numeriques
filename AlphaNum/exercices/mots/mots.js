@@ -1,3 +1,5 @@
+import { sansAccents } from "../../../outils.js";
+
 const MOTS = [
   "bonjour",
   "bus",
@@ -19,7 +21,7 @@ const MOTS = [
   "jardin",
   "canal",
   "nom",
-  "prenom",
+  "prénom",
   "france",
   "adresse",
   "maison",
@@ -77,8 +79,11 @@ reponseMot.addEventListener("input", () => {
   const nom = motActuel;
 
   const saisie = reponseMot.value.toLowerCase();
+  // Le début du mot attendu, de la même longueur que ce qui est tapé
+  const debutAttendu = nom.slice(0, saisie.length);
 
-  if (!nom.startsWith(saisie)) {
+  // On compare SANS les accents : taper "pre" est accepté pour "pré"
+  if (sansAccents(saisie) !== sansAccents(debutAttendu)) {
     reponseMot.value = dernierValide;
     reponseMot.classList.add("invalide");
     majLettres();
@@ -88,11 +93,12 @@ reponseMot.addEventListener("input", () => {
     return;
   }
 
-  dernierValide = saisie;
-  reponseMot.value = saisie;
+  // On affiche la bonne orthographe : "pre" devient "pré"
+  dernierValide = debutAttendu;
+  reponseMot.value = debutAttendu;
   majLettres();
 
-  if (saisie === nom) {
+  if (debutAttendu === nom) {
     reponseMot.value = "✓ Bravo !";
     reponseMot.disabled = true;
     reponseMot.classList.add("valide");

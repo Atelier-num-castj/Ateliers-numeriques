@@ -1,4 +1,5 @@
 import { niveaux } from "./niveaux.js";
+import { afficherMessage } from "../../outils.js";
 
 // ============ 1. L'ÉTAT DU JEU ============
 let numeroNiveau = 0;
@@ -19,11 +20,6 @@ const pagination = document.getElementById("pagination");
 const boutonValider = document.getElementById("bouton-valider");
 
 // ============ 3. L'AFFICHAGE ============
-function afficher(texte, type) {
-  message.textContent = texte;
-  message.className = type;
-}
-
 function construireConversation() {
   const contact = niveau.contact;
   const nomAffiche = contact.nom || contact.numero;
@@ -149,15 +145,15 @@ function verifier(element, champ, event) {
     if (resultats[element.id] !== "colle") {
       resultats[element.id] = colle ? "colle" : "tape";
       if (colle) {
-        afficher("Bravo ! Copier-coller réussi.", "succes");
+        afficherMessage(message, "Bravo ! Copier-coller réussi.", "succes");
       } else {
-        afficher("C'est bien, mais il aurait fallu copier-coller !", "attention");
+        afficherMessage(message, "C'est bien, mais il aurait fallu copier-coller !", "attention");
       }
     }
   } else {
     delete resultats[element.id];
     if (colle) {
-      afficher(
+      afficherMessage(message, 
         "Ce n'est pas le bon texte pour « " + element.etiquette + " ».",
         "erreur",
       );
@@ -176,9 +172,9 @@ function mettreAJourJauge() {
   boutonValider.disabled = !niveauTermine();
 
   if (niveauTermine() && pourcentage === 100) {
-    afficher("Parfait : 100 % en copier-coller ! Tu peux valider.", "succes");
+    afficherMessage(message, "Parfait : 100 % en copier-coller ! Tu peux valider.", "succes");
   } else if (niveauTermine()) {
-    afficher(
+    afficherMessage(message, 
       "Terminé : " +
         pourcentage +
         " %. Valide, ou recommence pour viser 100 %.",
@@ -194,28 +190,23 @@ function chargerNiveau(numero) {
   Object.keys(resultats).forEach((id) => delete resultats[id]);
   zoneMessages.replaceChildren();
   formulaire.replaceChildren();
-  message.textContent = "";
+  afficherMessage(message, "");
 
   document.getElementById("titre").textContent = niveau.titre;
   document.getElementById("consigne").textContent = niveau.consigne;
+  // Le bouton mène au couper-coller s'il ne reste plus aucun autre exercice à faire
+  const autresRestants = niveaux.filter(
+    (_, index) => index !== numeroNiveau && meilleursScores[index] === undefined,
+  );
   boutonValider.textContent =
-    numeroNiveau < niveaux.length - 1 ? "Valider et continuer →" : "Terminer";
+    autresRestants.length === 0
+      ? "Terminer et passer au couper-coller →"
+      : "Valider et continuer →";
 
   construireConversation();
   construireFormulaire();
   construirePagination();
   mettreAJourJauge();
-}
-
-function afficherFin() {
-  const total = Object.values(meilleursScores).reduce(
-    (somme, score) => somme + score,
-    0,
-  );
-  const moyenne = Math.round(total / niveaux.length);
-
-  afficher("Bravo, tu as terminé ! Score moyen : " + moyenne + " %.", "succes");
-  construirePagination();
 }
 
 // ============ 5. DÉMARRAGE ============
@@ -226,16 +217,22 @@ boutonValider.addEventListener("click", () => {
     meilleursScores[numeroNiveau] || 0,
   );
 
-  if (numeroNiveau < niveaux.length - 1) {
-    chargerNiveau(numeroNiveau + 1);
+  // Le premier exercice qui n'a pas encore de score (-1 s'ils en ont tous un)
+  const suivant = niveaux.findIndex(
+    (_, index) => meilleursScores[index] === undefined,
+  );
+
+  if (suivant === -1) {
+    // Les 3 exercices sont faits : on passe à l'exercice suivant du parcours
+    window.location.href = "./couper.html";
   } else {
-    afficherFin();
+    chargerNiveau(suivant);
   }
 });
 
 zoneSaisie.addEventListener("paste", (event) => {
   event.preventDefault();
-  afficher("Colle dans la fiche, pas dans la conversation.", "erreur");
+  afficherMessage(message, "Colle dans la fiche, pas dans la conversation.", "erreur");
 });
 
 chargerNiveau(0);

@@ -57,3 +57,16 @@ export function espacesInsecables(texte) {
     .replace(/ ([:;!?»])/g, "\u00a0$1")
     .replace(/« /g, "«\u00a0");
 }
+
+/**
+ * Affiche un message dans un élément de la page.
+ * type : "succes" (vert), "attention" (orange), "erreur" (rouge), ou rien.
+ * Les autres classes de l'élément sont gardées : on ne change que le type.
+ */
+const TYPES_DE_MESSAGE = ["succes", "attention", "erreur"];
+
+export function afficherMessage(element, texte, type = "") {
+  element.textContent = texte;
+  element.classList.remove(...TYPES_DE_MESSAGE);
+  if (type) element.classList.add(type);
+}

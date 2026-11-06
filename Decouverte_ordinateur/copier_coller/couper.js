@@ -1,3 +1,5 @@
+import { afficherMessage } from "../../outils.js";
+
 // ---------- Les données ----------
 const postIts = [
   { id: "fruits", titre: "Fruits", emoji: "🍎", couleur: "#fff8b8" },
@@ -28,11 +30,6 @@ const message = document.getElementById("message");
 const jauge = document.getElementById("jauge");
 const remplissage = document.getElementById("jauge-remplissage");
 const scoreTexte = document.getElementById("score");
-
-function afficher(texte, type) {
-  message.textContent = texte;
-  message.className = type;
-}
 
 // ---------- La liste de gauche ----------
 articles.forEach((article) => {
@@ -88,7 +85,7 @@ function verifierCollage(event, postIt, zone) {
   const article = articles.find((a) => a.texte === texte);
 
   if (!article) {
-    afficher(
+    afficherMessage(message, 
       "Ce n'est pas un article de la liste. Fais un triple-clic pour prendre toute la ligne.",
       "erreur",
     );
@@ -100,12 +97,12 @@ function verifierCollage(event, postIt, zone) {
   const derniereLigne = avantLeCurseur.split("\n").pop();
 
   if (derniereLigne.trim() !== "") {
-    afficher(
+    afficherMessage(message, 
       "Appuie sur Entrée pour aller à la ligne : un article par ligne.",
       "attention",
     );
   } else if (article.postIt !== postIt.id) {
-    afficher(
+    afficherMessage(message, 
       "Oups : « " +
         texte +
         " » ne va pas sur le post-it « " +
@@ -114,12 +111,12 @@ function verifierCollage(event, postIt, zone) {
       "erreur",
     );
   } else if (article.champ.value.trim() === texte) {
-    afficher(
+    afficherMessage(message, 
       "Bon post-it, mais tu as copié ! L'article est encore dans la liste. Il faut couper : clic droit, puis 'Couper'.",
       "attention",
     );
   } else {
-    afficher("Bravo ! " + texte + " est bien rangé.", "succes");
+    afficherMessage(message, "Bravo ! " + texte + " est bien rangé.", "succes");
   }
 }
 
@@ -159,12 +156,12 @@ function mettreAJourJauge(bienRanges) {
 
   if (bienRanges.length === articles.length) {
     if (pourcentage === 100) {
-      afficher(
+      afficherMessage(message, 
         "🎉 Parfait : 100 % ! Tout est rangé, et tout a été coupé.",
         "succes",
       );
     } else {
-      afficher(
+      afficherMessage(message, 
         "Tout est rangé : " +
           pourcentage +
           " %. Pour 100 %, coupe au lieu de copier !",

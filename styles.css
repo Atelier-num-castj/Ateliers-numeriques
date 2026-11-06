@@ -112,13 +112,13 @@ header h3 {
   align-items: center;
 }
 
-nav {
+header nav {
   display: flex;
   align-items: center;
   margin-top: 0.4rem;
 }
 
-nav ul {
+header nav ul {
   display: flex;
   gap: 1rem;
 }
@@ -321,8 +321,9 @@ nav ul {
 /* Encadré jaune « 💡 astuce » */
 .astuce {
   padding: 0.6rem 0.9rem;
+  line-height: 1.5;
   background: var(--jaune-pale);
-  border-radius: 10px;
+  border-radius: var(--arrondi);
 }
 
 /* Petite note pour les téléphones */

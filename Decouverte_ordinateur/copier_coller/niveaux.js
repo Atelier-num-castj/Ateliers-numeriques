@@ -1,6 +1,47 @@
 export const niveaux = [
   {
-    titre: "Exercice 1 : la fiche contact",
+    titre: "Exercice 1 : le colis",
+    consigne: "Note les informations du livreur dans la fiche de suivi.",
+    contact: { numero: "+33 7 98 76 54 32", statut: "en ligne" },
+    messages: [
+      { separateur: "Aujourd'hui" },
+      {
+        de: "contact",
+        texte:
+          "Bonjour, ici votre livreur. Votre colis Superposte arrive aujourd'hui.",
+        heure: "09:15",
+      },
+      { de: "contact", texte: "Voici votre numéro de suivi :", heure: "09:15" },
+      { de: "contact", texte: "FR458-923-771", heure: "09:16" },
+      {
+        de: "moi",
+        texte: "Merci ! Vous passez à quelle heure ?",
+        heure: "09:20",
+      },
+      { de: "contact", texte: "Entre 14h et 16h", heure: "09:21" },
+      {
+        de: "contact",
+        texte: "Est-ce qu'il y a un code pour la porte ?",
+        heure: "09:22",
+      },
+      {
+        de: "moi",
+        texte: "Le code de la porte est 4582B",
+        heure: "09:23",
+      },
+    ],
+    elements: [
+      { id: "suivi", etiquette: "Numéro de suivi", attendu: "FR458-923-771" },
+      {
+        id: "creneau",
+        etiquette: "Horaire de passage",
+        attendu: ["Entre 14h et 16h", "14h et 16h"],
+      },
+      { id: "code", etiquette: "Code de la porte", attendu: "4582B" },
+    ],
+  },
+  {
+    titre: "Exercice 2 : la fiche contact",
     consigne:
       "Copie les informations de la conversation, puis colle-les dans la fiche.",
     contact: { nom: "Camille", numero: "06 12 34 56 78", statut: "en ligne" },
@@ -45,47 +86,6 @@ export const niveaux = [
         etiquette: "Adresse",
         attendu: "12 rue des Lilas, 69003 Lyon",
       },
-    ],
-  },
-  {
-    titre: "Exercice 2 : le colis",
-    consigne: "Note les informations du livreur dans la fiche de suivi.",
-    contact: { numero: "+33 7 98 76 54 32", statut: "en ligne" },
-    messages: [
-      { separateur: "Aujourd'hui" },
-      {
-        de: "contact",
-        texte:
-          "Bonjour, ici votre livreur. Votre colis Superposte arrive aujourd'hui.",
-        heure: "09:15",
-      },
-      { de: "contact", texte: "Voici votre numéro de suivi :", heure: "09:15" },
-      { de: "contact", texte: "FR458-923-771", heure: "09:16" },
-      {
-        de: "moi",
-        texte: "Merci ! Vous passez à quelle heure ?",
-        heure: "09:20",
-      },
-      { de: "contact", texte: "Entre 14h et 16h", heure: "09:21" },
-      {
-        de: "contact",
-        texte: "Est-ce qu'il y a un code pour la porte ?",
-        heure: "09:22",
-      },
-      {
-        de: "moi",
-        texte: "Le code de la porte est 4582B",
-        heure: "09:23",
-      },
-    ],
-    elements: [
-      { id: "suivi", etiquette: "Numéro de suivi", attendu: "FR458-923-771" },
-      {
-        id: "creneau",
-        etiquette: "Horaire de passage",
-        attendu: ["Entre 14h et 16h", "14h et 16h"],
-      },
-      { id: "code", etiquette: "Code de la porte", attendu: "4582B" },
     ],
   },
   {

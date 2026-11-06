@@ -187,17 +187,14 @@
   line-height: 1;
 }
 
-.astuce {
-  padding: 0.7rem 1rem;
+/* L'astuce : le style vient de .astuce dans ../../styles.css,
+   on l'agrandit juste un peu ici */
+.explication .astuce {
   font-size: 1.05rem;
-  line-height: 1.5;
-  background: var(--jaune-pale);
-  border-radius: var(--arrondi);
 }
 
 /* Le dessin de la souris */
 .souris {
-  flex-shrink: 0; /* ne rétrécit jamais */
   width: 70px;
 }
 

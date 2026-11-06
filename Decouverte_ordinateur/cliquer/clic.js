@@ -1,4 +1,4 @@
-import { espacesInsecables } from "../../outils.js";
+import { afficherMessage, espacesInsecables } from "../../outils.js";
 
 // =========================================================
 // clic.js — exercice « Apprendre à cliquer »
@@ -225,7 +225,7 @@ function texteAvecGras(texte) {
 // Met à jour l'explication du niveau en cours :
 // souris, titre, consigne, exemples et astuce
 function afficherConsigne() {
-  const niveau = NIVEAUX[numeroNiveau];
+  const niveau = niveauEnCours();
   souris.dataset.bouton = niveau.clic;
   consigneTitre.textContent = niveau.titre;
   consigneTexte.textContent = espacesInsecables(niveau.consigne);
@@ -269,12 +269,6 @@ function afficherCompteur() {
   texteCompteur.textContent = `Cible ${ciblesTouchees} sur ${mancheEnCours().nombre}`;
 }
 
-// Affiche un message sous la zone. type : "succes" (vert) ou "attention" (orange)
-function afficherMessage(texte, type = "") {
-  message.textContent = texte;
-  message.className = `message ${type}`;
-}
-
 // Présente le niveau en cours : onglets, consigne, écran « Commencer »
 function presenterNiveau() {
   const niveau = niveauEnCours();
@@ -298,7 +292,7 @@ function presenterNiveau() {
 // et on présente le niveau choisi
 function choisirNiveau(index) {
   arreterCibles();
-  afficherMessage("");
+  afficherMessage(message, "");
   numeroNiveau = index;
   presenterNiveau();
 }
@@ -321,7 +315,7 @@ function demarrerManche() {
   ecran.hidden = true;
   texteManche.textContent = `Manche ${numeroManche + 1} sur ${niveau.manches.length}`;
   afficherCompteur();
-  afficherMessage(""); // efface le message de la manche précédente
+  afficherMessage(message, ""); // efface le message de la manche précédente
   creerCible();
 }
 
@@ -375,7 +369,7 @@ function reagirAuClic(clicFait, evenement) {
       // S'il n'arrive pas à temps, on prévient la personne.
       cibleEnCours.attente = setTimeout(() => {
         element.classList.add("moitie");
-        afficherMessage(
+        afficherMessage(message, 
           "Un seul clic… Clique deux fois, plus vite !",
           "attention",
         );
@@ -402,7 +396,7 @@ function bonClic() {
   afficherCompteur();
 
   const index = Math.floor(Math.random() * FELICITATIONS.length);
-  afficherMessage(FELICITATIONS[index], "succes");
+  afficherMessage(message, FELICITATIONS[index], "succes");
 
   // On attend la fin de l'animation (0,25 s) avant la suite
   suiteEnAttente = setTimeout(() => {
@@ -430,14 +424,14 @@ function mauvaisClic(texte) {
     { duration: 300 },
   );
 
-  afficherMessage(texte, "attention");
+  afficherMessage(message, texte, "attention");
 }
 
 // Appelée quand toutes les cibles de la manche sont touchées
 function terminerManche() {
   const niveau = niveauEnCours();
   numeroManche++;
-  afficherMessage("");
+  afficherMessage(message, "");
 
   // 1. Il reste des manches dans ce niveau
   if (numeroManche < niveau.manches.length) {
