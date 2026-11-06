@@ -180,4 +180,56 @@ function mettreAJour() {
   mettreAJourJauge(bienRanges);
 }
 
+
+// ---------- Le presse-papiers ----------
+// Le presse-papiers ne garde qu'UNE chose à la fois. Si on coupe un 2e article
+// avant d'avoir collé le 1er, le 1er serait perdu pour toujours.
+// Donc : à chaque nouveau « couper » ou « copier », on remet dans la liste
+// les articles qui ne sont plus nulle part sur la page.
+
+// Le texte sélectionné au moment où on coupe ou copie
+function texteSelectionne(element) {
+  // Dans une case (input, textarea), la sélection se lit avec selectionStart / selectionEnd
+  if ("selectionStart" in element) {
+    return element.value
+      .slice(element.selectionStart, element.selectionEnd)
+      .trim();
+  }
+  // Ailleurs dans la page
+  return window.getSelection().toString().trim();
+}
+
+// Un article est « visible » s'il est encore dans sa case de la liste,
+// ou écrit dans un des post-its (même le mauvais : on peut encore le déplacer)
+function estVisible(article) {
+  if (article.champ.value.trim() === article.texte) return true;
+
+  return postIts.some((postIt) =>
+    document.getElementById(postIt.id).value.includes(article.texte),
+  );
+}
+
+// Remet dans la liste chaque article perdu,
+// sauf celui qui vient d'entrer dans le presse-papiers
+function remettreArticlesPerdus(texteDansLePressePapiers) {
+  articles.forEach((article) => {
+    if (article.texte === texteDansLePressePapiers) return; // pas perdu : il attend d'être collé
+    if (estVisible(article)) return;
+
+    article.champ.value = article.texte;
+    article.champ.classList.remove("vide");
+  });
+  mettreAJour();
+}
+
+function nouveauPressePapiers(evenement) {
+  const texte = texteSelectionne(evenement.target);
+  // L'événement « cut » arrive AVANT que le texte quitte sa case :
+  // setTimeout(…, 0) attend que le navigateur ait fini de couper.
+  setTimeout(() => remettreArticlesPerdus(texte), 0);
+}
+
+document.addEventListener("cut", nouveauPressePapiers);
+document.addEventListener("copy", nouveauPressePapiers);
+
 mettreAJour();

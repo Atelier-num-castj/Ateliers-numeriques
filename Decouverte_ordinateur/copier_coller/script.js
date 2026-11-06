@@ -126,11 +126,26 @@ function niveauTermine() {
   return Object.keys(resultats).length === niveau.elements.length;
 }
 
+// Rend deux textes comparables : sans majuscules, sans espaces en trop,
+// sans ponctuation à la fin (. ! ? , ; :)
+function normaliser(texte) {
+  return texte
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, " ") // plusieurs espaces d'affilée → une seule
+    .replace(/[.!?,;:]+$/, ""); // la ponctuation tout à la fin
+}
+
+// « attendu » peut être un texte, ou une liste de réponses acceptées
+function estAttendu(valeur, attendu) {
+  const reponses = Array.isArray(attendu) ? attendu : [attendu];
+  return reponses.some((reponse) => normaliser(reponse) === normaliser(valeur));
+}
+
 function verifier(element, champ, event) {
-  const valeur = champ.value.trim();
   const colle = event.inputType === "insertFromPaste";
 
-  if (valeur === element.attendu) {
+  if (estAttendu(champ.value, element.attendu)) {
     if (resultats[element.id] !== "colle") {
       resultats[element.id] = colle ? "colle" : "tape";
       if (colle) {

@@ -1,3 +1,7 @@
+document.addEventListener("contextmenu", (e) => {
+  e.preventDefault();
+});
+
 // --- Données --------------------------------------------------------------
 const LEVELS = Object.freeze([
   // Niveau 1

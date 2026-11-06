@@ -33,7 +33,7 @@ export const niveaux = [
       },
     ],
     elements: [
-      { id: "nom", etiquette: "Nom", attendu: "Camille Dupont" },
+      { id: "nom", etiquette: "Nom et Prénom", attendu: "Camille Dupont" },
       { id: "telephone", etiquette: "Téléphone", attendu: "06 12 34 56 78" },
       {
         id: "email",
@@ -79,16 +79,11 @@ export const niveaux = [
       },
     ],
     elements: [
-      {
-        id: "livreur",
-        etiquette: "Nom du colis",
-        attendu: "Superposte",
-      },
       { id: "suivi", etiquette: "Numéro de suivi", attendu: "FR458-923-771" },
       {
         id: "creneau",
         etiquette: "Horaire de passage",
-        attendu: "Entre 14h et 16h",
+        attendu: ["Entre 14h et 16h", "14h et 16h"],
       },
       { id: "code", etiquette: "Code de la porte", attendu: "4582B" },
     ],
@@ -142,7 +137,7 @@ export const niveaux = [
       {
         de: "contact",
         texte:
-          "On a prévu de faire des Pizzas, tu peux en prendre une 4 fromages",
+          "On a prévu de faire des pizzas, tu peux en prendre une 4 fromages",
         heure: "18:56",
       },
     ],
@@ -160,9 +155,13 @@ export const niveaux = [
       {
         id: "ami",
         etiquette: "Avec qui je viens ?",
-        attendu: "Mon grand frère Sammy",
+        attendu: ["Mon grand frère Sammy", "Mon grand frère", "Sammy"],
       },
-      { id: "repas", etiquette: "Quel est le repas ?", attendu: "Pizzas" },
+      {
+        id: "repas",
+        etiquette: "Quel est le repas ?",
+        attendu: ["pizzas", "pizza"],
+      },
       {
         id: "pizza",
         etiquette: "Quel est le parfum de la pizza que je ramène ?",
