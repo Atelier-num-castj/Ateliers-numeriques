@@ -183,6 +183,10 @@ function mettreAJour() {
 // avant d'avoir collé le 1er, le 1er serait perdu pour toujours.
 // Donc : à chaque nouveau « couper » ou « copier », on remet dans la liste
 // les articles qui ne sont plus nulle part sur la page.
+// Même chose si un article est effacé avec le clavier (Retour arrière, Suppr).
+
+// Le dernier texte coupé ou copié : il n'est pas perdu, il attend d'être collé
+let texteDansLePressePapiers = "";
 
 // Le texte sélectionné au moment où on coupe ou copie
 function texteSelectionne(element) {
@@ -220,13 +224,24 @@ function remettreArticlesPerdus(texteDansLePressePapiers) {
 }
 
 function nouveauPressePapiers(evenement) {
-  const texte = texteSelectionne(evenement.target);
+  texteDansLePressePapiers = texteSelectionne(evenement.target);
   // L'événement « cut » arrive AVANT que le texte quitte sa case :
   // setTimeout(…, 0) attend que le navigateur ait fini de couper.
-  setTimeout(() => remettreArticlesPerdus(texte), 0);
+  setTimeout(() => remettreArticlesPerdus(texteDansLePressePapiers), 0);
+}
+
+// Un texte effacé au clavier : evenement.inputType commence par "delete"
+// (deleteContentBackward = Retour arrière, deleteContentForward = Suppr…).
+// "deleteByCut" est exclu : couper n'efface pas, ça déplace dans le presse-papiers.
+function texteEfface(evenement) {
+  const type = evenement.inputType ?? "";
+  if (type.startsWith("delete") && type !== "deleteByCut") {
+    remettreArticlesPerdus(texteDansLePressePapiers);
+  }
 }
 
 document.addEventListener("cut", nouveauPressePapiers);
 document.addEventListener("copy", nouveauPressePapiers);
+document.addEventListener("input", texteEfface);
 
 mettreAJour();

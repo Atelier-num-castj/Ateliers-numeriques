@@ -176,6 +176,12 @@
   font-size: 1.3rem;
 }
 
+/* La consigne de l'exercice, au-dessus de la jauge */
+#consigne {
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
 #score {
   margin: 0.4rem 0 1.2rem;
   font-weight: bold;

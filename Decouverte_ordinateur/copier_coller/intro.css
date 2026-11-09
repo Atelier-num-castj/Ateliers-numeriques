@@ -69,7 +69,7 @@
   padding: 0.6rem 0.8rem;
   font-size: 1.1rem;
   background: var(--bleu-pale);
-  border-radius: 10px;
+  border-radius: var(--arrondi);
 }
 
 /* ----- Bravo ----- */
