@@ -1,5 +1,6 @@
-document.addEventListener("contextmenu", (e) => {
-  e.preventDefault();
+// Pas de menu du clic droit dans ce jeu : on ne fait que déplacer la souris
+document.addEventListener("contextmenu", (evenement) => {
+  evenement.preventDefault();
 });
 
 // --- Données --------------------------------------------------------------

@@ -91,9 +91,9 @@ const NIVEAUX = [
     ],
   },
   {
-    nom: "Double clic",
+    nom: "Double-clic",
     clic: "double",
-    titre: "Le double clic",
+    titre: "Le double-clic",
     consigne:
       "Mets le pointeur sur le rond vert, puis appuie deux fois très vite sur le bouton gauche, sans bouger la souris.",
     usages: [
@@ -106,10 +106,10 @@ const NIVEAUX = [
       { picto: "🔤", texte: "Sélectionner un **mot** dans un texte" },
     ],
     astuce:
-      "sur Internet, un seul clic suffit presque toujours. Le double clic sert surtout sur le bureau et dans les dossiers.",
+      "sur Internet, un seul clic suffit presque toujours. Le double-clic sert surtout sur le bureau et dans les dossiers.",
     resume: "Ouvrir un **dossier** ou un **fichier**",
     manches: [
-      // Cibles immobiles : pendant un double clic, la souris ne doit pas bouger.
+      // Cibles immobiles : pendant un double-clic, la souris ne doit pas bouger.
       // La difficulté vient de la taille et du nombre de cibles.
       {
         taille: 130,
@@ -139,7 +139,7 @@ const NIVEAUX = [
   },
 ];
 
-// Temps laissé pour faire le 2e clic d'un double clic, en millisecondes.
+// Temps laissé pour faire le 2e clic d'un double-clic, en millisecondes.
 // 500 ms est le réglage par défaut de Windows.
 const DELAI_DOUBLE_CLIC = 500;
 
@@ -348,7 +348,7 @@ function creerCible() {
 
 // ---------- 6. Les clics ----------
 
-// clicFait : "gauche" ou "droit" — evenement : pour savoir si c'est un double clic
+// clicFait : "gauche" ou "droit" — evenement : pour savoir si c'est un double-clic
 function reagirAuClic(clicFait, evenement) {
   if (!cibleEnCours) return; // pas de cible active : on ignore
 
@@ -360,7 +360,7 @@ function reagirAuClic(clicFait, evenement) {
 
     if (clicFait === "droit") {
       mauvaisClic(
-        "C'était le bouton droit. Ici, fais un double clic avec le bouton gauche.",
+        "C'était le bouton droit. Ici, fais un double-clic avec le bouton gauche.",
       );
     } else if (evenement.detail >= 2) {
       bonClic();
