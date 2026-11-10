@@ -290,7 +290,7 @@ function afficherEtape() {
   const consigne = etape.consigne.replace("{prenom}", prenomCherche);
   consigneTexte.replaceChildren(...texteAvecGras(consigne));
 
-  texteManche.textContent = `Manche ${numeroManche + 1} sur ${niveauEnCours().manches.length} : ${manche.nom.toLowerCase()}`;
+  texteManche.textContent = `Exercice ${numeroManche + 1} sur ${niveauEnCours().manches.length} : ${manche.nom.toLowerCase()}`;
   texteEtape.textContent =
     manche.etapes.length > 1
       ? `Étape ${numeroEtape + 1} sur ${manche.etapes.length} : ${etape.nom}`
@@ -315,7 +315,9 @@ function afficherEcran(titre, texte, texteBouton, action) {
   ecranBouton.textContent = texteBouton;
   ecranBouton.onclick = action;
   ecran.hidden = false;
-  ecranBouton.focus({ preventScroll: true });
+  // Le focus permet de valider avec Entrée.
+  // focusVisible: false : pas de contour orange, même au chargement de la page.
+  ecranBouton.focus({ preventScroll: true, focusVisible: false });
 }
 
 // Présente le niveau en cours : onglets, explication, écran « Commencer »
@@ -329,7 +331,7 @@ function presenterNiveau() {
   texteEtape.textContent = "";
   afficherEcran(
     niveau.titre,
-    `${niveau.manches.length} manches. Prends ton temps.`,
+    `${niveau.manches.length} exercices. Prends ton temps.`,
     "Commencer",
     () => {
       numeroManche = 0;
@@ -413,9 +415,9 @@ function terminerManche() {
   // 1. Il reste des manches dans ce niveau
   if (numeroManche < niveau.manches.length) {
     afficherEcran(
-      "Manche terminée",
-      `Prochaine manche : ${mancheEnCours().nom.toLowerCase()}.`,
-      "Manche suivante",
+      "Exercice terminé",
+      `Prochain exercice : ${mancheEnCours().nom.toLowerCase()}.`,
+      "Exercice suivant",
       demarrerManche,
     );
     return;

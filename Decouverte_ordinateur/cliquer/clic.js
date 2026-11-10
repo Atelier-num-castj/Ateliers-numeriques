@@ -262,7 +262,9 @@ function afficherEcran(titre, texte, texteBouton, action) {
   ecranBouton.textContent = texteBouton;
   ecranBouton.onclick = action;
   ecran.hidden = false;
-  ecranBouton.focus({ preventScroll: true }); // on peut valider directement avec Entrée
+  // Le focus permet de valider avec Entrée.
+  // focusVisible: false : pas de contour orange, même au chargement de la page.
+  ecranBouton.focus({ preventScroll: true, focusVisible: false });
 }
 
 function afficherCompteur() {
@@ -279,7 +281,7 @@ function presenterNiveau() {
   texteCompteur.textContent = "";
   afficherEcran(
     niveau.titre,
-    `${niveau.manches.length} manches. Les erreurs ne comptent pas, prends ton temps.`,
+    `${niveau.manches.length} exercices. Les erreurs ne comptent pas, prends ton temps.`,
     "Commencer",
     () => {
       numeroManche = 0;
@@ -313,7 +315,7 @@ function demarrerManche() {
   const niveau = niveauEnCours();
   ciblesTouchees = 0;
   ecran.hidden = true;
-  texteManche.textContent = `Manche ${numeroManche + 1} sur ${niveau.manches.length}`;
+  texteManche.textContent = `Exercice ${numeroManche + 1} sur ${niveau.manches.length}`;
   afficherCompteur();
   afficherMessage(message, ""); // efface le message de la manche précédente
   creerCible();
@@ -436,9 +438,9 @@ function terminerManche() {
   // 1. Il reste des manches dans ce niveau
   if (numeroManche < niveau.manches.length) {
     afficherEcran(
-      "Manche terminée",
-      "Bravo ! La prochaine manche est un peu plus difficile.",
-      "Manche suivante",
+      "Exercice terminé",
+      "Bravo ! Le prochain exercice est un peu plus difficile.",
+      "Exercice suivant",
       demarrerManche,
     );
     return;
