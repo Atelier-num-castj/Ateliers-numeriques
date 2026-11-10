@@ -46,6 +46,18 @@
   background: linear-gradient(#cfe8fa, #eef7fd 70%);
 }
 
+/* La consigne courte, juste au-dessus du jeu (niveau 2) */
+.objectif {
+  margin-bottom: 0.8rem;
+  padding: 0.7rem 1rem;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  text-align: center;
+  background: var(--blanc);
+  border: 3px solid var(--couleur);
+  border-radius: var(--arrondi);
+}
+
 /* Quand le décor d'une manche est affiché, il remplit la zone */
 .scene {
   position: relative;
@@ -185,25 +197,15 @@
   }
 }
 
-/* Le trésor emporté : collé en haut à droite de l'écran */
-.porte {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  z-index: 4;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.4rem 0.9rem 0.4rem 0.5rem;
-  font-weight: bold;
-  background: var(--jaune-pale);
-  border: 3px solid #c99a2e;
-  border-radius: 999px;
-  box-shadow: var(--ombre);
-}
-
-.porte svg {
-  width: 46px;
+/* Le trésor emporté : il remonte le chemin avec l'écran.
+   molette.js change left et top ; la transition adoucit les à-coups
+   de la molette. */
+.tresor.emporte {
+  z-index: 2;
+  pointer-events: none; /* on ne peut plus cliquer dessus */
+  transition:
+    left 0.15s linear,
+    top 0.15s linear;
 }
 
 /* ---------- 7. La fusée ---------- */

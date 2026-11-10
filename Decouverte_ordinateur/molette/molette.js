@@ -18,6 +18,7 @@ import { afficherMessage, espacesInsecables, melanger } from "../../outils.js";
 //     consigne : affichée dans la carte d'explication (** = gras,
 //                {prenom} = le prénom à chercher)
 //     guide    : l'étiquette collée en bas de l'écran (niveau 1)
+//     objectif : la consigne courte, affichée juste au-dessus du jeu (niveau 2)
 //   aide    : le message si on tourne la molette à côté du cadre (niveau 2)
 // usages : les exemples de « À quoi ça sert ? »
 // astuce : la phrase après « 💡 Astuce : »
@@ -101,6 +102,7 @@ const NIVEAUX = [
             nom: "chercher",
             consigne:
               "Mets le pointeur **sur la liste**, puis tourne la molette pour trouver **{prenom}**. Clique sur son nom.",
+            objectif: "🔍 Trouve **{prenom}** et clique sur son nom.",
           },
         ],
         aide: "La liste ne bouge pas ? Mets d'abord le pointeur **sur la liste**, puis tourne la molette.",
@@ -113,6 +115,8 @@ const NIVEAUX = [
             nom: "remonter",
             consigne:
               "Les derniers messages sont en bas. Mets le pointeur **sur la conversation** et remonte pour trouver l'heure du **rendez-vous chez le médecin**. Clique sur ce message.",
+            objectif:
+              "🔍 Trouve l'heure du **rendez-vous chez le médecin** et clique sur ce message.",
           },
         ],
         aide: "La conversation ne bouge pas ? Mets d'abord le pointeur **sur la conversation**, puis tourne la molette.",
@@ -131,6 +135,10 @@ const CONTACTS = [
   "Pierre", "Rachid", "Sarah", "Sophie", "Thomas", "Vanessa",
   "Yasmine", "Youssef", "Zoé",
 ];
+
+// Le trésor s'arrête là, juste sous la maison (en px depuis le haut du décor).
+// Quand il y arrive, l'exercice est réussi.
+const HAUT_DU_CHEMIN = 230;
 
 // Le prénom à chercher est tiré au hasard parmi les derniers de la liste,
 // pour qu'il faille bien faire défiler
@@ -196,6 +204,7 @@ const texteMobile = document.getElementById("mobile");
 const plateau = document.getElementById("plateau");
 const texteManche = document.getElementById("manche");
 const texteEtape = document.getElementById("etape");
+const texteObjectif = document.getElementById("objectif");
 const ecran = document.getElementById("ecran");
 const ecranTitre = document.getElementById("ecran-titre");
 const ecranTexte = document.getElementById("ecran-texte");
@@ -206,7 +215,6 @@ const guide = document.getElementById("guide");
 const guideFleche = document.getElementById("guide-fleche");
 const guideTexte = document.getElementById("guide-texte");
 const message = document.getElementById("message");
-const porte = document.getElementById("porte");
 const bravo = document.getElementById("bravo");
 const bravoTexte = document.getElementById("bravo-texte");
 const bravoBouton = document.getElementById("bravo-bouton");
@@ -221,6 +229,7 @@ let prenomCherche = ""; // le contact à trouver (niveau 2)
 let observateur = null; // l'IntersectionObserver de la manche en cours
 let suiteEnAttente = null; // minuteur entre la réussite et la fenêtre « Bravo »
 let actionSuivante = null; // ce que fait le bouton de la fenêtre « Bravo »
+let ecouteurs = null; // AbortController : arrête les écouteurs de la manche
 
 // Raccourcis pour lire le niveau, la manche et l'étape en cours
 const niveauEnCours = () => NIVEAUX[numeroNiveau];
@@ -297,6 +306,13 @@ function afficherEtape() {
   const consigne = etape.consigne.replace("{prenom}", prenomCherche);
   consigneTexte.replaceChildren(...texteAvecGras(consigne));
 
+  // La consigne courte, juste au-dessus du jeu (seulement si l'étape en a une)
+  texteObjectif.hidden = !etape.objectif;
+  if (etape.objectif) {
+    const objectif = etape.objectif.replace("{prenom}", prenomCherche);
+    texteObjectif.replaceChildren(...texteAvecGras(objectif));
+  }
+
   texteManche.textContent = `Exercice ${numeroManche + 1} sur ${niveauEnCours().manches.length} : ${manche.nom.toLowerCase()}`;
   texteEtape.textContent =
     manche.etapes.length > 1
@@ -363,9 +379,11 @@ function arreterManche() {
   clearTimeout(suiteEnAttente);
   observateur?.disconnect(); // ?. : seulement s'il y a un observateur
   observateur = null;
+  ecouteurs?.abort(); // retire les écouteurs ajoutés pendant la manche
+  ecouteurs = null;
   scene.replaceChildren();
   guide.hidden = true;
-  porte.hidden = true;
+  texteObjectif.hidden = true;
 }
 
 function demarrerManche() {
@@ -489,27 +507,69 @@ function surveiller(elements, quandVisible, seuil = 0.9) {
   elements.forEach((element) => observateur.observe(element));
 }
 
-// Niveau 1, manche 1 : descendre au trésor, puis remonter à la maison
+// Lit la forme du chemin dessiné en SVG.
+// Renvoie une liste : pour chaque hauteur du décor (en px),
+// la position du chemin en largeur (en % du décor).
+function lireChemin(trace) {
+  const largeurDessin = trace.ownerSVGElement.viewBox.baseVal.width;
+  const positions = [];
+  const longueur = trace.getTotalLength();
+
+  // On avance le long du chemin, 2 unités par 2 unités
+  for (let distance = 0; distance <= longueur; distance += 2) {
+    const { x, y } = trace.getPointAtLength(distance);
+    positions[Math.round(y)] = (x / largeurDessin) * 100;
+  }
+
+  // Les hauteurs sautées gardent la position de la hauteur juste au-dessus
+  for (let y = 1; y < positions.length; y++) {
+    positions[y] ??= positions[y - 1];
+  }
+  return positions;
+}
+
+// Niveau 1, manche 1 : descendre au trésor, puis le rapporter à la maison
 function preparerTresor(decor) {
-  const maison = decor.querySelector(".maison");
   const tresor = decor.querySelector(".tresor");
+  const positions = lireChemin(decor.querySelector(".trace-sable"));
+  const bas = positions.length - 1; // la fin du chemin, là où est le trésor
 
-  tresor.addEventListener("click", () => {
-    tresor.hidden = true;
-    porte.hidden = false; // le trésor suit la personne, en haut de l'écran
-    afficherMessage(message, "Tu as trouvé le trésor !", "succes");
-    etapeSuivante();
-  });
-
-  surveiller([maison, tresor], (element) => {
-    if (element === tresor && numeroEtape === 0) {
-      // On est arrivé en bas : le guide dit quoi faire
+  // Arrivé en bas : le guide dit quoi faire
+  surveiller([tresor], () => {
+    if (numeroEtape === 0) {
       const { fleche, texte } = etapeEnCours().guideArrivee;
       guideFleche.textContent = fleche;
       guideTexte.textContent = texte;
-    } else if (element === maison && numeroEtape === 1) {
+    }
+  });
+
+  // Place le trésor sur le chemin, au milieu de l'écran
+  function suivreLeChemin() {
+    // La hauteur du milieu de l'écran, mesurée depuis le haut du décor
+    const milieu = innerHeight / 2 - decor.getBoundingClientRect().top;
+    // Sans sortir du chemin : entre la maison et la fin du chemin
+    const y = Math.round(Math.min(Math.max(milieu, HAUT_DU_CHEMIN), bas));
+
+    tresor.style.left = `${positions[y]}%`;
+    tresor.style.top = `${y}px`;
+
+    if (y === HAUT_DU_CHEMIN && !mancheFinie) {
       reussirManche("Le trésor est à la maison.");
     }
+  }
+
+  tresor.addEventListener("click", () => {
+    tresor.classList.add("emporte"); // il n'est plus cliquable, il nous suit
+    afficherMessage(message, "Tu as trouvé le trésor !", "succes");
+    etapeSuivante();
+
+    // À chaque défilement (et si la fenêtre change de taille),
+    // le trésor se replace. signal : arreterManche() retire ces écouteurs.
+    ecouteurs = new AbortController();
+    const options = { passive: true, signal: ecouteurs.signal };
+    addEventListener("scroll", suivreLeChemin, options);
+    addEventListener("resize", suivreLeChemin, options);
+    suivreLeChemin();
   });
 }
 
