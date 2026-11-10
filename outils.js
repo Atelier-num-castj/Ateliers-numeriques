@@ -70,3 +70,21 @@ export function afficherMessage(element, texte, type = "") {
   element.classList.remove(...TYPES_DE_MESSAGE);
   if (type) element.classList.add(type);
 }
+
+/**
+ * Transforme "Ouvrir un **lien**" en : "Ouvrir un " + <strong>lien</strong>.
+ * On découpe le texte à chaque ** : un morceau sur deux est en gras.
+ * Les espaces insécables sont ajoutés au passage.
+ * Renvoie une liste de morceaux à ajouter avec append() ou replaceChildren().
+ */
+export function texteAvecGras(texte) {
+  return espacesInsecables(texte)
+    .split("**")
+    .map((morceau, index) => {
+      if (index % 2 === 0) return morceau; // morceaux 0, 2, 4… : texte normal
+
+      const gras = document.createElement("strong");
+      gras.textContent = morceau; // morceaux 1, 3, 5… : en gras
+      return gras;
+    });
+}

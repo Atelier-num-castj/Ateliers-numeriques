@@ -1,4 +1,9 @@
-import { afficherMessage, espacesInsecables, melanger } from "../../outils.js";
+import {
+  afficherMessage,
+  espacesInsecables,
+  melanger,
+  texteAvecGras,
+} from "../../outils.js";
 
 // =========================================================
 // molette.js — exercice « Utiliser la molette »
@@ -257,20 +262,6 @@ function afficherOnglets() {
     return onglet;
   });
   listeNiveaux.replaceChildren(...onglets);
-}
-
-// Transforme "Ouvrir un **lien**" en : "Ouvrir un " + <strong>lien</strong>.
-// (même fonction que dans clic.js)
-function texteAvecGras(texte) {
-  return espacesInsecables(texte)
-    .split("**")
-    .map((morceau, index) => {
-      if (index % 2 === 0) return morceau;
-
-      const gras = document.createElement("strong");
-      gras.textContent = morceau;
-      return gras;
-    });
 }
 
 // Met à jour la carte d'explication pour le niveau en cours

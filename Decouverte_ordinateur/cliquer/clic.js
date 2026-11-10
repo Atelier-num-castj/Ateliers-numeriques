@@ -1,4 +1,8 @@
-import { afficherMessage, espacesInsecables } from "../../outils.js";
+import {
+  afficherMessage,
+  espacesInsecables,
+  texteAvecGras,
+} from "../../outils.js";
 
 // =========================================================
 // clic.js — exercice « Apprendre à cliquer »
@@ -205,21 +209,6 @@ function afficherOnglets() {
     return onglet;
   });
   listeNiveaux.replaceChildren(...onglets);
-}
-
-// Transforme "Ouvrir un **lien**" en : "Ouvrir un " + <strong>lien</strong>.
-// On découpe le texte à chaque ** : un morceau sur deux est en gras.
-// Renvoie une liste de morceaux à ajouter avec append() ou replaceChildren().
-function texteAvecGras(texte) {
-  return espacesInsecables(texte)
-    .split("**")
-    .map((morceau, index) => {
-      if (index % 2 === 0) return morceau; // morceaux 0, 2, 4… : texte normal
-
-      const gras = document.createElement("strong");
-      gras.textContent = morceau; // morceaux 1, 3, 5… : en gras
-      return gras;
-    });
 }
 
 // Met à jour l'explication du niveau en cours :
