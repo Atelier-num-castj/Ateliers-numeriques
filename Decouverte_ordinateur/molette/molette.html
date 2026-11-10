@@ -127,6 +127,14 @@
 
         <p class="message" id="message" role="status"></p>
       </section>
+
+      <!-- La fenêtre « Bravo », à la fin de chaque exercice
+           (comme dans « Déplacer la souris »). molette.js l'ouvre avec showModal(). -->
+      <dialog class="bravo" id="bravo" aria-labelledby="bravo-titre">
+        <h3 id="bravo-titre">Bravo ! 🎉</h3>
+        <p id="bravo-texte"></p>
+        <button type="button" class="bouton" id="bravo-bouton"></button>
+      </dialog>
     </main>
 
     <!-- Le trésor emporté : il reste visible en haut de l'écran -->

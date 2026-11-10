@@ -46,7 +46,9 @@ const NIVEAUX = [
             nom: "descendre",
             consigne:
               "Tourne la molette **vers toi** pour descendre le chemin. Tout en bas, clique sur le **trésor**.",
-            guide: { fleche: "↓", texte: "Descends avec la molette" },
+            guide: { fleche: "↓", texte: "Descends jusqu'au trésor" },
+            // Le guide quand le trésor apparaît à l'écran
+            guideArrivee: { fleche: "👆", texte: "Clique sur le trésor" },
           },
           {
             nom: "remonter",
@@ -169,8 +171,9 @@ const MESSAGES = [
   { texte: "Super, à tout à l'heure 😊", heure: "09:02" },
 ];
 
-// Temps pour lire « Bravo » avant l'écran suivant, en millisecondes
-const PAUSE_APRES_REUSSITE = 1800;
+// Temps entre la réussite et l'ouverture de la fenêtre « Bravo »,
+// en millisecondes (le même que dans « Déplacer la souris »)
+const PAUSE_AVANT_BRAVO = 600;
 
 // Les messages de réussite, tirés au hasard pour varier
 const FELICITATIONS = [
@@ -204,16 +207,20 @@ const guideFleche = document.getElementById("guide-fleche");
 const guideTexte = document.getElementById("guide-texte");
 const message = document.getElementById("message");
 const porte = document.getElementById("porte");
+const bravo = document.getElementById("bravo");
+const bravoTexte = document.getElementById("bravo-texte");
+const bravoBouton = document.getElementById("bravo-bouton");
 
 // ---------- 3. L'état du jeu ----------
 let numeroNiveau = 0; // position du niveau en cours dans NIVEAUX
 const niveauxFaits = new Set(); // les numéros des niveaux terminés
 let numeroManche = 0; // position de la manche en cours dans le niveau
 let numeroEtape = 0; // position de l'étape en cours dans la manche
-let mancheFinie = false; // true entre « Bravo » et l'écran suivant
+let mancheFinie = false; // true dès que l'exercice est réussi
 let prenomCherche = ""; // le contact à trouver (niveau 2)
 let observateur = null; // l'IntersectionObserver de la manche en cours
-let suiteEnAttente = null; // minuteur entre « Bravo » et l'écran suivant
+let suiteEnAttente = null; // minuteur entre la réussite et la fenêtre « Bravo »
+let actionSuivante = null; // ce que fait le bouton de la fenêtre « Bravo »
 
 // Raccourcis pour lire le niveau, la manche et l'étape en cours
 const niveauEnCours = () => NIVEAUX[numeroNiveau];
@@ -383,68 +390,68 @@ function etapeSuivante() {
   afficherEtape();
 }
 
-// La manche est réussie : on félicite, puis on passe à la suite
+// La manche est réussie : on félicite, puis la fenêtre « Bravo » s'ouvre
 function reussirManche(texte) {
   mancheFinie = true;
   observateur?.disconnect();
 
   const index = Math.floor(Math.random() * FELICITATIONS.length);
-  const bravo = `${FELICITATIONS[index]} ${texte}`;
-  afficherMessage(message, bravo, "succes");
+  const felicitation = `${FELICITATIONS[index]} ${texte}`;
+  afficherMessage(message, felicitation, "succes");
 
   // Au niveau 1, le message est loin en bas : le guide l'affiche aussi
   if (!guide.hidden) {
     guide.classList.add("bravo");
     guideFleche.textContent = "✓";
-    guideTexte.textContent = bravo;
+    guideTexte.textContent = felicitation;
   }
 
-  suiteEnAttente = setTimeout(terminerManche, PAUSE_APRES_REUSSITE);
+  suiteEnAttente = setTimeout(() => ouvrirBravo(texte), PAUSE_AVANT_BRAVO);
 }
 
-// Après la pause : écran de la manche suivante, du niveau suivant, ou de fin
-function terminerManche() {
+// La fenêtre « Bravo » : ce qui a été réussi, et un bouton pour la suite.
+// Le bouton lance directement la suite, comme dans « Déplacer la souris ».
+function ouvrirBravo(texte) {
   const niveau = niveauEnCours();
-  arreterManche();
-  afficherMessage(message, "");
-  numeroManche++;
+  let phrase;
+  let texteBouton;
 
-  // On remonte au plateau, pour voir l'écran
-  plateau.scrollIntoView({ block: "start" });
+  if (numeroManche < niveau.manches.length - 1) {
+    // 1. Il reste des exercices dans ce niveau
+    phrase = `${texte} Tu as réussi l'exercice !`;
+    texteBouton = "Exercice suivant →";
+    actionSuivante = () => {
+      numeroManche++;
+      demarrerManche();
+    };
+  } else {
+    // 2. Le niveau est terminé : la coche ✓ apparaît sur l'onglet
+    niveauxFaits.add(numeroNiveau);
+    afficherOnglets();
 
-  // 1. Il reste des manches dans ce niveau
-  if (numeroManche < niveau.manches.length) {
-    afficherEcran(
-      "Exercice terminé",
-      `Prochain exercice : ${mancheEnCours().nom.toLowerCase()}.`,
-      "Exercice suivant",
-      demarrerManche,
-    );
-    return;
+    if (niveauxFaits.size === NIVEAUX.length) {
+      // 3. Tous les niveaux sont réussis, dans n'importe quel ordre
+      phrase = `${texte} Tu as réussi tous les niveaux !`;
+      texteBouton = "Terminer →";
+      actionSuivante = afficherFin;
+    } else {
+      // 4. Sinon, le premier niveau pas encore réussi
+      const suivant = NIVEAUX.findIndex((_, i) => !niveauxFaits.has(i));
+      phrase = `${texte} Tu as réussi le niveau « ${niveau.nom} » !`;
+      texteBouton = "Niveau suivant →";
+      actionSuivante = () => {
+        numeroNiveau = suivant;
+        presenterNiveau();
+        // On remonte aux onglets, pour lire l'explication du nouveau niveau
+        listeNiveaux.scrollIntoView({ block: "start" });
+      };
+    }
   }
 
-  // 2. Le niveau est terminé : la coche ✓ apparaît sur l'onglet
-  niveauxFaits.add(numeroNiveau);
-  afficherOnglets();
-
-  // 3. Tous les niveaux sont réussis, dans n'importe quel ordre
-  if (niveauxFaits.size === NIVEAUX.length) {
-    afficherFin();
-    return;
-  }
-
-  // 4. Sinon, on propose le premier niveau pas encore réussi
-  const suivant = NIVEAUX.findIndex((_, index) => !niveauxFaits.has(index));
-
-  afficherEcran(
-    `${niveau.nom} : réussi !`,
-    `Prochaine étape : ${NIVEAUX[suivant].titre.toLowerCase()}.`,
-    "Niveau suivant",
-    () => {
-      numeroNiveau = suivant;
-      presenterNiveau();
-    },
-  );
+  bravoTexte.textContent = espacesInsecables(phrase);
+  bravoBouton.textContent = texteBouton;
+  bravo.showModal(); // la fenêtre s'ouvre au milieu de l'écran, le fond s'assombrit
+  bravoBouton.focus({ focusVisible: false }); // Entrée marche, sans contour
 }
 
 function afficherFin() {
@@ -494,8 +501,13 @@ function preparerTresor(decor) {
     etapeSuivante();
   });
 
-  surveiller([maison], () => {
-    if (numeroEtape === 1) {
+  surveiller([maison, tresor], (element) => {
+    if (element === tresor && numeroEtape === 0) {
+      // On est arrivé en bas : le guide dit quoi faire
+      const { fleche, texte } = etapeEnCours().guideArrivee;
+      guideFleche.textContent = fleche;
+      guideTexte.textContent = texte;
+    } else if (element === maison && numeroEtape === 1) {
       reussirManche("Le trésor est à la maison.");
     }
   });
@@ -644,5 +656,21 @@ window.addEventListener(
   { passive: true },
 );
 
-// ---------- 8. Démarrage ----------
+// ---------- 8. La fenêtre « Bravo » ----------
+// Le bouton ferme la fenêtre, enlève le décor, puis lance la suite
+bravoBouton.addEventListener("click", () => {
+  bravo.close();
+  arreterManche();
+  afficherMessage(message, "");
+  plateau.scrollIntoView({ block: "start" }); // on revient en haut du jeu
+  actionSuivante();
+});
+
+// La touche Échap ferme normalement une fenêtre <dialog>.
+// Ici on l'empêche : sans le bouton, on resterait bloqué sans suite.
+bravo.addEventListener("cancel", (evenement) => {
+  evenement.preventDefault();
+});
+
+// ---------- 9. Démarrage ----------
 presenterNiveau();

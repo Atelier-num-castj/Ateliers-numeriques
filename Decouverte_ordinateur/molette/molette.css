@@ -49,7 +49,9 @@
 /* Quand le décor d'une manche est affiché, il remplit la zone */
 .scene {
   position: relative;
-  overflow: hidden;
+  /* clip coupe ce qui dépasse, comme hidden, mais sans créer de zone
+     qui défile : la fusée (position: sticky) peut suivre l'écran */
+  overflow: clip;
   border-radius: var(--arrondi);
 }
 
@@ -453,7 +455,36 @@
   border-radius: 8px;
 }
 
-/* ---------- 9. Petits écrans ---------- */
+/* ---------- 9. La fenêtre « Bravo » ----------
+   showModal() la place au milieu de l'écran, par-dessus tout le reste.
+   ::backdrop est le voile sombre derrière elle. */
+.bravo {
+  max-width: min(90%, 440px);
+  margin: auto;
+  padding: 1.5rem 2rem;
+  text-align: center;
+  color: var(--encre);
+  background: var(--blanc);
+  border: 3px solid var(--orange);
+  border-radius: 16px;
+}
+
+.bravo::backdrop {
+  background: rgb(0 0 0 / 0.5);
+}
+
+.bravo h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.8rem;
+}
+
+.bravo p {
+  margin-bottom: 1.2rem;
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+/* ---------- 10. Petits écrans ---------- */
 @media (max-width: 560px) {
   .guide {
     font-size: 1rem;
