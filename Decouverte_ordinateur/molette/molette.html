@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Utiliser la molette</title>
     <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="./molette.css" />
     <link
       rel="shortcut icon"
       href="../../assets/logo-CASTJ.png"
       type="image/x-icon"
     />
+    <script type="module" src="./molette.js"></script>
   </head>
   <body>
     <header>
@@ -36,11 +39,229 @@
       </div>
     </header>
 
-    <main class="molette">
+    <!-- data-niveau donne la couleur du niveau en cours (molette.css, section 1).
+         molette.js le change quand on change de niveau. -->
+    <main class="molette" id="molette" data-niveau="page">
       <div class="instructions">
         <h3 class="sous-titre">Apprendre à utiliser la molette</h3>
         <div class="trait"></div>
       </div>
+
+      <!-- Les niveaux : créés par molette.js -->
+      <ol class="niveaux" id="niveaux" aria-label="Les niveaux"></ol>
+
+      <!-- L'explication du niveau : même carte repliable que « Cliquer » -->
+      <details class="explication" open>
+        <summary>
+          <!-- La souris : les deux boutons restent gris,
+               seule la molette prend la couleur du niveau -->
+          <svg class="souris" viewBox="0 0 86 120" aria-hidden="true">
+            <rect
+              class="souris-corps"
+              x="6"
+              y="6"
+              width="74"
+              height="108"
+              rx="37"
+            />
+            <path class="souris-gauche" d="M6 46V43a37 37 0 0 1 37-37v40z" />
+            <path class="souris-droit" d="M80 46V43A37 37 0 0 0 43 6v40z" />
+            <rect
+              class="souris-molette"
+              x="36"
+              y="16"
+              width="14"
+              height="26"
+              rx="7"
+            />
+          </svg>
+          <h4 id="consigne-titre"></h4>
+          <span class="consigne-texte" id="consigne-texte"></span>
+          <span class="replier"></span>
+        </summary>
+
+        <div class="explication-detail">
+          <h5>À quoi ça sert ?</h5>
+          <ul class="usages" id="usages"></ul>
+          <p class="astuce">
+            <strong>💡 Astuce :</strong> <span id="astuce"></span>
+          </p>
+          <p class="mobile" id="mobile"></p>
+        </div>
+      </details>
+
+      <!-- Le plateau de jeu -->
+      <section class="plateau" id="plateau">
+        <div class="barre-manche">
+          <p id="manche"></p>
+          <p id="etape"></p>
+        </div>
+
+        <!-- La zone de jeu : l'écran entre deux manches,
+             ou le décor de la manche en cours (scène) -->
+        <div class="zone" id="zone">
+          <div class="ecran" id="ecran">
+            <h3 id="ecran-titre"></h3>
+            <p id="ecran-texte"></p>
+            <div class="ecran-boutons">
+              <button type="button" class="bouton" id="ecran-bouton"></button>
+              <!-- Lien vers l'activité suivante : affiché seulement à la fin du jeu -->
+              <a
+                class="bouton"
+                id="activite-suivante"
+                href="../copier_coller/intro.html"
+                hidden
+                >Activité suivante →</a
+              >
+            </div>
+          </div>
+          <div id="scene"></div>
+        </div>
+
+        <!-- Le guide du niveau 1 : il reste collé en bas de l'écran
+             pendant qu'on fait défiler la page -->
+        <p class="guide" id="guide" hidden>
+          <span class="guide-fleche" id="guide-fleche" aria-hidden="true"></span>
+          <span id="guide-texte"></span>
+        </p>
+
+        <p class="message" id="message" role="status"></p>
+      </section>
     </main>
+
+    <!-- Le trésor emporté : il reste visible en haut de l'écran -->
+    <p class="porte" id="porte" hidden>
+      <svg viewBox="0 0 120 96" aria-hidden="true">
+        <use href="#dessin-coffre" />
+      </svg>
+      Tu as le trésor !
+    </p>
+
+    <!-- =====================================================
+         Les décors des manches.
+         Un <template> n'est pas affiché : molette.js en fait
+         une copie (cloneNode) au début de chaque manche.
+         ===================================================== -->
+
+    <!-- Le dessin du coffre, réutilisé deux fois avec <use> -->
+    <svg hidden>
+      <symbol id="dessin-coffre" viewBox="0 0 120 96">
+        <rect x="10" y="40" width="100" height="50" rx="6" fill="#a0632b" stroke="#16213e" stroke-width="4" />
+        <path d="M10 44 V30 a50 24 0 0 1 100 0 V44 Z" fill="#c07a36" stroke="#16213e" stroke-width="4" />
+        <rect x="52" y="38" width="16" height="22" rx="3" fill="#f2c13a" stroke="#16213e" stroke-width="3" />
+        <rect x="12" y="62" width="96" height="6" fill="#f2c13a" />
+      </symbol>
+      <symbol id="dessin-arbre" viewBox="0 0 60 80">
+        <rect x="25" y="48" width="10" height="30" fill="#7a5230" />
+        <circle cx="30" cy="30" r="28" fill="#4f9a5a" />
+      </symbol>
+    </svg>
+
+    <!-- Niveau 1, manche 1 : le chemin du trésor -->
+    <template id="scene-tresor">
+      <div class="scene chemin">
+        <!-- Le chemin : le même tracé, en sable puis en pointillés.
+             preserveAspectRatio="none" : le dessin s'étire à la largeur du plateau -->
+        <svg
+          class="trace"
+          viewBox="0 0 868 2400"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          <path
+            class="trace-sable"
+            d="M190 200 C 190 500, 680 520, 660 750 S 160 1000, 210 1250 S 700 1500, 650 1750 S 250 2000, 540 2240"
+          />
+          <path
+            class="trace-pointilles"
+            d="M190 200 C 190 500, 680 520, 660 750 S 160 1000, 210 1250 S 700 1500, 650 1750 S 250 2000, 540 2240"
+          />
+        </svg>
+
+        <!-- Les arbres : --x et --y donnent leur place (molette.css) -->
+        <svg class="arbre" style="--x: 88%; --y: 420px" aria-hidden="true"><use href="#dessin-arbre" /></svg>
+        <svg class="arbre" style="--x: 9%; --y: 820px" aria-hidden="true"><use href="#dessin-arbre" /></svg>
+        <svg class="arbre" style="--x: 90%; --y: 1150px" aria-hidden="true"><use href="#dessin-arbre" /></svg>
+        <svg class="arbre" style="--x: 12%; --y: 1580px" aria-hidden="true"><use href="#dessin-arbre" /></svg>
+        <svg class="arbre" style="--x: 88%; --y: 1960px" aria-hidden="true"><use href="#dessin-arbre" /></svg>
+        <svg class="arbre" style="--x: 14%; --y: 2250px" aria-hidden="true"><use href="#dessin-arbre" /></svg>
+
+        <!-- La maison : le départ et l'arrivée -->
+        <svg class="objet maison" viewBox="0 0 120 110" role="img" aria-label="La maison">
+          <path d="M10 52 L60 10 L110 52" fill="#c9382a" stroke="#16213e" stroke-width="4" stroke-linejoin="round" />
+          <rect x="22" y="50" width="76" height="54" fill="#fff6e3" stroke="#16213e" stroke-width="4" />
+          <rect x="52" y="70" width="18" height="34" fill="#2378b4" stroke="#16213e" stroke-width="3" />
+          <rect x="30" y="62" width="16" height="16" fill="#cfe8fa" stroke="#16213e" stroke-width="3" />
+          <rect x="76" y="62" width="16" height="16" fill="#cfe8fa" stroke="#16213e" stroke-width="3" />
+        </svg>
+
+        <!-- Le trésor, tout en bas -->
+        <button type="button" class="objet tresor" aria-label="Le trésor">
+          <svg viewBox="0 0 120 96" aria-hidden="true"><use href="#dessin-coffre" /></svg>
+        </button>
+      </div>
+    </template>
+
+    <!-- Niveau 1, manche 2 : la fusée, de la Terre à la Lune -->
+    <template id="scene-fusee">
+      <div class="scene espace">
+        <!-- La Lune, tout en haut -->
+        <svg class="objet lune" viewBox="0 0 160 160" role="img" aria-label="La Lune">
+          <circle cx="80" cy="80" r="74" fill="#f4f1de" stroke="#c9c3a3" stroke-width="4" />
+          <circle cx="55" cy="60" r="14" fill="#e2dcc0" />
+          <circle cx="102" cy="48" r="9" fill="#e2dcc0" />
+          <circle cx="98" cy="104" r="18" fill="#e2dcc0" />
+          <circle cx="50" cy="112" r="8" fill="#e2dcc0" />
+        </svg>
+
+        <!-- La piste de la fusée : toute la hauteur du décor.
+             La fusée y est « collante » (position: sticky) :
+             elle reste au milieu de l'écran pendant qu'on fait défiler. -->
+        <div class="piste">
+          <svg class="fusee" viewBox="0 0 80 170" role="img" aria-label="La fusée">
+            <g class="flamme">
+              <path d="M28 132 Q40 170 52 132 Z" fill="#f18d20" />
+              <path d="M33 132 Q40 155 47 132 Z" fill="#ffd54a" />
+            </g>
+            <path d="M12 104 L26 84 V128 H12 Z" fill="#c9382a" stroke="#16213e" stroke-width="3" stroke-linejoin="round" />
+            <path d="M68 104 L54 84 V128 H68 Z" fill="#c9382a" stroke="#16213e" stroke-width="3" stroke-linejoin="round" />
+            <path d="M40 4 C 62 26, 58 90, 54 132 H26 C 22 90, 18 26, 40 4 Z" fill="#ffffff" stroke="#16213e" stroke-width="3" />
+            <path d="M40 4 C 50 14, 54 26, 55 36 H25 C 26 26, 30 14, 40 4 Z" fill="#c9382a" stroke="#16213e" stroke-width="3" />
+            <circle cx="40" cy="62" r="11" fill="#cfe8fa" stroke="#16213e" stroke-width="3" />
+          </svg>
+        </div>
+
+        <!-- La Terre : de l'herbe et la rampe de lancement -->
+        <svg class="sol" viewBox="0 0 868 240" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 70 C 200 20, 400 90, 600 50 S 800 40, 868 60 V240 H0 Z" fill="#a9d8ad" />
+          <path d="M0 120 C 250 80, 500 150, 868 100 V240 H0 Z" fill="#8fcb95" />
+          <rect x="300" y="78" width="268" height="14" rx="4" fill="#5d6877" />
+        </svg>
+      </div>
+    </template>
+
+    <!-- Niveau 2, manche 1 : le répertoire du téléphone.
+         Les contacts sont ajoutés par molette.js (liste CONTACTS). -->
+    <template id="scene-contacts">
+      <div class="scene cadre">
+        <p class="cadre-entete">
+          <span class="cadre-titre">Contacts</span>
+        </p>
+        <!-- tabindex="0" : on peut aussi faire défiler la liste au clavier -->
+        <div class="defilant repertoire" tabindex="0" aria-label="Liste des contacts"></div>
+      </div>
+    </template>
+
+    <!-- Niveau 2, manche 2 : une conversation.
+         Les messages sont ajoutés par molette.js (liste MESSAGES). -->
+    <template id="scene-messages">
+      <div class="scene cadre">
+        <p class="cadre-entete">
+          <span class="avatar" aria-hidden="true">N</span>
+          <span class="cadre-titre">Nadia</span>
+        </p>
+        <div class="defilant fil" tabindex="0" aria-label="Conversation avec Nadia"></div>
+      </div>
+    </template>
   </body>
 </html>

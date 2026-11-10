@@ -1,0 +1,470 @@
+/* =========================================================
+   molette.css — exercice « Utiliser la molette »
+   Chargé APRÈS ../../styles.css (le site)
+   et ../styles.css (la rubrique : onglets, explication,
+   souris, plateau, écran, message)
+   ========================================================= */
+
+/* ---------- 1. Une couleur par niveau ----------
+   Tout élément qui a data-niveau="…" reçoit sa couleur
+   dans la variable --couleur. Ses enfants en héritent :
+   l'onglet, la molette de la souris, l'étiquette du chemin… */
+[data-niveau="page"] {
+  --couleur: var(--bleu);
+}
+[data-niveau="cadre"] {
+  --couleur: var(--orange);
+}
+[data-niveau="situation"] {
+  --couleur: var(--vert);
+}
+
+/* ---------- 2. La page ---------- */
+.molette {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem 2rem;
+}
+
+/* ---------- 3. La souris de Molette ----------
+   Le dessin de base est dans ../styles.css.
+   Ici, on colorie seulement la molette. */
+.souris-molette {
+  fill: var(--couleur);
+  stroke: var(--encre);
+  stroke-width: 2;
+}
+
+/* ---------- 4. La zone de jeu ---------- */
+.zone {
+  position: relative; /* l'écran entre deux manches se place par-dessus */
+  min-height: min(380px, 60vh);
+  border-radius: var(--arrondi);
+  background: linear-gradient(#cfe8fa, #eef7fd 70%);
+}
+
+/* Quand le décor d'une manche est affiché, il remplit la zone */
+.scene {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--arrondi);
+}
+
+/* Les objets du décor se placent par leur centre */
+.objet {
+  position: absolute;
+  translate: -50% -50%;
+}
+
+/* ---------- 5. Le guide du niveau 1 ----------
+   position: sticky + bottom : le guide reste collé en bas
+   de l'écran tant que le plateau est visible.
+   La marge négative le fait passer par-dessus le décor. */
+.guide {
+  position: sticky;
+  bottom: 1rem;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  width: fit-content;
+  margin: -4.5rem auto 1.5rem;
+  padding: 0.6rem 1.3rem;
+  font-size: 1.15rem;
+  font-weight: bold;
+  color: var(--blanc);
+  background: var(--couleur);
+  border-radius: 999px;
+  box-shadow: 0 4px 0 var(--encre);
+}
+
+.guide-fleche {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+/* Manche réussie : le guide passe au vert */
+.guide.bravo {
+  background: var(--vert);
+}
+
+/* ---------- 6. Le chemin du trésor ---------- */
+.chemin {
+  height: 2400px;
+  /* 3 couches : collines, nuages, puis le ciel qui devient
+     de l'herbe, puis du sable tout en bas */
+  background:
+    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 200' preserveAspectRatio='none'><path d='M0 110 C150 50 300 150 450 100 S700 40 800 90 V200 H0Z' fill='%23cfe9cf'/><path d='M0 155 C200 100 350 185 550 140 S750 120 800 140 V200 H0Z' fill='%23a9d8ad'/></svg>")
+      0 40px / 100% 200px no-repeat,
+    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='420' height='160'><g fill='white' opacity='.9'><ellipse cx='80' cy='50' rx='46' ry='16'/><ellipse cx='110' cy='40' rx='30' ry='18'/><ellipse cx='310' cy='100' rx='40' ry='13'/><ellipse cx='335' cy='92' rx='24' ry='14'/></g></svg>")
+      0 0 / 420px 160px repeat-x,
+    linear-gradient(
+      #cfe8fa,
+      #eef7fd 210px,
+      #a9d8ad 238px,
+      #8fcb95 1600px,
+      #d9c08f 2150px,
+      #e8d3a5
+    );
+}
+
+/* Le tracé s'étire sur tout le décor */
+.trace {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.trace path {
+  fill: none;
+  /* l'épaisseur ne change pas quand le dessin s'étire */
+  vector-effect: non-scaling-stroke;
+}
+
+.trace-sable {
+  stroke: #e3cf9f;
+  stroke-width: 58;
+  stroke-linecap: round;
+}
+
+.trace-pointilles {
+  stroke: #c8ab6e;
+  stroke-width: 4;
+  stroke-dasharray: 14 18;
+}
+
+.arbre {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: 64px;
+  translate: -50% -50%;
+}
+
+.maison {
+  left: 22%;
+  top: 150px;
+  width: 130px;
+}
+
+.tresor {
+  left: 62%;
+  top: 2240px;
+  width: 130px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  animation: briller 1.4s ease-in-out infinite alternate;
+}
+
+.tresor:hover,
+.tresor:focus-visible {
+  scale: 1.1;
+}
+
+.tresor:focus-visible {
+  outline: 4px solid var(--orange);
+  outline-offset: 6px;
+  border-radius: 8px;
+}
+
+/* Le trésor brille pour attirer l'œil */
+@keyframes briller {
+  from {
+    filter: drop-shadow(0 0 4px #ffd54a);
+  }
+  to {
+    filter: drop-shadow(0 0 18px #ffd54a);
+  }
+}
+
+/* Le trésor emporté : collé en haut à droite de l'écran */
+.porte {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.9rem 0.4rem 0.5rem;
+  font-weight: bold;
+  background: var(--jaune-pale);
+  border: 3px solid #c99a2e;
+  border-radius: 999px;
+  box-shadow: var(--ombre);
+}
+
+.porte svg {
+  width: 46px;
+}
+
+/* ---------- 7. La fusée ---------- */
+.espace {
+  height: 2600px;
+  /* La nuit en haut, puis le ciel bleu près de la Terre */
+  background: linear-gradient(
+    #0b1640,
+    #1c2f6e 900px,
+    #4f86c6 1500px,
+    #9fd3f5 2000px,
+    #cfe8fa
+  );
+}
+
+/* Les étoiles : deux couches de petits points répétés,
+   qui s'effacent en descendant (mask-image) */
+.espace::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1500px;
+  background:
+    radial-gradient(circle, #fff 0 1.5px, transparent 2.5px) 0 0 / 90px 110px,
+    radial-gradient(circle, #fff 0 1px, transparent 2px) 45px 60px / 130px 150px;
+  mask-image: linear-gradient(#000 50%, transparent);
+}
+
+/* Les nuages, près de la Terre */
+.espace::after {
+  content: "";
+  position: absolute;
+  inset: 1750px 0 auto;
+  height: 400px;
+  background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='420' height='200'><g fill='white' opacity='.9'><ellipse cx='80' cy='50' rx='46' ry='16'/><ellipse cx='110' cy='40' rx='30' ry='18'/><ellipse cx='310' cy='140' rx='40' ry='13'/><ellipse cx='335' cy='132' rx='24' ry='14'/></g></svg>")
+    0 0 / 420px 200px repeat;
+}
+
+.lune {
+  left: 70%;
+  top: 130px;
+  z-index: 1;
+  width: 150px;
+}
+
+/* La piste prend toute la hauteur du décor, au-dessus de la rampe.
+   La fusée est posée en bas, sur la rampe (à 150px du bas du décor).
+   sticky + bottom: 150px : quand on monte, elle reste à 150px
+   du bas de l'écran, comme si elle volait. */
+.piste {
+  position: absolute;
+  inset: 0 0 150px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.fusee {
+  position: sticky;
+  bottom: 150px;
+  width: 80px;
+  transition: rotate 0.6s ease-in-out;
+}
+
+/* Le retour sur Terre : la fusée se retourne */
+.fusee.retour {
+  rotate: 180deg;
+}
+
+/* La flamme tremble */
+.flamme {
+  transform-origin: 40px 132px;
+  animation: trembler 0.15s ease-in-out infinite alternate;
+}
+
+@keyframes trembler {
+  to {
+    scale: 1 0.8;
+  }
+}
+
+.sol {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 1;
+  width: 100%;
+  height: 240px;
+}
+
+/* ---------- 8. Les cadres du niveau 2 (faux téléphone) ----------
+   Les couleurs du faux WhatsApp, comme dans le copier/coller.
+   Préfixe --wa- pour ne pas les mélanger avec celles du site. */
+.cadre {
+  --wa-vert: #008069;
+  --wa-fond: #efeae2;
+  --wa-bulle-recue: #ffffff;
+  --wa-bulle-envoyee: #d9fdd3;
+  --wa-texte: #111b21;
+  --wa-texte-leger: #667781;
+
+  display: flex;
+  flex-direction: column;
+  width: min(380px, 100%);
+  height: min(460px, 65vh);
+  margin: 1.5rem auto;
+  color: var(--wa-texte);
+  background: var(--blanc);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgb(0 0 0 / 0.25);
+}
+
+.cadre-entete {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 1rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--blanc);
+  background: var(--wa-vert);
+}
+
+/* La partie qui défile, et elle seule.
+   overscroll-behavior : arrivé en bas de la liste,
+   la molette ne fait pas défiler la page derrière. */
+.defilant {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.defilant:focus-visible {
+  outline: 4px solid var(--orange);
+  outline-offset: -4px;
+}
+
+.avatar {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  font-weight: bold;
+  color: #455a64;
+  background: var(--bordure);
+  border-radius: 50%;
+}
+
+/* Le répertoire */
+.lettre {
+  position: sticky; /* la lettre reste en haut pendant qu'on défile */
+  top: 0;
+  padding: 0.2rem 1rem;
+  font-weight: bold;
+  color: var(--wa-vert);
+  background: #f0f2f5;
+}
+
+.contact {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  width: 100%;
+  padding: 0.55rem 1rem;
+  font-size: 1.05rem;
+  text-align: left;
+  color: inherit;
+  background: none;
+  border: none;
+  border-bottom: 1px solid #eef0f2;
+  cursor: pointer;
+}
+
+.contact:hover {
+  background: #f5f6f6;
+}
+
+.contact:focus-visible,
+.bulle:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: -3px;
+}
+
+.contact.trouve {
+  background: var(--vert-pale);
+}
+
+/* La conversation */
+.fil {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1rem 0.75rem;
+  background: var(--wa-fond);
+  border-radius: 0 0 16px 16px;
+}
+
+.bulle {
+  max-width: 80%;
+  padding: 0.4rem 0.6rem 0.3rem;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  text-align: left;
+  color: inherit;
+  overflow-wrap: anywhere;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 1px 1px rgb(0 0 0 / 0.13);
+  cursor: pointer;
+}
+
+.bulle:hover {
+  box-shadow: 0 0 0 3px #53bdeb;
+}
+
+.recu {
+  align-self: flex-start;
+  background: var(--wa-bulle-recue);
+  border-top-left-radius: 0;
+}
+
+.envoye {
+  align-self: flex-end;
+  background: var(--wa-bulle-envoyee);
+  border-top-right-radius: 0;
+}
+
+.bulle.trouve {
+  box-shadow: 0 0 0 4px var(--vert);
+}
+
+.meta {
+  display: block;
+  margin-top: 0.1rem;
+  font-size: 0.7rem;
+  text-align: right;
+  color: var(--wa-texte-leger);
+}
+
+.separateur {
+  align-self: center;
+  margin: 0.5rem 0;
+  padding: 0.2rem 0.7rem;
+  font-size: 0.75rem;
+  color: var(--wa-texte-leger);
+  background: #ffffffcc;
+  border-radius: 8px;
+}
+
+/* ---------- 9. Petits écrans ---------- */
+@media (max-width: 560px) {
+  .guide {
+    font-size: 1rem;
+  }
+
+  .maison,
+  .tresor {
+    width: 100px;
+  }
+
+  .lune {
+    width: 110px;
+  }
+}
