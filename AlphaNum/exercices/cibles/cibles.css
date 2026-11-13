@@ -1,0 +1,127 @@
+/* =========================================================
+   cibles.css — exercice « Apprendre à cliquer avec l'alphabet »
+   Chargé APRÈS ../../../styles.css
+   et ../../../Decouverte_ordinateur/styles.css
+   (qui donne .plateau, .barre-manche, .ecran, .message)
+   ========================================================= */
+
+/* ---------- 1. La page ---------- */
+.cibles {
+  --couleur: var(--bleu); /* la couleur des cibles */
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem 2rem;
+}
+
+/* ---------- 2. La zone de jeu ----------
+   Même ciel et mêmes collines que Cliquer (copiés de clic.css) */
+.zone {
+  position: relative; /* la cible se place par rapport à elle */
+  height: min(420px, 60vh);
+  overflow: hidden;
+  user-select: none; /* un clic rapide ne sélectionne pas la lettre */
+  border-radius: var(--arrondi);
+  /* 3 couches de fond : la PREMIÈRE écrite est AU-DESSUS des autres */
+  background:
+    /* 1. Les collines */
+    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 200' preserveAspectRatio='none'><path d='M0 110 C150 50 300 150 450 100 S700 40 800 90 V200 H0Z' fill='%23cfe9cf'/><path d='M0 155 C200 100 350 185 550 140 S750 120 800 140 V200 H0Z' fill='%23a9d8ad'/></svg>")
+      bottom / 100% 45% no-repeat,
+    /* 2. Les nuages */
+    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='420' height='160'><g fill='white' opacity='.9'><ellipse cx='80' cy='50' rx='46' ry='16'/><ellipse cx='110' cy='40' rx='30' ry='18'/><ellipse cx='310' cy='100' rx='40' ry='13'/><ellipse cx='335' cy='92' rx='24' ry='14'/></g></svg>")
+      0 0 / 420px 160px repeat-x,
+    /* 3. Le ciel */
+    linear-gradient(#cfe8fa, #eef7fd 70%);
+}
+
+/* ---------- 3. La cible avec sa lettre ---------- */
+.cible {
+  position: absolute;
+  display: grid;
+  place-items: center; /* la lettre au milieu */
+  /* --taille est donnée par cibles.js */
+  width: var(--taille);
+  height: var(--taille);
+  padding: 0;
+  /* La lettre : un peu plus de la moitié du rond */
+  font-family: var(--police);
+  font-size: calc(var(--taille) * 0.55);
+  font-weight: bold;
+  line-height: 1;
+  color: var(--encre);
+  background: var(--blanc);
+  border: 8px solid var(--couleur);
+  border-radius: 50%;
+  box-shadow: 0 5px 0 rgb(0 0 0 / 0.25);
+  cursor: pointer;
+  animation: apparition 0.2s ease-out;
+}
+
+/* Survol : un halo de la couleur de la cible */
+.cible:hover {
+  box-shadow:
+    0 5px 0 rgb(0 0 0 / 0.25),
+    0 0 0 6px color-mix(in srgb, var(--couleur) 35%, transparent);
+}
+
+/* Bon clic : la cible devient verte, grossit et disparaît */
+.cible.touchee {
+  pointer-events: none;
+  color: var(--blanc);
+  background: var(--vert);
+  border-color: var(--vert);
+  animation: disparition 0.25s ease-in forwards;
+}
+
+@keyframes apparition {
+  from {
+    scale: 0.6;
+    opacity: 0;
+  }
+}
+
+@keyframes disparition {
+  to {
+    scale: 1.3;
+    opacity: 0;
+  }
+}
+
+/* ---------- 4. La frise de l'alphabet ----------
+   Mêmes couleurs que Mots et Sons :
+   vert = déjà fait, orange = celle qu'on cherche */
+.frise {
+  display: flex;
+  flex-wrap: wrap; /* passe à la ligne si l'écran est étroit */
+  justify-content: center;
+  gap: 0.3rem;
+  list-style: none;
+}
+
+.frise li {
+  display: grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  font-weight: bold;
+  color: var(--texte-leger);
+  background: var(--blanc);
+  border: 2px solid var(--bordure);
+  border-radius: 8px;
+}
+
+/* lettre déjà cliquée */
+.frise .trouvee {
+  color: var(--blanc);
+  background: var(--vert);
+  border-color: var(--vert);
+}
+
+/* lettre à cliquer maintenant */
+.frise .courante {
+  color: var(--encre);
+  background: var(--orange);
+  border-color: var(--orange);
+}

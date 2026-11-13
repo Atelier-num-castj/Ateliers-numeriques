@@ -355,3 +355,24 @@
   border-radius: 8px;
   user-select: none;
 }
+
+/* ---------- 9. Le décor « ciel et collines » ----------
+   Partagé par Cliquer (cliquer/clic.css) et « Cliquer sur l'alphabet »
+   (AlphaNum/exercices/cibles/cibles.css).
+   C'est seulement un fond : la taille de la zone reste réglée
+   par chaque exercice. On l'ajoute à côté de .zone :
+   <div class="zone ciel">
+   La Molette ne l'utilise pas (son ciel n'a pas de collines). */
+.ciel {
+  /* 3 couches de fond empilées, séparées par des virgules.
+     La PREMIÈRE écrite est AU-DESSUS des autres. */
+  background:
+    /* 1. Les collines : collées en bas, sur 45 % de la hauteur */
+    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 200' preserveAspectRatio='none'><path d='M0 110 C150 50 300 150 450 100 S700 40 800 90 V200 H0Z' fill='%23cfe9cf'/><path d='M0 155 C200 100 350 185 550 140 S750 120 800 140 V200 H0Z' fill='%23a9d8ad'/></svg>")
+      bottom / 100% 45% no-repeat,
+    /* 2. Les nuages : un petit dessin répété à l'horizontale */
+    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='420' height='160'><g fill='white' opacity='.9'><ellipse cx='80' cy='50' rx='46' ry='16'/><ellipse cx='110' cy='40' rx='30' ry='18'/><ellipse cx='310' cy='100' rx='40' ry='13'/><ellipse cx='335' cy='92' rx='24' ry='14'/></g></svg>")
+      0 0 / 420px 160px repeat-x,
+    /* 3. Le ciel : du bleu en haut vers presque blanc */
+    linear-gradient(#cfe8fa, #eef7fd 70%);
+}
