@@ -298,16 +298,9 @@
 }
 
 /* ---------- 8. Les cadres du niveau 2 (faux téléphone) ----------
-   Les couleurs du faux WhatsApp, comme dans le copier/coller.
-   Préfixe --wa- pour ne pas les mélanger avec celles du site. */
+   Les couleurs (--wa-) et les bulles du faux WhatsApp sont dans
+   ../styles.css, partagées avec le copier/coller. */
 .cadre {
-  --wa-vert: #008069;
-  --wa-fond: #efeae2;
-  --wa-bulle-recue: #ffffff;
-  --wa-bulle-envoyee: #d9fdd3;
-  --wa-texte: #111b21;
-  --wa-texte-leger: #667781;
-
   display: flex;
   flex-direction: column;
   width: min(380px, 100%);
@@ -342,18 +335,6 @@
 .defilant:focus-visible {
   outline: 4px solid var(--orange);
   outline-offset: -4px;
-}
-
-.avatar {
-  display: grid;
-  flex-shrink: 0;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  font-weight: bold;
-  color: #455a64;
-  background: var(--bordure);
-  border-radius: 50%;
 }
 
 /* Le répertoire */
@@ -405,56 +386,21 @@
   border-radius: 0 0 16px 16px;
 }
 
+/* Ici, les bulles sont des boutons : on peut cliquer dessus.
+   On enlève l'aspect « bouton » du navigateur. */
 .bulle {
-  max-width: 80%;
-  padding: 0.4rem 0.6rem 0.3rem;
-  font-size: 0.95rem;
-  line-height: 1.35;
   text-align: left;
   color: inherit;
-  overflow-wrap: anywhere;
   border: none;
-  border-radius: 8px;
-  box-shadow: 0 1px 1px rgb(0 0 0 / 0.13);
   cursor: pointer;
 }
 
 .bulle:hover {
-  box-shadow: 0 0 0 3px #53bdeb;
-}
-
-.recu {
-  align-self: flex-start;
-  background: var(--wa-bulle-recue);
-  border-top-left-radius: 0;
-}
-
-.envoye {
-  align-self: flex-end;
-  background: var(--wa-bulle-envoyee);
-  border-top-right-radius: 0;
+  box-shadow: 0 0 0 3px var(--wa-coches);
 }
 
 .bulle.trouve {
   box-shadow: 0 0 0 4px var(--vert);
-}
-
-.meta {
-  display: block;
-  margin-top: 0.1rem;
-  font-size: 0.7rem;
-  text-align: right;
-  color: var(--wa-texte-leger);
-}
-
-.separateur {
-  align-self: center;
-  margin: 0.5rem 0;
-  padding: 0.2rem 0.7rem;
-  font-size: 0.75rem;
-  color: var(--wa-texte-leger);
-  background: #ffffffcc;
-  border-radius: 8px;
 }
 
 /* ---------- 9. La fenêtre « Bravo » ----------

@@ -1,5 +1,5 @@
 import { niveaux } from "./niveaux.js";
-import { afficherMessage } from "../../outils.js";
+import { afficherMessage, texteAvecGras } from "../../outils.js";
 
 // ============ 1. L'ÉTAT DU JEU ============
 let numeroNiveau = 0;
@@ -45,7 +45,7 @@ function construireConversation() {
     bulle.className = "bulle " + (m.de === "moi" ? "envoye" : "recu");
 
     const texte = document.createElement("div");
-    texte.textContent = m.texte;
+    texte.append(...texteAvecGras(m.texte));
 
     const meta = document.createElement("div");
     meta.className = "meta";
@@ -77,7 +77,9 @@ function construireFormulaire() {
     const champ = document.createElement("input");
     champ.id = element.id;
     champ.type = "text";
-    champ.addEventListener("input", (event) => verifier(element, champ, event));
+    champ.addEventListener("input", (evenement) =>
+      verifier(element, champ, evenement),
+    );
 
     bloc.append(etiquette, champ);
     formulaire.append(bloc);
@@ -138,8 +140,8 @@ function estAttendu(valeur, attendu) {
   return reponses.some((reponse) => normaliser(reponse) === normaliser(valeur));
 }
 
-function verifier(element, champ, event) {
-  const colle = event.inputType === "insertFromPaste";
+function verifier(element, champ, evenement) {
+  const colle = evenement.inputType === "insertFromPaste";
 
   if (estAttendu(champ.value, element.attendu)) {
     if (resultats[element.id] !== "colle") {

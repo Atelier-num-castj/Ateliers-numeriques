@@ -1,19 +1,11 @@
 /* =========================================================
    style.css — exercice Copier / Coller (conversation WhatsApp)
-   Chargé APRÈS ../../styles.css
+   Chargé APRÈS ../../styles.css et ../styles.css
    ---------------------------------------------------------
-   Les couleurs propres au faux WhatsApp commencent par --wa-
-   pour ne pas se mélanger avec celles du site (--bleu, --fond…)
+   Les couleurs du faux WhatsApp (--wa-) et les bulles
+   (.avatar, .bulle, .recu, .envoye, .meta, .coches, .separateur)
+   sont dans ../styles.css, partagées avec la molette.
    ========================================================= */
-:root {
-  --wa-vert: #008069;
-  --wa-fond: #efeae2;
-  --wa-bulle-recue: #ffffff;
-  --wa-bulle-envoyee: #d9fdd3;
-  --wa-texte: #111b21;
-  --wa-texte-leger: #667781;
-  --wa-coches: #53bdeb;
-}
 
 /* ----- Mise en page générale ----- */
 .copier-coller {
@@ -53,17 +45,6 @@
   background: var(--wa-vert);
 }
 
-.avatar {
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  font-weight: bold;
-  color: #455a64;
-  background: var(--bordure);
-  border-radius: 50%;
-}
-
 .infos-contact .nom {
   font-weight: 600;
 }
@@ -86,51 +67,6 @@
   padding: 1rem 0.75rem;
   overflow-y: auto;
   user-select: text;
-}
-
-.bulle {
-  max-width: 80%;
-  padding: 0.4rem 0.6rem 0.3rem;
-  font-size: 0.95rem;
-  line-height: 1.35;
-  overflow-wrap: anywhere;
-  border-radius: 8px;
-  box-shadow: 0 1px 1px rgb(0 0 0 / 0.13);
-}
-
-.recu {
-  align-self: flex-start;
-  background: var(--wa-bulle-recue);
-  border-top-left-radius: 0;
-}
-
-.envoye {
-  align-self: flex-end;
-  background: var(--wa-bulle-envoyee);
-  border-top-right-radius: 0;
-}
-
-.meta {
-  margin-top: 0.1rem;
-  font-size: 0.7rem;
-  text-align: right;
-  color: var(--wa-texte-leger);
-  user-select: none; /* l'heure ne doit pas être copiée avec le texte */
-}
-
-.coches {
-  color: var(--wa-coches);
-}
-
-.separateur {
-  align-self: center;
-  margin: 0.5rem 0;
-  padding: 0.2rem 0.7rem;
-  font-size: 0.75rem;
-  color: var(--wa-texte-leger);
-  background: #ffffffcc;
-  border-radius: 8px;
-  user-select: none;
 }
 
 .saisie {

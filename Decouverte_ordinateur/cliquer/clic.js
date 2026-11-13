@@ -24,7 +24,7 @@ const NIVEAUX = [
     clic: "gauche",
     titre: "Le clic gauche",
     consigne:
-      "Mets le pointeur sur le rond bleu, puis appuie une fois sur le bouton gauche de la souris.",
+      "Mets la souris sur le rond bleu, puis appuie une fois sur son bouton gauche.",
     usages: [
       { picto: "🔗", texte: "Ouvrir un **lien** sur Internet" },
       {
@@ -63,7 +63,7 @@ const NIVEAUX = [
     clic: "droit",
     titre: "Le clic droit",
     consigne:
-      "Mets le pointeur sur le rond orange, puis appuie une fois sur le bouton droit de la souris.",
+      "Mets la souris sur le rond orange, puis appuie une fois sur son bouton droit.",
     usages: [
       { picto: "📋", texte: "Ouvrir un **menu** avec plus de choix" },
       { picto: "✂️", texte: "**Copier**, **couper** et **coller**" },
@@ -99,7 +99,7 @@ const NIVEAUX = [
     clic: "double",
     titre: "Le double-clic",
     consigne:
-      "Mets le pointeur sur le rond vert, puis appuie deux fois très vite sur le bouton gauche, sans bouger la souris.",
+      "Mets la souris sur le rond vert, puis appuie deux fois très vite sur son bouton gauche, sans la bouger.",
     usages: [
       { picto: "📁", texte: "Ouvrir un **dossier**" },
       {

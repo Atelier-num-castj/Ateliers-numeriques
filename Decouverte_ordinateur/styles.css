@@ -278,3 +278,80 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------- 8. Le faux WhatsApp ----------
+   Les couleurs et les bulles de conversation, partagées par
+   le copier/coller (copier_coller/style.css) et la molette (molette.css).
+   Préfixe --wa- pour ne pas mélanger ces couleurs avec celles du site. */
+:root {
+  --wa-vert: #008069;
+  --wa-fond: #efeae2;
+  --wa-bulle-recue: #ffffff;
+  --wa-bulle-envoyee: #d9fdd3;
+  --wa-texte: #111b21;
+  --wa-texte-leger: #667781;
+  --wa-coches: #53bdeb;
+}
+
+/* La pastille avec l'initiale du contact */
+.avatar {
+  display: grid;
+  flex-shrink: 0; /* garde sa taille dans une ligne flex */
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  font-weight: bold;
+  color: #455a64;
+  background: var(--bordure);
+  border-radius: 50%;
+}
+
+/* Une bulle de message : reçue (à gauche, en blanc)
+   ou envoyée (à droite, en vert) */
+.bulle {
+  max-width: 80%;
+  padding: 0.4rem 0.6rem 0.3rem;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  border-radius: 8px;
+  box-shadow: 0 1px 1px rgb(0 0 0 / 0.13);
+}
+
+.recu {
+  align-self: flex-start;
+  background: var(--wa-bulle-recue);
+  border-top-left-radius: 0;
+}
+
+.envoye {
+  align-self: flex-end;
+  background: var(--wa-bulle-envoyee);
+  border-top-right-radius: 0;
+}
+
+/* L'heure sous le message, avec les coches ✓✓ des messages envoyés */
+.meta {
+  display: block;
+  margin-top: 0.1rem;
+  font-size: 0.7rem;
+  text-align: right;
+  color: var(--wa-texte-leger);
+  user-select: none; /* l'heure ne doit pas être copiée avec le texte */
+}
+
+.coches {
+  color: var(--wa-coches);
+}
+
+/* La date entre deux groupes de messages */
+.separateur {
+  align-self: center;
+  margin: 0.5rem 0;
+  padding: 0.2rem 0.7rem;
+  font-size: 0.75rem;
+  color: var(--wa-texte-leger);
+  background: #ffffffcc;
+  border-radius: 8px;
+  user-select: none;
+}

@@ -25,6 +25,7 @@ import {
 //     guide    : l'étiquette collée en bas de l'écran (niveau 1)
 //     objectif : la consigne courte, affichée juste au-dessus du jeu (niveau 2)
 //   aide    : le message si on tourne la molette à côté du cadre (niveau 2)
+// introduction : la phrase de l'écran « Commencer » (** = gras)
 // usages : les exemples de « À quoi ça sert ? »
 // astuce : la phrase après « 💡 Astuce : »
 // mobile : la phrase pour les téléphones et tablettes
@@ -33,6 +34,7 @@ const NIVEAUX = [
     nom: "Faire défiler la page",
     couleur: "page",
     titre: "Faire défiler la page",
+    introduction: "Tu vas faire descendre et monter **toute la page**.",
     usages: [
       { picto: "📰", texte: "Lire un **article** trop long pour l'écran" },
       { picto: "🛒", texte: "Voir tous les **produits** d'un magasin en ligne" },
@@ -77,7 +79,7 @@ const NIVEAUX = [
           {
             nom: "redescendre",
             consigne:
-              "Bravo, tu es près de la Lune ! Tourne la molette **vers toi** pour redescendre sur la **Terre**.",
+              "Tu es près de la Lune ! Tourne la molette **vers toi** pour redescendre sur la **Terre**.",
             guide: { fleche: "↓", texte: "Redescends sur la Terre" },
           },
         ],
@@ -85,9 +87,10 @@ const NIVEAUX = [
     ],
   },
   {
-    nom: "Défiler dans un cadre",
+    nom: "Faire défiler une liste",
     couleur: "cadre",
-    titre: "Faire défiler dans un cadre",
+    titre: "Faire défiler une liste",
+    introduction: "Tu vas faire défiler **une liste** dans un téléphone.",
     usages: [
       { picto: "📇", texte: "Chercher un **contact** dans une liste" },
       { picto: "💬", texte: "Relire les anciens **messages** d'une conversation" },
@@ -95,7 +98,7 @@ const NIVEAUX = [
       { picto: "📧", texte: "Parcourir ses **e-mails**" },
     ],
     astuce:
-      "la molette fait bouger ce qui est **sous le pointeur**. Pour faire défiler une liste, mets d'abord le pointeur dessus.",
+      "la molette fait bouger ce qui est **sous la souris**. Pour faire défiler une liste, mets d'abord la souris dessus.",
     mobile:
       "📱 Sur un téléphone ou une tablette, pose ton doigt sur la liste et fais-le glisser.",
     manches: [
@@ -106,11 +109,11 @@ const NIVEAUX = [
           {
             nom: "chercher",
             consigne:
-              "Mets le pointeur **sur la liste**, puis tourne la molette pour trouver **{prenom}**. Clique sur son nom.",
+              "Mets la souris **sur la liste**, puis tourne la molette pour trouver **{prenom}**. Clique sur son nom.",
             objectif: "🔍 Trouve **{prenom}** et clique sur son nom.",
           },
         ],
-        aide: "La liste ne bouge pas ? Mets d'abord le pointeur **sur la liste**, puis tourne la molette.",
+        aide: "La liste ne bouge pas ? Mets d'abord la souris **sur la liste**, puis tourne la molette.",
       },
       {
         scene: "messages",
@@ -119,12 +122,12 @@ const NIVEAUX = [
           {
             nom: "remonter",
             consigne:
-              "Les derniers messages sont en bas. Mets le pointeur **sur la conversation** et remonte pour trouver l'heure du **rendez-vous chez le médecin**. Clique sur ce message.",
+              "Les derniers messages sont en bas. Mets la souris **sur la conversation** et remonte pour trouver l'heure du **rendez-vous chez le médecin**. Clique sur ce message.",
             objectif:
               "🔍 Trouve l'heure du **rendez-vous chez le médecin** et clique sur ce message.",
           },
         ],
-        aide: "La conversation ne bouge pas ? Mets d'abord le pointeur **sur la conversation**, puis tourne la molette.",
+        aide: "La conversation ne bouge pas ? Mets d'abord la souris **sur la conversation**, puis tourne la molette.",
       },
     ],
   },
@@ -325,7 +328,7 @@ function afficherEcran(titre, texte, texteBouton, action) {
   lienSuivant.hidden = true; // afficherFin() le montrera
 
   ecranTitre.textContent = titre;
-  ecranTexte.textContent = texte;
+  ecranTexte.replaceChildren(...texteAvecGras(texte)); // ** = gras
   ecranBouton.textContent = texteBouton;
   ecranBouton.onclick = action;
   ecran.hidden = false;
@@ -345,7 +348,7 @@ function presenterNiveau() {
   texteEtape.textContent = "";
   afficherEcran(
     niveau.titre,
-    `${niveau.manches.length} exercices. Prends ton temps.`,
+    `${niveau.introduction} ${niveau.manches.length} Exercices.`,
     "Commencer",
     () => {
       numeroManche = 0;
@@ -675,7 +678,7 @@ function preparerMessages(decor) {
       afficherMessage(
         message,
         espacesInsecables(
-          "Ce n'est pas ce message. Remonte plus haut dans la conversation.",
+          "Ce n'est pas ce message. Continue à chercher dans la conversation.",
         ),
         "attention",
       );
@@ -692,7 +695,7 @@ const PREPARER_SCENE = {
 };
 
 // ---------- 7. L'aide du niveau 2 ----------
-// Si on tourne la molette alors que le pointeur n'est pas sur le cadre,
+// Si on tourne la molette alors que la souris n'est pas sur le cadre,
 // c'est la page qui bouge, pas la liste : on explique pourquoi.
 // passive: true : on écoute seulement, on n'empêche pas le défilement.
 window.addEventListener(

@@ -12,13 +12,13 @@ export const niveaux = [
         heure: "09:15",
       },
       { de: "contact", texte: "Voici votre numéro de suivi :", heure: "09:15" },
-      { de: "contact", texte: "FR458-923-771", heure: "09:16" },
+      { de: "contact", texte: "**FR458-923-771**", heure: "09:16" },
       {
         de: "moi",
         texte: "Merci ! Vous passez à quelle heure ?",
         heure: "09:20",
       },
-      { de: "contact", texte: "Entre 14h et 16h", heure: "09:21" },
+      { de: "contact", texte: "**Entre 14h et 16h**", heure: "09:21" },
       {
         de: "contact",
         texte: "Est-ce qu'il y a un code pour la porte ?",
@@ -26,7 +26,7 @@ export const niveaux = [
       },
       {
         de: "moi",
-        texte: "Le code de la porte est 4582B",
+        texte: "Le code de la porte est **4582B**",
         heure: "09:23",
       },
     ],
@@ -49,7 +49,7 @@ export const niveaux = [
       { separateur: "Aujourd'hui" },
       {
         de: "contact",
-        texte: "Salut ! Moi c'est Camille Dupont 😊",
+        texte: "Salut ! Moi c'est **Camille Dupont** 😊",
         heure: "14:02",
       },
       {
@@ -60,16 +60,21 @@ export const niveaux = [
       },
       {
         de: "contact",
-        texte:
-          "Oui, tu peux me contacter ici ! Je t'envoie également mon adresse mail.",
+        texte: "Oui, c'est bien mon numéro : **06 12 34 56 78**",
         heure: "14:04",
       },
-      { de: "contact", texte: "camille.dupont@exemple.fr", heure: "14:04" },
+      {
+        de: "contact",
+        texte:
+          "Tu peux me contacter ici ! Je t'envoie également mon adresse mail.",
+        heure: "14:04",
+      },
+      { de: "contact", texte: "**camille.dupont@exemple.fr**", heure: "14:04" },
       { de: "moi", texte: "Parfait ! Merci", heure: "14:05" },
       {
         de: "contact",
         texte:
-          "Pour le rendez-vous de cet après-midi c'est au : 12 rue des Lilas, 69003 Lyon",
+          "Pour le rendez-vous de cet après-midi c'est au : **12 rue des Lilas, 69003 Lyon**",
         heure: "14:06",
       },
     ],
@@ -104,11 +109,11 @@ export const niveaux = [
         texte: "Avec plaisir ! C'est à quelle heure ?",
         heure: "18:42",
       },
-      { de: "contact", texte: "Samedi 14 novembre à 20h30", heure: "18:43" },
+      { de: "contact", texte: "**Samedi 14 novembre à 20h30**", heure: "18:43" },
       { de: "moi", texte: "Super, et c'est où ?", heure: "18:44" },
       {
         de: "contact",
-        texte: "5 place du Canal, 69100 Villeurbanne",
+        texte: "**5 place du Canal, 69100 Villeurbanne**",
         heure: "18:45",
       },
       {
@@ -122,7 +127,7 @@ export const niveaux = [
         texte: "Génial avec lequel ?",
         heure: "18:51",
       },
-      { de: "moi", texte: "Mon grand frère Sammy", heure: "18:52" },
+      { de: "moi", texte: "**Mon grand frère Sammy**", heure: "18:52" },
       {
         de: "contact",
         texte: "J'ai hâte de vous voir !",
@@ -137,7 +142,7 @@ export const niveaux = [
       {
         de: "contact",
         texte:
-          "On a prévu de faire des pizzas, tu peux en prendre une 4 fromages",
+          "On a prévu de faire des **pizzas**, tu peux en prendre une **4 fromages**",
         heure: "18:56",
       },
     ],
