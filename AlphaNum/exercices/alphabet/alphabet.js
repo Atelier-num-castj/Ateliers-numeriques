@@ -1,138 +1,173 @@
 import { melanger } from "../../../outils.js";
 
+// =========================================================
+// alphabet.js — exercice « Le jeu de l'alphabet »
+// Remettre les lettres dans l'ordre, à la souris ou au clavier.
+// =========================================================
+
+// ---------- 1. Les réglages ----------
 const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+// Le nombre de lettres de chaque niveau : A à M, puis A à Z
 const TAILLES = [13, 26];
 
-let niveau = 0,
-  suivant = 0,
-  pile = [];
-let majuscule = true;
+// Durée de la secousse d'une mauvaise tuile, en millisecondes
+const DUREE_SECOUSSE = 400;
 
-let aide = false;
+// ---------- 2. Les éléments de la page ----------
+const boutonsNiveau = document.querySelectorAll("[data-niveau]");
+const boutonAide = document.getElementById("bouton-aide");
+const choixCasse = document.getElementById("bouton-casse");
+const consigne = document.getElementById("consigne");
+const message = document.getElementById("message");
+const lettresTrouvees = document.getElementById("lettres-trouves");
+const zonePile = document.getElementById("zonePile");
+const zoneTuiles = document.getElementById("pile");
+const fin = document.getElementById("fin");
+const boutonRejouer = document.getElementById("bouton-rejouer");
+const boutonSuivant = document.getElementById("bouton-suivant");
 
-const $ = (id) => document.getElementById(id);
-const casseLettres = (l) => (majuscule ? l : l.toLowerCase());
+// ---------- 3. L'état du jeu ----------
+let niveau = 0; // position du niveau dans TAILLES
+let suivant = 0; // position de la prochaine lettre à trouver dans ALPHABET
+let pile = []; // les lettres qui restent à cliquer, mélangées
+let majuscule = true; // false = les lettres sont affichées en minuscules
+let aide = false; // true = la lettre à chercher est toujours montrée
+let secousseEnAttente = null; // minuteur de la secousse (mauvaise tuile)
 
+// Écrit la lettre en majuscule ou en minuscule, selon le choix
+const casseLettres = (lettre) => (majuscule ? lettre : lettre.toLowerCase());
+
+// ---------- 4. L'affichage ----------
+function remplirActivite() {
+  const nombre = TAILLES[niveau];
+
+  boutonsNiveau.forEach((bouton) =>
+    bouton.classList.toggle("actif", Number(bouton.dataset.niveau) === niveau),
+  );
+
+  // La consigne : on montre la lettre à chercher pour la première,
+  // ou tout le temps si l'aide est activée.
+  // Quand tout est trouvé, il n'y a plus de lettre à chercher :
+  // on ne prépare rien, terminer() écrira le message de fin.
+  const phrase = document.createElement("p");
+  if (suivant < nombre) {
+    if (aide || suivant === 0) {
+      const lettreSuivante = document.createElement("span");
+      lettreSuivante.className = "cible";
+      lettreSuivante.textContent = casseLettres(ALPHABET[suivant]);
+      phrase.append("Cherche la lettre : ", lettreSuivante);
+    } else {
+      phrase.textContent = "Cherche la lettre suivante";
+    }
+  }
+  consigne.replaceChildren(phrase);
+
+  // Les cases des lettres trouvées : une case par lettre du niveau
+  const cases = [];
+  for (let index = 0; index < nombre; index++) {
+    const caseLettre = document.createElement("div");
+    caseLettre.className = "lettre-trouve";
+    if (index < suivant) {
+      caseLettre.classList.add("ok");
+      caseLettre.textContent = casseLettres(ALPHABET[index]);
+    } else if (index === suivant) {
+      caseLettre.classList.add("prochaine");
+    }
+    cases.push(caseLettre);
+  }
+  lettresTrouvees.replaceChildren(...cases);
+
+  // Les tuiles à cliquer
+  const tuiles = pile.map((lettre) => {
+    const tuile = document.createElement("button");
+    tuile.type = "button";
+    tuile.className = "tuile";
+    tuile.dataset.lettre = lettre;
+    tuile.textContent = casseLettres(lettre);
+    tuile.addEventListener("click", () => choisir(lettre, tuile));
+    return tuile;
+  });
+  zoneTuiles.replaceChildren(...tuiles);
+}
+
+// ---------- 5. Le jeu ----------
 function demarrer() {
-  const n = TAILLES[niveau];
   suivant = 0;
-  pile = melanger(ALPHABET.slice(0, n).split(""));
-  $("fin").hidden = true;
-  $("zonePile").hidden = false;
-  $("message").textContent = "";
+  pile = melanger(ALPHABET.slice(0, TAILLES[niveau]).split(""));
+  fin.hidden = true;
+  zonePile.hidden = false;
+  message.textContent = "";
   remplirActivite();
 }
 
-function remplirActivite() {
-  const n = TAILLES[niveau];
-
-  document
-    .querySelectorAll("[data-niveau]")
-    .forEach((b) =>
-      b.classList.toggle("actif", Number(b.dataset.niveau) === niveau),
-    );
-
-  // Création de la ligne consigne
-  $("consigne").innerHTML = "";
-
-  const consigne = document.createElement("p");
-  const lettreSuivante = document.createElement("span");
-  lettreSuivante.className = "cible";
-  lettreSuivante.textContent = casseLettres(ALPHABET[suivant]);
-
-  if (aide) {
-    consigne.append("Cherche la lettre : ", lettreSuivante);
-  } else if (suivant === 0) {
-    consigne.append("Cherche la lettre : ", lettreSuivante);
-  } else {
-    consigne.textContent = "Cherche la lettre suivante";
-  }
-
-  $("consigne").appendChild(consigne);
-
-  $("lettres-trouves").innerHTML = "";
-  for (let i = 0; i < n; i++) {
-    const lettre = document.createElement("div");
-    lettre.className = "lettre-trouve";
-    if (i < suivant) {
-      lettre.classList.add("ok");
-      lettre.textContent = casseLettres(ALPHABET[i]);
-    } else if (i === suivant) {
-      lettre.classList.add("prochaine");
-    }
-    $("lettres-trouves").appendChild(lettre);
-  }
-
-  // Ajout de la pile de tuile pour l'exercice
-
-  $("pile").innerHTML = "";
-  pile.forEach((lettre) => {
-    const bouton = document.createElement("button");
-    bouton.className = "tuile";
-    bouton.dataset.lettre = lettre;
-    bouton.textContent = casseLettres(lettre);
-    bouton.addEventListener("click", () => choisir(lettre, bouton));
-    $("pile").appendChild(bouton);
-  });
-}
-
-function choisir(lettre, bouton) {
+function choisir(lettre, tuile) {
   if (lettre === ALPHABET[suivant]) {
     suivant++;
-    pile = pile.filter((l) => l !== lettre);
-    $("message").textContent = "Bravo";
+    pile = pile.filter((autre) => autre !== lettre);
+    message.textContent = "Bravo";
     if (suivant === TAILLES[niveau]) {
       terminer();
     } else {
       remplirActivite();
     }
   } else {
-    bouton.classList.add("faux");
-    setTimeout(() => bouton.classList.remove("faux"), 400);
+    tuile.classList.add("faux");
+    clearTimeout(secousseEnAttente);
+    secousseEnAttente = setTimeout(
+      () => tuile.classList.remove("faux"),
+      DUREE_SECOUSSE,
+    );
   }
 }
 
 function terminer() {
   remplirActivite();
-  $("zonePile").hidden = true;
-  $("consigne").textContent = "Toutes les lettres sont à leur place.";
-  $("fin").hidden = false;
-  $("bouton-suivant").hidden = niveau === TAILLES.length - 1;
-  $("fin").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  zonePile.hidden = true;
+  consigne.textContent = "Toutes les lettres sont à leur place.";
+  fin.hidden = false;
+  boutonSuivant.hidden = niveau === TAILLES.length - 1;
+  fin.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
-document.querySelectorAll("[data-niveau]").forEach((b) =>
-  b.addEventListener("click", () => {
-    niveau = Number(b.dataset.niveau);
+// ---------- 6. Les boutons et le clavier ----------
+boutonsNiveau.forEach((bouton) =>
+  bouton.addEventListener("click", () => {
+    niveau = Number(bouton.dataset.niveau);
     demarrer();
   }),
 );
 
-document.addEventListener("keydown", (e) => {
-  if (e.repeat || e.ctrlKey || e.altKey || e.metaKey) return;
-  if (document.activeElement.tagName === "SELECT") return;
+// On peut aussi jouer au clavier : taper une lettre = cliquer sur sa tuile
+document.addEventListener("keydown", (evenement) => {
+  if (evenement.repeat) return; // touche restée enfoncée
+  if (evenement.ctrlKey || evenement.altKey || evenement.metaKey) return;
+  if (document.activeElement === choixCasse) return; // on choisit dans la liste
 
-  const lettre = e.key.toUpperCase();
+  const lettre = evenement.key.toUpperCase();
   if (lettre.length !== 1 || !ALPHABET.includes(lettre)) return;
 
-  const bouton = document.querySelector(`.tuile[data-lettre="${lettre}"]`);
-  if (bouton) choisir(lettre, bouton);
+  const tuile = zoneTuiles.querySelector(`.tuile[data-lettre="${lettre}"]`);
+  if (tuile) choisir(lettre, tuile);
 });
 
-$("bouton-aide").addEventListener("click", (e) => {
+boutonAide.addEventListener("click", () => {
   aide = !aide;
-  e.target.classList.toggle("actif", aide);
+  boutonAide.classList.toggle("actif", aide);
   remplirActivite();
 });
 
-$("bouton-casse").addEventListener("change", (e) => {
-  majuscule = e.target.value === "majuscules";
+choixCasse.addEventListener("change", () => {
+  majuscule = choixCasse.value === "majuscules";
   remplirActivite();
 });
-$("bouton-rejouer").addEventListener("click", demarrer);
-$("bouton-suivant").addEventListener("click", () => {
+
+boutonRejouer.addEventListener("click", demarrer);
+
+boutonSuivant.addEventListener("click", () => {
   niveau++;
   demarrer();
 });
 
+// ---------- 7. Démarrage ----------
 demarrer();

@@ -191,6 +191,10 @@ const MESSAGES = [
 // en millisecondes (le même que dans « Déplacer la souris »)
 const PAUSE_AVANT_BRAVO = 600;
 
+// Niveau 2 : part du cadre qu'il faut voir à l'écran pour afficher l'aide
+// « La liste ne bouge pas ? » (0.75 = 75 %)
+const PART_VISIBLE_POUR_AIDER = 0.75;
+
 // Les messages de réussite, tirés au hasard pour varier
 const FELICITATIONS = [
   "Bravo !",
@@ -315,7 +319,7 @@ function afficherEtape() {
 
   // Le guide n'existe que pour les étapes qui en ont un (niveau 1)
   guide.hidden = !etape.guide;
-  guide.classList.remove("bravo");
+  guide.classList.remove("reussi");
   if (etape.guide) {
     guideFleche.textContent = etape.guide.fleche;
     guideTexte.textContent = etape.guide.texte;
@@ -413,7 +417,7 @@ function reussirManche(texte) {
 
   // Au niveau 1, le message est loin en bas : le guide l'affiche aussi
   if (!guide.hidden) {
-    guide.classList.add("bravo");
+    guide.classList.add("reussi");
     guideFleche.textContent = "✓";
     guideTexte.textContent = felicitation;
   }
@@ -552,6 +556,8 @@ function preparerTresor(decor) {
     }
   }
 
+  // once: true : le clic ne compte qu'une fois. Sinon, la touche Entrée
+  // ou Espace sur le trésor déjà ramassé relancerait cette fonction.
   tresor.addEventListener("click", () => {
     tresor.classList.add("emporte"); // il n'est plus cliquable, il nous suit
     afficherMessage(message, "Tu as trouvé le trésor !", "succes");
@@ -564,7 +570,7 @@ function preparerTresor(decor) {
     addEventListener("scroll", suivreLeChemin, options);
     addEventListener("resize", suivreLeChemin, options);
     suivreLeChemin();
-  });
+  }, { once: true });
 }
 
 // Niveau 1, manche 2 : monter jusqu'à la Lune, puis redescendre
@@ -695,14 +701,28 @@ const PREPARER_SCENE = {
 };
 
 // ---------- 7. L'aide du niveau 2 ----------
+
+// true si une grande partie de l'élément est visible à l'écran
+function estBienVisible(element) {
+  const { top, bottom, height } = element.getBoundingClientRect();
+  // La hauteur de la partie visible : entre le haut et le bas de l'écran
+  const hauteurVisible = Math.min(bottom, innerHeight) - Math.max(top, 0);
+  // Si le cadre est plus grand que l'écran, on compare à la hauteur de l'écran
+  const hauteurMax = Math.min(height, innerHeight);
+  return hauteurVisible >= hauteurMax * PART_VISIBLE_POUR_AIDER;
+}
+
 // Si on tourne la molette alors que la souris n'est pas sur le cadre,
 // c'est la page qui bouge, pas la liste : on explique pourquoi.
+// On ne le dit que si le cadre est bien visible à l'écran : sinon, la personne
+// est juste en train de descendre la page pour arriver jusqu'au téléphone.
 // passive: true : on écoute seulement, on n'empêche pas le défilement.
 window.addEventListener(
   "wheel",
   (evenement) => {
     const cadre = scene.querySelector(".defilant");
     if (!cadre || mancheFinie || cadre.contains(evenement.target)) return;
+    if (!estBienVisible(cadre)) return;
 
     afficherMessage(message, "", "attention"); // vide le message, met la couleur
     message.append(...texteAvecGras(mancheEnCours().aide)); // puis le texte, avec le gras

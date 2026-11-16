@@ -71,6 +71,9 @@
 /* ----- Les post-its (à droite) ----- */
 #postIts {
   flex: 1 1 420px;
+  /* min-width: 0 : sur un petit écran, le bloc peut devenir plus étroit
+     que ses 420px de départ au lieu de dépasser de la page */
+  min-width: 0;
   max-width: 640px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));

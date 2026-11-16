@@ -41,14 +41,17 @@
       </div>
     </header>
     <main>
-      <h3>Le jeu de l'alphabet</h3>
+      <div class="instructions">
+        <h3 class="sous-titre">Le jeu de l'alphabet</h3>
+        <div class="trait"></div>
+      </div>
 
       <div class="barre">
-        <button data-niveau="0">Niveau 1 : A à M</button>
-        <button data-niveau="1">Niveau 2 : A à Z</button>
+        <button type="button" data-niveau="0">Niveau 1 : A à M</button>
+        <button type="button" data-niveau="1">Niveau 2 : A à Z</button>
       </div>
       <div class="barre">
-        <button id="bouton-aide">Aide</button>
+        <button type="button" id="bouton-aide">Aide</button>
         <select id="bouton-casse">
           <option value="majuscules">Majuscules</option>
           <option value="minuscules">Minuscules</option>
@@ -57,21 +60,21 @@
 
       <section class="carte" id="jeu">
         <div class="consigne" id="consigne"></div>
-        <p id="message"></p>
-        <h2>Les lettres trouvées</h2>
+        <p id="message" role="status"></p>
+        <h4>Les lettres trouvées</h4>
         <div class="lettres-trouves" id="lettres-trouves"></div>
       </section>
 
       <section class="carte" id="zonePile">
-        <h2>Clique sur la bonne lettre</h2>
+        <h4>Clique sur la bonne lettre</h4>
         <div class="pile" id="pile"></div>
       </section>
 
       <section class="carte bravo" id="fin" hidden>
-        <h2>Bravo !</h2>
+        <h4>Bravo !</h4>
         <p>Tu as remis toutes les lettres dans l'ordre.</p>
-        <button id="bouton-rejouer">Rejouer</button>
-        <button id="bouton-suivant">Niveau suivant</button>
+        <button type="button" id="bouton-rejouer">Rejouer</button>
+        <button type="button" id="bouton-suivant">Niveau suivant</button>
       </section>
     </main>
   </body>

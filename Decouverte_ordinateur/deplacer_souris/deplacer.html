@@ -47,27 +47,40 @@
         <p>Apprends à déplacer la souris. Pas besoin de cliquer !</p>
       </div>
       <div
-        class="levels"
-        id="levels"
+        class="choix-niveaux"
+        id="choix-niveaux"
         role="group"
         aria-label="Choisir un niveau"
       >
         <p>Niveau :</p>
       </div>
 
-      <div id="msg" role="status" aria-live="polite">
-        <p class="txt" id="msgText"></p>
-        <button type="button" class="primary" id="nextBtn" hidden></button>
+      <div class="bandeau" id="bandeau" role="status" aria-live="polite">
+        <p id="bandeau-texte"></p>
+        <button
+          type="button"
+          class="principal"
+          id="bouton-suivant"
+          hidden
+        ></button>
       </div>
 
-      <div class="board">
-        <dialog id="winDialog">
-          <h2 id="winTitle">Bravo ! 🎉</h2>
-          <p>Tu es arrivé à la maison !</p>
-          <button type="button" class="primary" id="winNextBtn" autofocus>
-            Niveau suivant
-          </button>
-        </dialog>
+      <!-- La fenêtre « Bravo », à la fin de chaque niveau :
+           deplacer.js l'ouvre avec showModal(), comme dans la Molette -->
+      <dialog id="fenetre-bravo" aria-labelledby="fenetre-bravo-titre">
+        <h3 id="fenetre-bravo-titre">Bravo ! 🎉</h3>
+        <p>Tu es arrivé à la maison !</p>
+        <button
+          type="button"
+          class="principal"
+          id="fenetre-bravo-bouton"
+          autofocus
+        >
+          Niveau suivant
+        </button>
+      </dialog>
+
+      <div class="decor">
         <svg
           id="scene"
           viewBox="0 0 800 500"
@@ -75,14 +88,14 @@
           aria-label="Un chemin qui va du rond de départ jusqu'à la maison"
         >
           <rect
-            data-role="bg"
+            data-role="fond"
             x="0"
             y="0"
             width="800"
             height="500"
             fill="#7cc576"
           />
-          <g class="deco">
+          <g class="decoration">
             <text x="20" y="70">🌳</text>
             <text x="735" y="480">🌼</text>
             <text x="20" y="490">🌷</text>
@@ -90,24 +103,24 @@
             <text x="380" y="480">🌼</text>
           </g>
           <path
-            id="trackBorder"
-            class="no-hit"
+            id="bord-chemin"
+            class="traverse"
             fill="none"
             stroke="#6b4f2a"
             stroke-linecap="round"
             stroke-linejoin="round"
           />
           <path
-            id="track"
-            data-role="track"
+            id="chemin"
+            data-role="chemin"
             fill="none"
             stroke="#f3dfb0"
             stroke-linecap="round"
             stroke-linejoin="round"
           />
           <path
-            id="dash"
-            class="no-hit"
+            id="pointilles"
+            class="traverse"
             fill="none"
             stroke="#ffffff"
             stroke-opacity=".7"
@@ -117,8 +130,8 @@
             stroke-linejoin="round"
           />
           <polyline
-            id="trail"
-            class="no-hit"
+            id="trace"
+            class="traverse"
             fill="none"
             stroke="#e8590c"
             stroke-width="8"
@@ -127,24 +140,24 @@
             points=""
           />
           <g
-            id="ghosts"
-            class="no-hit"
+            id="fantomes"
+            class="traverse"
             font-size="34"
             text-anchor="middle"
             dominant-baseline="central"
           ></g>
-          <g id="startG">
+          <g id="depart">
             <circle
-              id="startCircle"
-              data-role="start"
+              id="depart-rond"
+              data-role="depart"
               r="44"
               fill="#ffffff"
               stroke="#2f7d4f"
               stroke-width="7"
             />
             <text
-              id="startText"
-              class="no-hit"
+              id="depart-texte"
+              class="traverse"
               text-anchor="middle"
               dominant-baseline="central"
               font-size="19"
@@ -155,10 +168,10 @@
             </text>
           </g>
 
-          <g id="houseG">
-            <g id="houseInner">
+          <g id="maison">
+            <g id="maison-dessin">
               <circle
-                data-role="house"
+                data-role="maison"
                 r="52"
                 fill="#ffffff"
                 fill-opacity=".45"
@@ -166,7 +179,7 @@
                 stroke-width="4"
               />
               <text
-                class="no-hit"
+                class="traverse"
                 text-anchor="middle"
                 dominant-baseline="central"
                 font-size="76"
@@ -178,9 +191,9 @@
         </svg>
       </div>
 
-      <div class="stats">
-        <span id="triesEl">Essais : 0</span>
-        <span id="winsEl">Réussites : 0</span>
+      <div class="compteurs">
+        <span id="essais">Essais : 0</span>
+        <span id="reussites">Réussites : 0</span>
       </div>
 
       <a class="lien-jeu" href="../cliquer/clic.html"

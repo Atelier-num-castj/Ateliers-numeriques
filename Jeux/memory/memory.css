@@ -44,19 +44,30 @@ select:focus-visible {
 }
 
 /* ----- La grille de cartes ----- */
-/* Le nombre de colonnes est changé par memory.js selon le niveau */
+/* --colonnes : le nombre de colonnes. memory.js écrit le niveau dans
+   data-niveau, et c'est ici qu'on choisit le nombre de colonnes.
+   minmax(0, 90px) : une colonne fait 90px, mais elle peut rétrécir
+   si l'écran est trop étroit (au lieu de dépasser de la page). */
 #jeu {
+  --colonnes: 4;
   display: grid;
-  grid-template-columns: repeat(4, 90px);
+  grid-template-columns: repeat(var(--colonnes), minmax(0, 90px));
   justify-content: center;
   gap: 10px;
+  width: 100%;
   margin: 20px 0;
 }
 
-/* Une carte cachée (dos bleu) */
+#jeu[data-niveau="difficile"] {
+  --colonnes: 5;
+}
+
+/* Une carte cachée (dos bleu).
+   aspect-ratio: 1 : la carte reste carrée, même quand elle rétrécit. */
 .carte {
-  width: 90px;
-  height: 90px;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
   font-size: 32px;
   color: var(--blanc);
   background: var(--bleu);
@@ -86,4 +97,24 @@ select:focus-visible {
 .carte.mot.visible {
   font-size: 14px;
   font-weight: bold;
+  overflow-wrap: anywhere; /* un mot trop long passe à la ligne */
+}
+
+/* ----- Petits écrans ----- */
+@media (max-width: 560px) {
+  /* Le jeu prend presque toute la largeur de l'écran */
+  .memory-container {
+    max-width: 100%;
+    padding: 0 0.5rem;
+  }
+
+  /* 4 colonnes à tous les niveaux : 5 cartes de front seraient trop petites */
+  #jeu[data-niveau="difficile"] {
+    --colonnes: 4;
+  }
+
+  /* Les cartes sont plus étroites : les mots sont un peu plus petits */
+  .carte.mot.visible {
+    font-size: 12px;
+  }
 }

@@ -188,7 +188,6 @@ reponse.addEventListener("input", () => {
     reponse.value = "✓ Bravo !";
     reponse.disabled = true;
     reponse.classList.add("valide");
-    reponse.disabled = true;
     score++;
     compteur.textContent = score;
     setTimeout(() => {

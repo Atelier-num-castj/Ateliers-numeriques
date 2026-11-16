@@ -97,18 +97,6 @@ main {
   border-radius: 50%;
 }
 
-/* Le bouton 🔊 pour écouter le mot */
-#ecouter {
-  width: 4rem;
-  height: 4rem;
-  padding: 0;
-  font-size: 2.3rem;
-  background: var(--blanc);
-  border: 2px solid var(--encre);
-  border-radius: 50%;
-  box-shadow: 1px 3px 0 var(--encre);
-}
-
 /* ---------- Activité 2 : remettre dans l'ordre ---------- */
 .activite-box {
   display: flex;
@@ -139,9 +127,68 @@ main {
   animation: secoue 0.3s;
 }
 
+/* Le message sous les cartes (« Bravo ! … ») */
+#message-ordre {
+  min-height: 2rem;
+  margin-top: 1rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-align: center;
+}
+
 /* ---------- Bouton Recommencer, en bas à droite ---------- */
 #recommencer {
   position: absolute;
   right: 30px;
   bottom: 30px;
+}
+
+/* ---------- Petits écrans ----------
+   Les onglets et le bouton « Recommencer » reviennent dans la page
+   (ils ne sont plus posés par-dessus), et les deux colonnes de
+   l'activité 2 se partagent la largeur de l'écran. */
+@media (max-width: 700px) {
+  main {
+    padding: 1rem 0.5rem 2rem;
+  }
+
+  .onglets {
+    position: static;
+    flex-wrap: wrap;
+    margin: 0;
+  }
+
+  #recommencer {
+    position: static;
+  }
+
+  .consigne,
+  .consigne span {
+    font-size: 1.8rem;
+  }
+
+  #activite-2 {
+    width: 100%;
+  }
+
+  .activite-box {
+    gap: 0.6rem;
+  }
+
+  /* Chaque colonne prend la moitié de la largeur */
+  .tas,
+  .emplacements {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .emplacement,
+  .activite-box .carte {
+    gap: 0.4rem;
+    width: 100%;
+    min-width: 0;
+    margin: 0.9rem 0;
+    padding: 1.3rem 0.3rem;
+    font-size: 0.9rem;
+  }
 }

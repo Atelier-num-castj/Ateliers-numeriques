@@ -37,16 +37,6 @@ export function sansAccents(texte) {
 }
 
 /**
- * Lit un texte à voix haute en français avec la voix du navigateur.
- */
-export function parler(texte) {
-  const voix = new SpeechSynthesisUtterance(texte);
-  voix.lang = "fr-FR";
-  speechSynthesis.cancel(); // arrête une lecture déjà en cours
-  speechSynthesis.speak(voix);
-}
-
-/**
  * Typographie française : met une espace insécable avant : ; ! ? »
  * et après «, pour qu'ils ne se retrouvent jamais seuls en début
  * ou en fin de ligne.

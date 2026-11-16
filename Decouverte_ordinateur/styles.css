@@ -5,7 +5,10 @@
    Chargée APRÈS ../../styles.css et AVANT le CSS de l'exercice.
    Elle contient ce que partagent les activités à niveaux
    (Cliquer, Molette) : onglets, carte d'explication, souris,
-   plateau, écran entre deux manches, message.
+   plateau, écran entre deux manches, message (sections 1 à 7).
+   Et aussi : le faux WhatsApp du copier/coller et de la molette
+   (section 8), le décor « ciel et collines » (section 9),
+   les animations des cibles (section 10).
    Chaque exercice définit lui-même sa variable --couleur.
    ========================================================= */
 
@@ -163,7 +166,7 @@
   border-radius: var(--arrondi);
 }
 
-/* Le pictogramme devant chaque exemple (créé par clic.js) */
+/* Le pictogramme devant chaque exemple (créé par clic.js et molette.js) */
 .usages .picto {
   font-size: 1.6rem;
   line-height: 1;
@@ -291,6 +294,9 @@
   --wa-texte: #111b21;
   --wa-texte-leger: #667781;
   --wa-coches: #53bdeb;
+  --wa-gris: #f0f2f5; /* fond des lettres A, B, C… du répertoire */
+  --wa-ligne: #eef0f2; /* trait entre deux contacts */
+  --wa-survol: #f5f6f6; /* contact survolé par la souris */
 }
 
 /* La pastille avec l'initiale du contact */
@@ -375,4 +381,22 @@
       0 0 / 420px 160px repeat-x,
     /* 3. Le ciel : du bleu en haut vers presque blanc */
     linear-gradient(#cfe8fa, #eef7fd 70%);
+}
+
+/* ---------- 10. Les animations des cibles ----------
+   Partagées par Cliquer (cliquer/clic.css) et « Cliquer sur l'alphabet »
+   (AlphaNum/exercices/cibles/cibles.css) : la cible arrive en grossissant,
+   et repart en grossissant encore quand on l'a touchée. */
+@keyframes apparition {
+  from {
+    scale: 0.6;
+    opacity: 0;
+  }
+}
+
+@keyframes disparition {
+  to {
+    scale: 1.3;
+    opacity: 0;
+  }
 }

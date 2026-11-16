@@ -1,14 +1,14 @@
 import { afficherMessage } from "../../outils.js";
 
 // ---------- Les données ----------
-const postIts = [
+const POST_ITS = [
   { id: "fruits", titre: "Fruits", emoji: "🍎", couleur: "#fff8b8" },
   { id: "alimentaire", titre: "Alimentaire", emoji: "🥫", couleur: "#ffd9e0" },
   { id: "boissons", titre: "Boissons", emoji: "🥤", couleur: "#d6ecff" },
   { id: "nettoyage", titre: "Nettoyage", emoji: "🧴", couleur: "#d9f5d3" },
 ];
 
-const articles = [
+const ARTICLES = [
   { texte: "🧼 savon", postIt: "nettoyage" },
   { texte: "🍎 pomme", postIt: "fruits" },
   { texte: "🍞 pain", postIt: "alimentaire" },
@@ -25,14 +25,14 @@ const articles = [
 
 // ---------- Les éléments de la page ----------
 const zoneArticles = document.getElementById("articles");
-const zonepostIts = document.getElementById("postIts");
+const zonePostIts = document.getElementById("postIts");
 const message = document.getElementById("message");
 const jauge = document.getElementById("jauge");
 const remplissage = document.getElementById("jauge-remplissage");
 const scoreTexte = document.getElementById("score");
 
 // ---------- La liste de gauche ----------
-articles.forEach((article) => {
+ARTICLES.forEach((article) => {
   const champ = document.createElement("input");
   champ.className = "article";
   champ.value = article.texte;
@@ -48,8 +48,8 @@ articles.forEach((article) => {
   zoneArticles.append(champ);
 });
 
-// ---------- Les postIts de droite ----------
-postIts.forEach((postIt) => {
+// ---------- Les post-its de droite ----------
+POST_ITS.forEach((postIt) => {
   const carte = document.createElement("div");
   carte.className = "postIt";
   carte.style.setProperty("--papier", postIt.couleur);
@@ -69,20 +69,20 @@ postIts.forEach((postIt) => {
   zone.placeholder = "Colle ici…";
   zone.spellcheck = false;
 
-  zone.addEventListener("paste", (event) =>
-    verifierCollage(event, postIt, zone),
+  zone.addEventListener("paste", (evenement) =>
+    verifierCollage(evenement, postIt, zone),
   );
   zone.addEventListener("input", mettreAJour);
 
   entete.append(titre, compteur);
   carte.append(entete, zone);
-  zonepostIts.append(carte);
+  zonePostIts.append(carte);
 });
 
 // ---------- La vérification ----------
-function verifierCollage(event, postIt, zone) {
-  const texte = event.clipboardData.getData("text").trim();
-  const article = articles.find((a) => a.texte === texte);
+function verifierCollage(evenement, postIt, zone) {
+  const texte = evenement.clipboardData.getData("text").trim();
+  const article = ARTICLES.find((a) => a.texte === texte);
 
   if (!article) {
     afficherMessage(message, 
@@ -122,7 +122,7 @@ function verifierCollage(event, postIt, zone) {
 
 // ---------- Ce qui est bien rangé ----------
 function articlesBienRanges() {
-  return articles.filter((article) => {
+  return ARTICLES.filter((article) => {
     const zone = document.getElementById(article.postIt);
     const lignes = zone.value.split("\n").map((ligne) => ligne.trim());
     return lignes.includes(article.texte);
@@ -130,8 +130,8 @@ function articlesBienRanges() {
 }
 
 function mettreAJourCompteurs(bienRanges) {
-  postIts.forEach((postIt) => {
-    const attendus = articles.filter((a) => a.postIt === postIt.id);
+  POST_ITS.forEach((postIt) => {
+    const attendus = ARTICLES.filter((a) => a.postIt === postIt.id);
     const nombre = bienRanges.filter((a) => a.postIt === postIt.id).length;
     const complet = attendus.length > 0 && nombre === attendus.length;
 
@@ -141,7 +141,7 @@ function mettreAJourCompteurs(bienRanges) {
 }
 
 function mettreAJourJauge(bienRanges) {
-  const part = 100 / articles.length;
+  const part = 100 / ARTICLES.length;
   let total = 0;
 
   bienRanges.forEach((article) => {
@@ -154,7 +154,7 @@ function mettreAJourJauge(bienRanges) {
   scoreTexte.textContent = pourcentage + " %";
   jauge.setAttribute("aria-valuenow", pourcentage);
 
-  if (bienRanges.length === articles.length) {
+  if (bienRanges.length === ARTICLES.length) {
     if (pourcentage === 100) {
       afficherMessage(message, 
         "🎉 Parfait : 100 % ! Tout est rangé, et tout a été coupé.",
@@ -205,7 +205,7 @@ function texteSelectionne(element) {
 function estVisible(article) {
   if (article.champ.value.trim() === article.texte) return true;
 
-  return postIts.some((postIt) =>
+  return POST_ITS.some((postIt) =>
     document.getElementById(postIt.id).value.includes(article.texte),
   );
 }
@@ -213,7 +213,7 @@ function estVisible(article) {
 // Remet dans la liste chaque article perdu,
 // sauf celui qui vient d'entrer dans le presse-papiers
 function remettreArticlesPerdus(texteDansLePressePapiers) {
-  articles.forEach((article) => {
+  ARTICLES.forEach((article) => {
     if (article.texte === texteDansLePressePapiers) return; // pas perdu : il attend d'être collé
     if (estVisible(article)) return;
 

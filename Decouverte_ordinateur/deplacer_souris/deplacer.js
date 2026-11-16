@@ -1,192 +1,232 @@
-// Pas de menu du clic droit dans ce jeu : on ne fait que déplacer la souris
-document.addEventListener("contextmenu", (evenement) => {
-  evenement.preventDefault();
-});
+import { afficherMessage } from "../../outils.js";
 
-// --- Données --------------------------------------------------------------
-const LEVELS = Object.freeze([
+// =========================================================
+// deplacer.js — « Le chemin vers la maison »
+// On suit un chemin avec la souris, sans cliquer.
+// =========================================================
+
+// ---------- 1. Les niveaux ----------
+// Un niveau = un chemin, de plus en plus étroit et tordu.
+//   largeur : la largeur du chemin (dans les unités du dessin : 800 × 500)
+//   trace   : le dessin du chemin, écrit comme un <path> SVG
+//   depart  : la position [x, y] du rond « DÉPART »
+//   arrivee : la position [x, y] de la maison
+const NIVEAUX = [
   // Niveau 1
   {
-    width: 96,
-    path: "M110 250 L690 250",
-    start: [110, 250],
-    end: [690, 250],
+    largeur: 96,
+    trace: "M110 250 L690 250",
+    depart: [110, 250],
+    arrivee: [690, 250],
   },
   // Niveau 2
   {
-    width: 78,
-    path: "M110 380 C260 380 240 130 400 130 S540 370 690 370",
-    start: [110, 380],
-    end: [690, 370],
+    largeur: 78,
+    trace: "M110 380 C260 380 240 130 400 130 S540 370 690 370",
+    depart: [110, 380],
+    arrivee: [690, 370],
   },
   // Niveau 3
   {
-    width: 60,
-    path: "M110 100 L300 100 L300 400 L500 400 L500 150 L690 150",
-    start: [110, 100],
-    end: [690, 150],
+    largeur: 60,
+    trace: "M110 100 L300 100 L300 400 L500 400 L500 150 L690 150",
+    depart: [110, 100],
+    arrivee: [690, 150],
   },
   // Niveau 4
   {
-    width: 46,
-    path: "M100 100 C400 100 400 250 200 250 C0 250 0 400 250 400 L690 400",
-    start: [100, 100],
-    end: [690, 400],
+    largeur: 46,
+    trace: "M100 100 C400 100 400 250 200 250 C0 250 0 400 250 400 L690 400",
+    depart: [100, 100],
+    arrivee: [690, 400],
   },
   // Niveau 5
   {
-    width: 42,
-    path: "M100 420 L100 330 L240 330 L240 240 L380 240 L380 150 L520 150 L520 80 L690 80",
-    start: [100, 420],
-    end: [690, 80],
+    largeur: 42,
+    trace:
+      "M100 420 L100 330 L240 330 L240 240 L380 240 L380 150 L520 150 L520 80 L690 80",
+    depart: [100, 420],
+    arrivee: [690, 80],
   },
   // Niveau 6
   {
-    width: 40,
-    path: "M100 90 L700 90 C760 90 760 190 700 190 L100 190 C40 190 40 290 100 290 L700 290 C760 290 760 390 700 390 L140 390",
-    start: [100, 90],
-    end: [140, 390],
+    largeur: 40,
+    trace:
+      "M100 90 L700 90 C760 90 760 190 700 190 L100 190 C40 190 40 290 100 290 L700 290 C760 290 760 390 700 390 L140 390",
+    depart: [100, 90],
+    arrivee: [140, 390],
   },
   // Niveau 7
   {
-    width: 30,
-    path: "M100 420 L250 100 L400 420 L550 100 L690 420",
-    start: [100, 420],
-    end: [690, 420],
+    largeur: 30,
+    trace: "M100 420 L250 100 L400 420 L550 100 L690 420",
+    depart: [100, 420],
+    arrivee: [690, 420],
   },
   // Niveau 8
   {
-    width: 30,
-    path: "M90 100 L90 400 A40 40 0 0 0 170 400 L170 100 A40 40 0 0 1 250 100 L250 400 A40 40 0 0 0 330 400 L330 100 A40 40 0 0 1 410 100 L410 400 A40 40 0 0 0 490 400 L490 100 A40 40 0 0 1 570 100 L570 400 A40 40 0 0 0 650 400 L650 100 A40 40 0 0 1 730 100 L730 380",
-    start: [90, 100],
-    end: [730, 380],
+    largeur: 30,
+    trace:
+      "M90 100 L90 400 A40 40 0 0 0 170 400 L170 100 A40 40 0 0 1 250 100 L250 400 A40 40 0 0 0 330 400 L330 100 A40 40 0 0 1 410 100 L410 400 A40 40 0 0 0 490 400 L490 100 A40 40 0 0 1 570 100 L570 400 A40 40 0 0 0 650 400 L650 100 A40 40 0 0 1 730 100 L730 380",
+    depart: [90, 100],
+    arrivee: [730, 380],
   },
-]);
+];
 
-const MESSAGES = Object.freeze({
-  intro:
+const MESSAGES = {
+  debut:
     "Mets la souris sur le rond « DÉPART », puis suis le chemin jusqu'à la maison.",
-  go: "C'est parti ! Reste sur le chemin et va jusqu'à la maison.",
-  offTrack:
+  enRoute: "C'est parti ! Reste sur le chemin et va jusqu'à la maison.",
+  horsChemin:
     "Oups ! Tu es sorti du chemin. Reviens sur le rond « DÉPART » et recommence.",
-  leftGame:
+  horsJeu:
     "Oups ! La souris est sortie du jeu. Reviens sur le rond « DÉPART ».",
-  win: "Bravo ! 🎉 Tu es arrivé à la maison ! 🏠",
-});
-
-// --- Éléments -------------------------------------------------------------
-const $ = (selector) => document.querySelector(selector);
-
-const svg = $("#scene");
-const roadPaths = [$("#trackBorder"), $("#track"), $("#dash")];
-const trailLine = $("#trail");
-const ghosts = $("#ghosts");
-const startG = $("#startG");
-const startCircle = $("#startCircle");
-const startText = $("#startText");
-const houseG = $("#houseG");
-const houseInner = $("#houseInner");
-const msg = $("#msg");
-const msgText = $("#msgText");
-const nextBtn = $("#nextBtn");
-const levelsBox = $("#levels");
-const triesEl = $("#triesEl");
-const winsEl = $("#winsEl");
-const winDialog = $("#winDialog");
-const winNextBtn = $("#winNextBtn");
-
-const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)");
-
-// --- État -----------------------------------------------------------------
-// phase : "idle" (attend le départ) | "active" (en chemin) | "won" (arrivé)
-const game = { level: 0, phase: "idle", tries: 0, wins: 0, trail: [] };
-
-// --- Utilitaires ----------------------------------------------------------
-const animate = (element, keyframes, duration) => {
-  if (reduceMotion.matches) return;
-  element.animate(keyframes, { duration, easing: "ease-out" });
+  gagne: "Bravo ! 🎉 Tu es arrivé à la maison ! 🏠",
 };
 
-const toSvgPoint = (clientX, clientY) =>
-  new DOMPoint(clientX, clientY).matrixTransform(svg.getScreenCTM().inverse());
+// Temps entre l'arrivée à la maison et l'ouverture de la fenêtre « Bravo »,
+// en millisecondes
+const PAUSE_AVANT_BRAVO = 600;
 
-const say = (text, kind = "") => {
-  msgText.textContent = text;
-  msg.className = kind;
-  nextBtn.hidden = true;
-};
+// Le trait orange garde seulement les derniers points du trajet
+const LONGUEUR_DE_LA_TRACE = 400;
 
-const resetTrail = () => {
-  game.trail = [];
-  trailLine.setAttribute("points", "");
-};
+// ---------- 2. Les éléments de la page ----------
+const dessin = document.getElementById("scene");
+// Les 3 traits du chemin : le bord marron, le sable, les pointillés
+const bordChemin = document.getElementById("bord-chemin");
+const chemin = document.getElementById("chemin");
+const pointilles = document.getElementById("pointilles");
+const trace = document.getElementById("trace");
+const fantomes = document.getElementById("fantomes");
+const depart = document.getElementById("depart");
+const departRond = document.getElementById("depart-rond");
+const departTexte = document.getElementById("depart-texte");
+const maison = document.getElementById("maison");
+const maisonDessin = document.getElementById("maison-dessin");
+const bandeau = document.getElementById("bandeau");
+const bandeauTexte = document.getElementById("bandeau-texte");
+const boutonSuivant = document.getElementById("bouton-suivant");
+const choixNiveaux = document.getElementById("choix-niveaux");
+const texteEssais = document.getElementById("essais");
+const texteReussites = document.getElementById("reussites");
+const fenetreBravo = document.getElementById("fenetre-bravo");
+const fenetreBravoBouton = document.getElementById("fenetre-bravo-bouton");
 
-const resetStart = () => {
-  startCircle.setAttribute("fill", "#ffffff");
-  startText.textContent = "DÉPART";
-};
+// La personne a-t-elle demandé moins d'animations dans son système ?
+const moinsAnimations = matchMedia("(prefers-reduced-motion: reduce)");
 
-// --- Actions --------------------------------------------------------------
-const loadLevel = (index) => {
+// ---------- 3. L'état du jeu ----------
+let numeroNiveau = 0; // position du niveau en cours dans NIVEAUX
+// etape : "attente" (attend le départ) | "enRoute" (sur le chemin) | "gagne" (arrivé)
+let etape = "attente";
+let essais = 0;
+let reussites = 0;
+let pointsTrace = []; // les points du trait orange : ["110,250", "112,250"…]
+let bravoEnAttente = null; // minuteur avant l'ouverture de la fenêtre « Bravo »
+
+// ---------- 4. Les outils ----------
+
+// Joue une petite animation, sauf si la personne en veut moins
+function animer(element, images, duree) {
+  if (moinsAnimations.matches) return;
+  element.animate(images, { duration: duree, easing: "ease-out" });
+}
+
+// Transforme une position de la souris à l'écran en position dans le dessin
+function versLeDessin(clientX, clientY) {
+  return new DOMPoint(clientX, clientY).matrixTransform(
+    dessin.getScreenCTM().inverse(),
+  );
+}
+
+// Affiche un message dans le bandeau.
+// type : "succes" (fond vert), "erreur" (texte rouge), ou rien.
+function dire(texte, type = "") {
+  afficherMessage(bandeauTexte, texte, type === "erreur" ? "erreur" : "");
+  bandeau.classList.toggle("reussi", type === "succes");
+  boutonSuivant.hidden = true;
+}
+
+function effacerTrace() {
+  pointsTrace = [];
+  trace.setAttribute("points", "");
+}
+
+function remettreDepart() {
+  departRond.setAttribute("fill", "#ffffff");
+  departTexte.textContent = "DÉPART";
+}
+
+// ---------- 5. Le jeu ----------
+function chargerNiveau(index) {
   const {
-    width,
-    path,
-    start: [sx, sy],
-    end: [ex, ey],
-  } = LEVELS[index];
+    largeur,
+    trace: forme,
+    depart: [departX, departY],
+    arrivee: [arriveeX, arriveeY],
+  } = NIVEAUX[index];
 
-  winDialog.close();
+  clearTimeout(bravoEnAttente); // la fenêtre « Bravo » ne doit plus s'ouvrir
+  fenetreBravo.close();
 
-  game.level = index;
-  game.phase = "idle";
-  resetTrail();
-  ghosts.replaceChildren();
-  resetStart();
+  numeroNiveau = index;
+  etape = "attente";
+  effacerTrace();
+  fantomes.replaceChildren();
+  remettreDepart();
 
-  roadPaths.forEach((p) => p.setAttribute("d", path));
-  roadPaths[0].setAttribute("stroke-width", width + 12);
-  roadPaths[1].setAttribute("stroke-width", width);
-  startG.setAttribute("transform", `translate(${sx} ${sy})`);
-  houseG.setAttribute("transform", `translate(${ex} ${ey})`);
+  // Les 3 traits ont la même forme ; le bord est un peu plus large que le sable
+  [bordChemin, chemin, pointilles].forEach((trait) =>
+    trait.setAttribute("d", forme),
+  );
+  bordChemin.setAttribute("stroke-width", largeur + 12);
+  chemin.setAttribute("stroke-width", largeur);
+  depart.setAttribute("transform", `translate(${departX} ${departY})`);
+  maison.setAttribute("transform", `translate(${arriveeX} ${arriveeY})`);
 
-  levelsBox
+  choixNiveaux
     .querySelectorAll("button")
-    .forEach((button, i) =>
-      button.setAttribute("aria-current", String(i === index)),
+    .forEach((bouton, numero) =>
+      bouton.setAttribute("aria-current", String(numero === index)),
     );
 
-  say(MESSAGES.intro);
-};
+  dire(MESSAGES.debut);
+}
 
-const startRun = () => {
-  game.phase = "active";
-  game.tries += 1;
-  triesEl.textContent = `Essais : ${game.tries}`;
-  startCircle.setAttribute("fill", "#9be3b3");
-  startText.textContent = "GO !";
-  say(MESSAGES.go);
-};
+// La souris arrive sur le rond « DÉPART »
+function partir() {
+  etape = "enRoute";
+  essais++;
+  texteEssais.textContent = `Essais : ${essais}`;
+  departRond.setAttribute("fill", "#9be3b3");
+  departTexte.textContent = "GO !";
+  dire(MESSAGES.enRoute);
+}
 
-const failRun = (text = MESSAGES.offTrack) => {
-  if (game.phase !== "active") return;
-  game.phase = "idle";
-  const last = game.trail.at(-1);
-  if (last) {
-    const [x, y] = last.split(",");
-    const ghost = document.createElementNS(
+// La souris est sortie du chemin (ou du jeu) : un fantôme reste à cet endroit
+function echouer(texte = MESSAGES.horsChemin) {
+  if (etape !== "enRoute") return;
+  etape = "attente";
+
+  const dernierPoint = pointsTrace.at(-1);
+  if (dernierPoint) {
+    const [x, y] = dernierPoint.split(",");
+    const fantome = document.createElementNS(
       "http://www.w3.org/2000/svg",
       "text",
     );
-    ghost.textContent = "👻";
-    ghost.setAttribute("x", x);
-    ghost.setAttribute("y", y);
-    ghosts.append(ghost);
+    fantome.textContent = "👻";
+    fantome.setAttribute("x", x);
+    fantome.setAttribute("y", y);
+    fantomes.append(fantome);
   }
-  resetTrail();
-  resetStart();
-  say(text, "bad");
-  animate(
-    msg,
+
+  effacerTrace();
+  remettreDepart();
+  dire(texte, "erreur");
+  animer(
+    bandeau,
     [
       { transform: "translateX(0)" },
       { transform: "translateX(-6px)" },
@@ -195,25 +235,30 @@ const failRun = (text = MESSAGES.offTrack) => {
     ],
     300,
   );
-};
+}
 
-const winRun = () => {
-  game.phase = "won";
-  game.wins += 1;
-  winsEl.textContent = `Réussites : ${game.wins}`;
-  resetStart();
-  say(MESSAGES.win, "ok");
+// La souris est arrivée à la maison
+function gagner() {
+  etape = "gagne";
+  reussites++;
+  texteReussites.textContent = `Réussites : ${reussites}`;
+  remettreDepart();
+  dire(MESSAGES.gagne, "succes");
 
-  const isLast = game.level === LEVELS.length - 1;
-  nextBtn.textContent = isLast ? "Recommencer le niveau 1" : "Niveau suivant";
-  nextBtn.hidden = false;
-  winNextBtn.textContent = nextBtn.textContent;
-  setTimeout(() => {
-    if (game.phase === "won") winDialog.show();
-  }, 600);
+  const dernierNiveau = numeroNiveau === NIVEAUX.length - 1;
+  boutonSuivant.textContent = dernierNiveau
+    ? "Recommencer le niveau 1"
+    : "Niveau suivant";
+  boutonSuivant.hidden = false;
+  fenetreBravoBouton.textContent = boutonSuivant.textContent;
 
-  animate(
-    houseInner,
+  // showModal() : la fenêtre s'ouvre au milieu de l'écran, le fond s'assombrit
+  bravoEnAttente = setTimeout(() => {
+    if (etape === "gagne") fenetreBravo.showModal();
+  }, PAUSE_AVANT_BRAVO);
+
+  animer(
+    maisonDessin,
     [
       { transform: "scale(.85)" },
       { transform: "scale(1.2)" },
@@ -221,62 +266,80 @@ const winRun = () => {
     ],
     500,
   );
-};
+}
 
-const followTrail = (clientX, clientY) => {
-  const { x, y } = toSvgPoint(clientX, clientY);
-  game.trail = [...game.trail, `${Math.round(x)},${Math.round(y)}`].slice(-400);
-  trailLine.setAttribute("points", game.trail.join(" "));
-};
+// Ajoute un point au trait orange qui suit la souris
+function prolongerTrace(clientX, clientY) {
+  const { x, y } = versLeDessin(clientX, clientY);
+  pointsTrace = [...pointsTrace, `${Math.round(x)},${Math.round(y)}`].slice(
+    -LONGUEUR_DE_LA_TRACE,
+  );
+  trace.setAttribute("points", pointsTrace.join(" "));
+}
 
-// --- Événements -----------------------------------------------------------
-const onPointer = ({ clientX, clientY }) => {
-  if (game.phase === "won") return;
+function niveauSuivant() {
+  const dernierNiveau = numeroNiveau === NIVEAUX.length - 1;
+  chargerNiveau(dernierNiveau ? 0 : numeroNiveau + 1);
+}
 
+// ---------- 6. La souris ----------
+
+// À chaque mouvement, on regarde ce qu'il y a sous la souris :
+// data-role dit si c'est le départ, le chemin, la maison ou le fond.
+function suivreLaSouris(evenement) {
+  if (etape === "gagne") return;
+
+  const { clientX, clientY } = evenement;
   const role = document.elementFromPoint(clientX, clientY)?.dataset.role;
 
-  if (game.phase === "idle") {
-    if (role === "start") startRun();
+  if (etape === "attente") {
+    if (role === "depart") partir();
     return;
   }
 
   switch (role) {
-    case "house":
-      winRun();
+    case "maison":
+      gagner();
       break;
-    case "start":
-    case "track":
-      followTrail(clientX, clientY);
+    case "depart":
+    case "chemin":
+      prolongerTrace(clientX, clientY);
       break;
     default:
-      failRun();
+      echouer();
   }
-};
+}
 
-svg.addEventListener("pointermove", onPointer);
-svg.addEventListener("pointerdown", onPointer);
-svg.addEventListener("pointerleave", () => failRun(MESSAGES.leftGame));
+dessin.addEventListener("pointermove", suivreLaSouris);
+dessin.addEventListener("pointerdown", suivreLaSouris);
+dessin.addEventListener("pointerleave", () => echouer(MESSAGES.horsJeu));
 
-nextBtn.addEventListener("click", () => {
-  const isLast = game.level === LEVELS.length - 1;
-  loadLevel(isLast ? 0 : game.level + 1);
+// Pas de menu du clic droit dans ce jeu : on ne fait que déplacer la souris
+document.addEventListener("contextmenu", (evenement) => {
+  evenement.preventDefault();
 });
 
-winNextBtn.addEventListener("click", () => {
-  winDialog.close();
-  nextBtn.click();
+// ---------- 7. Les boutons ----------
+boutonSuivant.addEventListener("click", niveauSuivant);
+fenetreBravoBouton.addEventListener("click", niveauSuivant);
+
+// La touche Échap ferme normalement une fenêtre <dialog>.
+// Ici on l'empêche : c'est le bouton qui lance la suite.
+fenetreBravo.addEventListener("cancel", (evenement) => {
+  evenement.preventDefault();
 });
 
-levelsBox.append(
-  ...LEVELS.map((_, i) => {
-    const button = Object.assign(document.createElement("button"), {
-      type: "button",
-      textContent: String(i + 1),
-    });
-    button.setAttribute("aria-label", `Niveau ${i + 1}`);
-    button.addEventListener("click", () => loadLevel(i));
-    return button;
+// Un bouton par niveau : 1, 2, 3…
+choixNiveaux.append(
+  ...NIVEAUX.map((_, index) => {
+    const bouton = document.createElement("button");
+    bouton.type = "button";
+    bouton.textContent = index + 1;
+    bouton.setAttribute("aria-label", `Niveau ${index + 1}`);
+    bouton.addEventListener("click", () => chargerNiveau(index));
+    return bouton;
   }),
 );
 
-loadLevel(0);
+// ---------- 8. Démarrage ----------
+chargerNiveau(0);

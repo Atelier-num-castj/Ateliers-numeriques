@@ -101,7 +101,7 @@
 }
 
 /* Manche réussie : le guide passe au vert */
-.guide.bravo {
+.guide.reussi {
   background: var(--vert);
 }
 
@@ -344,7 +344,7 @@
   padding: 0.2rem 1rem;
   font-weight: bold;
   color: var(--wa-vert);
-  background: #f0f2f5;
+  background: var(--wa-gris);
 }
 
 .contact {
@@ -358,12 +358,12 @@
   color: inherit;
   background: none;
   border: none;
-  border-bottom: 1px solid #eef0f2;
+  border-bottom: 1px solid var(--wa-ligne);
   cursor: pointer;
 }
 
 .contact:hover {
-  background: #f5f6f6;
+  background: var(--wa-survol);
 }
 
 .contact:focus-visible,

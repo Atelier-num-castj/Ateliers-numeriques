@@ -232,8 +232,8 @@ boutonValider.addEventListener("click", () => {
   }
 });
 
-zoneSaisie.addEventListener("paste", (event) => {
-  event.preventDefault();
+zoneSaisie.addEventListener("paste", (evenement) => {
+  evenement.preventDefault();
   afficherMessage(message, "Colle dans la fiche, pas dans la conversation.", "erreur");
 });
 

@@ -1,9 +1,13 @@
 import { melanger } from "../../outils.js";
 
-// ===== 1. TES PAIRES : ajoute, enlève ou change les lignes =====
+// =========================================================
+// memory.js — jeu de Memory
+// =========================================================
+
+// ---------- 1. Les paires : ajoute, enlève ou change les lignes ----------
 // "image" peut être un emoji OU le nom d'un fichier (ex: "chat.png").
 // Il faut au moins autant de paires que le plus grand niveau (ici 10).
-const themes = {
+const THEMES = {
   animaux: [
     { image: "🐱", mot: "Chat" },
     { image: "🐶", mot: "Chien" },
@@ -160,107 +164,101 @@ const themes = {
   ],
 };
 
-// ===== 2. TES NIVEAUX : le nombre est le nombre de paires =====
-// Astuce : garde un nombre de paires qui fait une grille régulière
-// (avec 4 colonnes, n'importe quel nombre de paires pair ou impair marche
-// si 2 x paires est divisible par 4, ex: 6, 8, 10).
-const niveaux = {
+// ---------- 2. Les niveaux : le nombre de paires ----------
+// Le nombre de colonnes de la grille est réglé dans memory.css,
+// grâce à l'attribut data-niveau posé sur la grille.
+const NIVEAUX = {
   facile: 6,
   moyen: 8,
   difficile: 10,
 };
 
-// ===== 3. VARIABLES DU JEU =====
+// Temps pendant lequel deux cartes différentes restent visibles,
+// en millisecondes
+const PAUSE_MAUVAISE_PAIRE = 1000;
 
+// ---------- 3. Les éléments de la page ----------
+const choixTheme = document.getElementById("theme");
+const choixMode = document.getElementById("mode");
+const choixNiveau = document.getElementById("niveau");
+const info = document.getElementById("info");
+const jeu = document.getElementById("jeu");
+const boutonRecommencer = document.getElementById("recommencer");
+
+// ---------- 4. L'état du jeu ----------
 let themeActuel = "animaux"; // le thème de la partie en cours
 let modeActuel = "images"; // "images" ou "mots"
 let niveauActuel = "facile"; // "facile", "moyen" ou "difficile"
-let nbPaires = 6; // nombre de paires de la partie en cours
+let nombrePaires = 6; // nombre de paires de la partie en cours
 let premiere = null; // la première carte retournée (null = aucune)
 let bloque = false; // true pendant que 2 cartes différentes sont visibles
 let coups = 0; // nombre de coups joués
 let trouvees = 0; // nombre de paires trouvées
+let retourEnAttente = null; // minuteur avant de recacher une mauvaise paire
 
-// ===== 4. AFFICHER LE CONTENU D'UNE CARTE =====
+// ---------- 5. L'affichage d'une carte ----------
 // Si le contenu contient un point (ex: "chat.png"), on affiche une vraie image.
 // Sinon on affiche du texte (emoji ou mot).
 function afficher(bouton, contenu) {
-  if (contenu.indexOf(".") > -1) {
-    bouton.innerHTML = '<img src="' + contenu + '" width="60">';
+  if (contenu.includes(".")) {
+    const image = document.createElement("img");
+    image.src = contenu;
+    image.width = 60;
+    image.alt = "";
+    bouton.replaceChildren(image);
   } else {
     bouton.textContent = contenu;
   }
 }
 
-// ===== 5. LANCER UNE PARTIE =====
-document.getElementById("theme").addEventListener("change", function () {
-  themeActuel = this.value;
-  lancer();
-});
-
-document.getElementById("mode").addEventListener("change", function () {
-  modeActuel = this.value;
-  lancer();
-});
-
-document.getElementById("niveau").addEventListener("change", function () {
-  niveauActuel = this.value;
-  lancer();
-});
-
+// ---------- 6. Lancer une partie ----------
 function lancer() {
+  // Rien ne doit rester « en attente » de la partie précédente
+  clearTimeout(retourEnAttente);
+
   premiere = null;
   bloque = false;
   coups = 0;
   trouvees = 0;
-  nbPaires = niveaux[niveauActuel];
-  document.getElementById("info").textContent = "Coups : 0";
+  nombrePaires = NIVEAUX[niveauActuel];
+  info.textContent = "Coups : 0";
 
-  // On mélange les paires et on garde seulement le nombre voulu
-  // melanger() renvoie une copie : la liste du thème reste intacte
-  const choisies = melanger(themes[themeActuel]).slice(0, nbPaires);
+  // On mélange les paires et on garde seulement le nombre voulu.
+  // melanger() renvoie une copie : la liste du thème reste intacte.
+  const choisies = melanger(THEMES[themeActuel]).slice(0, nombrePaires);
 
-  // On fabrique la liste des cartes : 2 cartes par paire
+  // On fabrique la liste des cartes : 2 cartes par paire.
+  // En mode « mots », la 2e carte montre le mot au lieu de l'image.
   const paquet = [];
-  for (let i = 0; i < choisies.length; i++) {
-    paquet.push({ id: i, contenu: choisies[i].image, estMot: false });
+  choisies.forEach((paire, id) => {
+    paquet.push({ id, contenu: paire.image, estMot: false });
 
     if (modeActuel === "images") {
-      paquet.push({ id: i, contenu: choisies[i].image, estMot: false });
+      paquet.push({ id, contenu: paire.image, estMot: false });
     } else {
-      paquet.push({ id: i, contenu: choisies[i].mot, estMot: true });
+      paquet.push({ id, contenu: paire.mot, estMot: true });
     }
-  }
-  const cartes = melanger(paquet);
-
-  // On dessine les cartes dans la page
-  const jeu = document.getElementById("jeu");
-  if (niveauActuel === "difficile") {
-    jeu.style.gridTemplateColumns = "repeat(5, 90px)";
-  } else {
-    jeu.style.gridTemplateColumns = "repeat(4, 90px)";
-  }
-  jeu.innerHTML = "";
-  cartes.forEach(function (carte) {
-    const bouton = document.createElement("button");
-    bouton.className = "carte";
-    if (carte.estMot) {
-      bouton.className = "carte mot";
-    }
-    bouton.textContent = "?";
-    bouton.onclick = function () {
-      cliquer(bouton, carte);
-    };
-    jeu.appendChild(bouton);
   });
+
+  // On dessine les cartes dans la page.
+  // data-niveau donne le nombre de colonnes (voir memory.css).
+  jeu.dataset.niveau = niveauActuel;
+  const cartes = melanger(paquet).map((carte) => {
+    const bouton = document.createElement("button");
+    bouton.type = "button";
+    bouton.className = "carte";
+    bouton.classList.toggle("mot", carte.estMot);
+    bouton.textContent = "?";
+    bouton.addEventListener("click", () => cliquer(bouton, carte));
+    return bouton;
+  });
+  jeu.replaceChildren(...cartes);
 }
 
-// ===== 6. QUAND ON CLIQUE SUR UNE CARTE =====
+// ---------- 7. Quand on clique sur une carte ----------
 function cliquer(bouton, carte) {
   // On ignore le clic si on attend ou si la carte est déjà retournée
-  if (bloque || bouton.classList.contains("visible")) {
-    return;
-  }
+  if (bloque || bouton.classList.contains("visible")) return;
 
   // On retourne la carte
   afficher(bouton, carte.contenu);
@@ -268,13 +266,13 @@ function cliquer(bouton, carte) {
 
   // Si c'est la première carte, on la garde en mémoire et on s'arrête
   if (premiere === null) {
-    premiere = { bouton: bouton, carte: carte };
+    premiere = { bouton, carte };
     return;
   }
 
   // Sinon c'est la deuxième carte : on compte un coup
   coups++;
-  document.getElementById("info").textContent = "Coups : " + coups;
+  info.textContent = `Coups : ${coups}`;
 
   if (premiere.carte.id === carte.id) {
     // Bonne paire !
@@ -282,27 +280,41 @@ function cliquer(bouton, carte) {
     bouton.classList.add("trouvee");
     trouvees++;
     premiere = null;
-    if (trouvees === nbPaires) {
-      document.getElementById("info").textContent =
-        "🎉 Bravo ! Gagné en " + coups + " coups";
+    if (trouvees === nombrePaires) {
+      info.textContent = `🎉 Bravo ! Gagné en ${coups} coups`;
     }
   } else {
-    // Mauvaise paire : on les recache après 1 seconde (1000 ms)
+    // Mauvaise paire : on les recache après 1 seconde
     bloque = true;
     const ancienne = premiere.bouton;
     premiere = null;
-    setTimeout(function () {
+    retourEnAttente = setTimeout(() => {
       ancienne.textContent = "?";
       ancienne.classList.remove("visible");
       bouton.textContent = "?";
       bouton.classList.remove("visible");
       bloque = false;
-    }, 1000);
+    }, PAUSE_MAUVAISE_PAIRE);
   }
 }
 
-document.getElementById("recommencer").addEventListener("click", function () {
+// ---------- 8. Les réglages et le bouton « Recommencer » ----------
+choixTheme.addEventListener("change", () => {
+  themeActuel = choixTheme.value;
   lancer();
 });
-// ===== 7. ON LANCE LA PREMIÈRE PARTIE AU CHARGEMENT =====
+
+choixMode.addEventListener("change", () => {
+  modeActuel = choixMode.value;
+  lancer();
+});
+
+choixNiveau.addEventListener("change", () => {
+  niveauActuel = choixNiveau.value;
+  lancer();
+});
+
+boutonRecommencer.addEventListener("click", lancer);
+
+// ---------- 9. Démarrage ----------
 lancer();
