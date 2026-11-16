@@ -26,9 +26,13 @@
   border-radius: var(--arrondi);
 }
 
+/* La boîte du pictogramme : assez large pour les 3 mains du
+   triple-clic (environ 60 px), pour que les textes restent alignés.
+   margin-right garde toujours un espace avant le texte. */
 .icone {
   display: inline-block;
-  min-width: 3.2rem;
+  min-width: 4rem;
+  margin-right: 0.5rem;
 }
 
 /* ----- Les exercices ----- */
@@ -52,7 +56,14 @@
   border-color: var(--vert);
 }
 
-/* La case à cocher dessinée avant chaque consigne */
+/* La case à cocher, tout à droite du cadre de l'exercice.
+   float: right la pousse au bout de la ligne de consigne,
+   le texte reste à gauche. */
+.statut {
+  float: right;
+  margin-left: 1rem;
+}
+
 .statut::before {
   content: "⬜";
 }
