@@ -131,6 +131,38 @@ const NIVEAUX = [
       },
     ],
   },
+  {
+    nom: "Chercher sur internet",
+    couleur: "situation",
+    titre: "Chercher sur internet",
+    introduction: "Tu vas chercher une information sur **une page internet**.",
+    usages: [
+      { picto: "🔎", texte: "Lire les résultats d'une **recherche**" },
+      { picto: "🍳", texte: "Trouver une **recette** de cuisine" },
+      { picto: "🏛️", texte: "Trouver les **horaires** de la mairie" },
+      { picto: "📰", texte: "Lire les **actualités** jusqu'en bas" },
+    ],
+    astuce:
+      "sur internet, ce qu'on cherche est souvent **plus bas**. Tourne la molette **vers toi** pour descendre.",
+    mobile:
+      "📱 Sur un téléphone ou une tablette, fais glisser ton doigt sur l'écran.",
+    manches: [
+      {
+        scene: "recherche",
+        nom: "La recherche",
+        etapes: [
+          {
+            nom: "chercher",
+            consigne:
+              "Tu cherches une recette de crêpes. Descends dans les résultats et clique sur **Les crêpes de Mamie**.",
+            guide: { fleche: "↓", texte: "Trouve « Les crêpes de Mamie »" },
+            // Le guide quand le bon résultat apparaît à l'écran
+            guideArrivee: { fleche: "👆", texte: "Clique sur le titre bleu" },
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 // Le répertoire du niveau 2 (rangé dans l'ordre de l'alphabet par le JS)
@@ -190,6 +222,10 @@ const MESSAGES = [
 // Temps entre la réussite et l'ouverture de la fenêtre « Bravo »,
 // en millisecondes (le même que dans « Déplacer la souris »)
 const PAUSE_AVANT_BRAVO = 600;
+
+// Niveau 3 : combien de temps le guide affiche « Ce n'est pas ça »,
+// en millisecondes, avant de reprendre son texte normal
+const DUREE_MESSAGE_GUIDE = 2500;
 
 // Niveau 2 : part du cadre qu'il faut voir à l'écran pour afficher l'aide
 // « La liste ne bouge pas ? » (0.75 = 75 %)
@@ -692,12 +728,61 @@ function preparerMessages(decor) {
   });
 }
 
+// Niveau 3 : une page internet, où il faut trouver et cliquer
+// sur l'élément qui a la classe « cible »
+function preparerPageWeb(decor, texteReussite) {
+  const cible = decor.querySelector(".cible");
+  let cibleVue = false; // true dès que la cible est apparue à l'écran
+  let retourDuGuide = null; // minuteur : le guide reprend son texte normal
+
+  // Le texte normal du guide : avant ou après l'arrivée sur la cible
+  function remettreLeGuide() {
+    const etape = etapeEnCours();
+    const { fleche, texte } = cibleVue ? etape.guideArrivee : etape.guide;
+    guideFleche.textContent = fleche;
+    guideTexte.textContent = texte;
+  }
+
+  // Arrivé à la cible : le guide dit quoi faire
+  surveiller([cible], () => {
+    cibleVue = true;
+    remettreLeGuide();
+  });
+
+  // Un seul écouteur pour toute la page
+  decor.addEventListener("click", (evenement) => {
+    const bouton = evenement.target.closest("button");
+    if (!bouton || mancheFinie) return;
+
+    if (bouton === cible) {
+      clearTimeout(retourDuGuide);
+      cible.classList.add("trouve");
+      reussirManche(texteReussite);
+    } else {
+      // Le message est loin en bas : c'est le guide qui le dit,
+      // pendant 2,5 secondes, puis il reprend son texte normal
+      guideFleche.textContent = "✋";
+      guideTexte.textContent = "Ce n'est pas ça. Continue à chercher.";
+      clearTimeout(retourDuGuide);
+      retourDuGuide = setTimeout(() => {
+        if (!mancheFinie) remettreLeGuide();
+      }, DUREE_MESSAGE_GUIDE);
+    }
+  });
+}
+
+// Niveau 3, manche 1 : la page de résultats de recherche
+function preparerRecherche(decor) {
+  preparerPageWeb(decor, "Tu as trouvé la recette.");
+}
+
 // Le décor à préparer pour chaque valeur de « scene » (section 1)
 const PREPARER_SCENE = {
   tresor: preparerTresor,
   fusee: preparerFusee,
   contacts: preparerContacts,
   messages: preparerMessages,
+  recherche: preparerRecherche,
 };
 
 // ---------- 7. L'aide du niveau 2 ----------

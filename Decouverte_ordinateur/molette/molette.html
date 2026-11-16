@@ -267,5 +267,79 @@
         <div class="defilant fil" tabindex="0" aria-label="Conversation avec Nadia"></div>
       </div>
     </template>
+
+    <!-- Niveau 3, manche 1 : une page de résultats de recherche.
+         Elle ressemble à un vrai moteur de recherche, avec un nom inventé
+         (« Cherchetout ») : on ne copie pas la marque d'une vraie entreprise.
+         Les titres des résultats sont des <button> : on peut cliquer dessus,
+         mais la page ne change pas d'adresse. -->
+    <template id="scene-recherche">
+      <div class="scene page-web">
+        <!-- La fenêtre du navigateur : la barre reste collée en haut de l'écran -->
+        <div class="navigateur" aria-hidden="true">
+          <span class="onglet"><span class="onglet-icone"></span>recette des crêpes - Cherchetout</span>
+          <div class="barre-adresse">
+            <span class="fleches">← → ↻</span>
+            <span class="adresse">cherchetout.fr/recherche?q=recette+des+crêpes</span>
+          </div>
+        </div>
+
+        <div class="recherche-entete">
+          <span class="logo-recherche">Cherche<span>tout</span></span>
+          <span class="champ-recherche">recette des crêpes</span>
+        </div>
+        <div class="onglets-recherche" aria-hidden="true">
+          <span class="choisi">Tous</span><span>Images</span><span>Vidéos</span><span>Actualités</span><span>Plus</span>
+        </div>
+
+        <div class="resultats">
+          <p class="nombre-resultats">Environ 1 230 000 résultats</p>
+
+          <div class="resultat">
+            <p class="site"><span class="site-icone">🍳</span><span>Recettes faciles<small>https://www.recettes-faciles.fr › crepes</small></span></p>
+            <button type="button" class="resultat-titre">Pâte à crêpes rapide en 10 minutes</button>
+            <p class="resume">La pâte à crêpes la plus simple : de la farine, des œufs, du lait. Prête en 10 minutes, sans repos.</p>
+          </div>
+
+          <!-- La bande d'images -->
+          <p class="titre-bloc">Images</p>
+          <div class="images-recherche">
+            <img src="../../assets/faux_google/crepes_2.webp" alt="Des crêpes avec des fruits rouges" />
+            <img src="../../assets/faux_google/crepes_3.webp" alt="Une pile de crêpes" />
+            <img src="../../assets/faux_google/crepes_4.webp" alt="Des crêpes et de la pâte à tartiner" />
+            <img src="../../assets/faux_google/crepes_5.webp" alt="Des crêpes épaisses" />
+          </div>
+
+          <div class="questions">
+            <p class="titre-bloc">Autres questions posées</p>
+            <p>Quelle farine pour les crêpes ?</p>
+            <p>Faut-il laisser reposer la pâte ?</p>
+            <p>Combien de crêpes avec 250 g de farine ?</p>
+          </div>
+
+          <div class="resultat">
+            <p class="site"><span class="site-icone">📺</span><span>Cuisine TV<small>https://www.cuisine-tv.fr › video</small></span></p>
+            <button type="button" class="resultat-titre">Vidéo : réussir ses crêpes comme un chef</button>
+            <p class="resume">Regardez notre vidéo pas à pas pour des crêpes fines et dorées.</p>
+          </div>
+
+          <div class="resultat">
+            <p class="site"><span class="site-icone">🌍</span><span>Recettes du monde<small>https://www.recettes-du-monde.fr › bretagne</small></span></p>
+            <button type="button" class="resultat-titre">Les crêpes bretonnes traditionnelles</button>
+            <p class="resume">Découvrez l'histoire des crêpes en Bretagne et la recette des galettes.</p>
+          </div>
+
+          <!-- Le résultat à trouver -->
+          <div class="resultat avec-photo">
+            <div>
+              <p class="site"><span class="site-icone">👵</span><span>La cuisine de Mamie<small>https://www.lacuisinedemamie.fr › crepes</small></span></p>
+              <button type="button" class="resultat-titre cible">Les crêpes de Mamie, la recette facile</button>
+              <p class="resume">Ma recette de crêpes, simple et inratable, pour 4 personnes.</p>
+            </div>
+            <img src="../../assets/faux_google/crepes_1.webp" alt="" />
+          </div>
+        </div>
+      </div>
+    </template>
   </body>
 </html>

@@ -403,7 +403,257 @@
   box-shadow: 0 0 0 4px var(--vert);
 }
 
-/* ---------- 9. La fenêtre « Bravo » ----------
+/* ---------- 9. Les pages internet du niveau 3 ----------
+   Une fenêtre de navigateur dessinée, puis la page du site.
+   Couleurs propres à ces pages : préfixe --web-. */
+.page-web {
+  --web-texte: #202124;
+  --web-gris: #4d5156;
+  --web-lien: #1a0dab;
+  --web-barre: #dee1e6;
+  --web-champ: #f1f3f4;
+  --web-trait: #dadce0;
+
+  /* de la place en bas : le guide ne cache pas la fin de la page */
+  padding-bottom: 4rem;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--web-texte);
+  background: var(--blanc);
+  box-shadow: var(--ombre);
+}
+
+/* La barre du navigateur : collée en haut de l'écran pendant qu'on défile
+   (sticky marche ici grâce à overflow: clip sur .scene) */
+.navigateur {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 0.5rem 0.6rem 0;
+  background: var(--web-barre);
+}
+
+.onglet {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 100%;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* « … » si le titre est trop long */
+  background: var(--blanc);
+  border-radius: 8px 8px 0 0;
+}
+
+.onglet-icone {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  background: var(--bleu);
+  border-radius: 50%;
+}
+
+.barre-adresse {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.6rem;
+  background: var(--blanc);
+  border-bottom: 1px solid var(--web-trait);
+}
+
+.fleches {
+  color: var(--web-gris);
+  letter-spacing: 0.3rem;
+}
+
+.adresse {
+  flex: 1;
+  min-width: 0;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: var(--web-champ);
+  border-radius: 999px;
+}
+
+.adresse::before {
+  content: "🔒 ";
+  font-size: 0.7rem;
+}
+
+/* La page de résultats de recherche */
+.recherche-entete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem 1.6rem;
+  padding: 1.3rem 1.6rem 0;
+}
+
+.logo-recherche {
+  font-size: 1.6rem;
+  font-weight: bold;
+  letter-spacing: -1px;
+  color: var(--bleu);
+}
+
+.logo-recherche span {
+  color: var(--orange);
+}
+
+.champ-recherche {
+  flex: 1 1 260px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 1.2rem;
+  border-radius: 999px;
+  box-shadow: 0 1px 6px rgb(32 33 36 / 0.28);
+}
+
+.champ-recherche::after {
+  content: "🔍";
+}
+
+.onglets-recherche {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.3rem;
+  padding: 0.9rem 1.6rem 0;
+  font-size: 0.85rem;
+  color: var(--web-gris);
+  border-bottom: 1px solid var(--web-trait);
+}
+
+.onglets-recherche span {
+  padding-bottom: 0.6rem;
+}
+
+.onglets-recherche .choisi {
+  color: #1a73e8;
+  border-bottom: 3px solid #1a73e8;
+}
+
+.resultats {
+  max-width: 640px;
+  padding: 0.6rem 1.6rem 2.5rem;
+}
+
+.nombre-resultats {
+  margin: 0.3rem 0 1.2rem;
+  font-size: 0.8rem;
+  color: var(--web-gris);
+}
+
+.resultat {
+  margin-bottom: 1.8rem;
+}
+
+/* Le résultat avec une photo à droite */
+.resultat.avec-photo {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.resultat.avec-photo img {
+  flex-shrink: 0;
+  width: 110px;
+  height: 90px;
+  object-fit: cover; /* la photo remplit le cadre sans être déformée */
+  border-radius: 8px;
+}
+
+.site {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+}
+
+.site small {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--web-gris);
+}
+
+.site-icone {
+  display: grid;
+  place-items: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  font-size: 0.8rem;
+  background: var(--web-champ);
+  border-radius: 50%;
+}
+
+/* Le titre d'un résultat : un bouton qui ressemble à un lien */
+.resultat-titre {
+  display: block;
+  margin: 0.3rem 0 0.2rem;
+  padding: 0;
+  font-size: 1.25rem;
+  text-align: left;
+  color: var(--web-lien);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.resultat-titre:hover {
+  text-decoration: underline;
+}
+
+.resultat-titre.trouve {
+  color: var(--vert);
+  text-decoration: underline;
+}
+
+.resume {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--web-gris);
+}
+
+.titre-bloc {
+  margin-bottom: 0.6rem;
+  font-size: 1.25rem;
+}
+
+.images-recherche {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1.8rem;
+}
+
+.images-recherche img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.questions {
+  margin-bottom: 1.8rem;
+}
+
+.questions p:not(.titre-bloc) {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.8rem 0;
+  border-top: 1px solid var(--web-trait);
+}
+
+.questions p:not(.titre-bloc)::after {
+  content: "⌄";
+  color: var(--web-gris);
+}
+
+/* ---------- 10. La fenêtre « Bravo » ----------
    showModal() la place au milieu de l'écran, par-dessus tout le reste.
    ::backdrop est le voile sombre derrière elle. */
 .bravo {
@@ -432,7 +682,7 @@
   line-height: 1.5;
 }
 
-/* ---------- 10. Petits écrans ---------- */
+/* ---------- 11. Petits écrans ---------- */
 @media (max-width: 560px) {
   .guide {
     font-size: 1rem;
@@ -445,5 +695,14 @@
 
   .lune {
     width: 110px;
+  }
+
+  .images-recherche {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .resultat.avec-photo img {
+    width: 80px;
+    height: 70px;
   }
 }
