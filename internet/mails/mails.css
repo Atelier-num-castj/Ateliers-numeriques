@@ -1,0 +1,572 @@
+/* =========================================================
+   mails.css — la page « Apprendre à utiliser les mails »
+   Chargée après styles.css : elle ajuste seulement.
+   ========================================================= */
+
+/* Quand on clique sur une partie du sommaire, la page descend
+   doucement (sauf si la personne a demandé moins d'animations). */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+main {
+  padding-bottom: 2rem;
+}
+
+/* Les parties : un peu d'espace entre les cartes,
+   et un petit écart en haut quand on arrive par le sommaire. */
+.consignes {
+  margin-top: 1.5rem;
+  scroll-margin-top: 1rem;
+}
+
+.consignes h5 {
+  margin-top: 0.5rem;
+  font-size: 1.05rem;
+  color: var(--bleu);
+}
+
+.consignes p,
+.consignes li {
+  line-height: 1.7;
+}
+
+/* Le sommaire : de gros liens faciles à cliquer */
+.sommaire ol {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.sommaire a {
+  color: var(--bleu);
+  font-weight: bold;
+}
+
+.sommaire a:hover {
+  color: var(--orange);
+}
+
+.sommaire a:focus-visible {
+  outline: 4px solid var(--orange);
+  outline-offset: 3px;
+}
+
+/* L'adresse mail d'exemple, écrite en grand */
+.exemple-adresse {
+  width: fit-content;
+  padding: 0.5rem 1rem;
+  font-size: 1.3rem;
+  background: var(--bleu-pale);
+  border-radius: var(--arrondi);
+}
+
+/* « À toi ! » : renvoie vers l'exercice de la fiche papier */
+.a-toi {
+  padding: 0.6rem 0.9rem;
+  font-weight: bold;
+  background: var(--vert-pale);
+  border-left: 6px solid var(--vert);
+  border-radius: var(--arrondi);
+}
+
+.lien-jeu {
+  width: min(900px, calc(100% - 2rem));
+  margin-inline: auto;
+}
+
+/* =========================================================
+   La fausse boîte Gmail (partie 1)
+   Un dessin en HTML et CSS : rien n'est cliquable.
+   Ses couleurs ont le préfixe --gm-, ses classes le préfixe fg-
+   (« faux Gmail »), pour ne pas se mélanger avec le reste du site.
+   ========================================================= */
+.faux-gmail {
+  --gm-fond: #f6f8fc;
+  --gm-choisi: #d3e3fd;
+  --gm-nouveau: #c2e7ff;
+  --gm-ligne: #e3e6ea;
+  --gm-gris: #5f6368;
+
+  overflow: hidden;
+  font-size: 0.9rem;
+  background: var(--gm-fond);
+  border: 1px solid var(--bordure);
+  border-radius: var(--arrondi);
+  box-shadow: var(--ombre);
+}
+
+.fg-haut {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.6rem 1rem;
+}
+
+.fg-nom {
+  font-size: 1.3rem;
+  color: var(--gm-gris);
+}
+
+.fg-recherche {
+  flex: 1;
+  padding: 0.6rem 1rem;
+  color: var(--gm-gris);
+  background: #e9eef6;
+  border-radius: 999px;
+}
+
+.fg-avatar {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  aspect-ratio: 1;
+  font-weight: bold;
+  color: var(--blanc);
+  background: var(--vert);
+  border-radius: 50%;
+}
+
+.fg-corps {
+  display: grid;
+  grid-template-columns: 16rem 1fr;
+}
+
+.fg-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.5rem 0.5rem 1rem 0;
+}
+
+.fg-nouveau {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: fit-content;
+  margin: 0 0 0.6rem 0.6rem;
+  padding: 1rem 1.3rem;
+  font-weight: bold;
+  background: var(--gm-nouveau);
+  border-radius: 1rem;
+}
+
+.fg-dossier {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.35rem 1rem 0.35rem 1.3rem;
+  border-radius: 0 999px 999px 0;
+}
+
+.fg-dossier .fg-nombre {
+  margin-left: auto;
+  font-weight: bold;
+}
+
+.fg-actif {
+  font-weight: bold;
+  background: var(--gm-choisi);
+}
+
+.fg-liste {
+  background: var(--blanc);
+  border-radius: var(--arrondi) 0 0 0;
+}
+
+.fg-mail {
+  display: grid;
+  grid-template-columns: 1.5rem 9rem 1fr auto;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--gm-ligne);
+}
+
+.fg-mail:not(.fg-non-lu) {
+  color: var(--gm-gris);
+  background: #f2f6fc;
+}
+
+.fg-non-lu {
+  font-weight: bold;
+}
+
+.fg-apercu {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.fg-apercu span {
+  font-weight: normal;
+  color: var(--gm-gris);
+}
+
+/* Les numéros orange qui renvoient à la légende */
+.pastille {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 1.6rem;
+  aspect-ratio: 1;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: var(--blanc);
+  background: var(--orange);
+  border: 2px solid var(--blanc);
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.3);
+}
+
+.legende {
+  list-style: none;
+  padding-left: 0 !important;
+}
+
+.legende li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+/* Sur téléphone : le menu passe au-dessus de la liste */
+@media (max-width: 700px) {
+  .fg-corps {
+    grid-template-columns: 1fr;
+  }
+
+  .fg-recherche,
+  .fg-date {
+    display: none;
+  }
+
+  .fg-mail {
+    grid-template-columns: 1.5rem 1fr;
+  }
+
+  .fg-apercu {
+    grid-column: 2;
+  }
+}
+
+/* =========================================================
+   Partie 2 : la fenêtre « Nouveau message »
+   Réutilise les couleurs --gm- et les .pastille de la partie 1.
+   ========================================================= */
+.fg-ecrire {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.fg-ecrire .fg-nouveau {
+  margin: 0;
+}
+
+.fg-fenetre {
+  max-width: 34rem;
+  overflow: hidden;
+  background: var(--blanc);
+  border-radius: var(--arrondi);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.2);
+}
+
+.fg-titre-fenetre {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 1rem;
+  font-weight: bold;
+  background: #f2f6fc;
+}
+
+.fg-titre-fenetre > span:last-child {
+  white-space: nowrap;
+  color: var(--gm-gris);
+  letter-spacing: 0.6rem;
+}
+
+.fg-champ {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 1rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--gm-ligne);
+}
+
+.fg-champ b {
+  color: var(--gm-gris);
+  font-weight: normal;
+}
+
+.fg-champ .pastille,
+.fg-texte .pastille {
+  margin-left: auto;
+}
+
+.fg-texte {
+  display: flex;
+  align-items: flex-start;
+  min-height: 9rem;
+  padding: 0.8rem 1rem;
+  line-height: 1.6;
+}
+
+.fg-outils {
+  flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.7rem 1rem;
+  color: var(--gm-gris);
+}
+
+.fg-envoyer {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.2rem;
+  font-weight: bold;
+  color: var(--blanc);
+  background: #0b57d0;
+  border-radius: 999px;
+}
+
+/* =========================================================
+   Parties 3 à 7 : mail ouvert, pièce jointe, fenêtres
+   Réutilise les couleurs --gm-, .pastille, .fg-fenetre,
+   .fg-champ, .fg-texte, .fg-outils et .fg-envoyer.
+   ========================================================= */
+
+/* Un mail ouvert (parties 3, 4 et 6) */
+.fg-mail-ouvert {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  max-width: 38rem;
+  padding: 1rem 1.2rem;
+  background: var(--blanc);
+  border-radius: var(--arrondi);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.2);
+}
+
+.fg-sujet {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.2rem;
+}
+
+.fg-expediteur {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.fg-expediteur small {
+  color: var(--gm-gris);
+}
+
+.fg-boutons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.fg-bouton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 1.1rem;
+  font-weight: bold;
+  color: var(--gm-gris);
+  border: 1px solid var(--gm-gris);
+  border-radius: 999px;
+}
+
+/* Le texte cité dans un transfert */
+.fg-citation {
+  font-size: 0.85rem;
+  color: var(--gm-gris);
+}
+
+/* Un outil à repérer dans la barre du bas (📎, 🖼️) */
+.fg-surligne {
+  outline: 3px solid var(--orange);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* L'outil et sa pastille restent toujours ensemble */
+.fg-repere {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+/* Le fichier joint, sous le message (partie 5) */
+.fg-jointe {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: fit-content;
+  margin: 0 1rem 0.6rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #0b57d0;
+  background: #f2f6fc;
+  border-radius: 6px;
+}
+
+/* Une petite fenêtre : choisir un fichier, insérer une photo */
+.fg-dialogue {
+  max-width: 30rem;
+  overflow: hidden;
+  background: var(--blanc);
+  border-radius: var(--arrondi);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.2);
+}
+
+.fg-dialogue-titre {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 1rem;
+  font-weight: bold;
+  background: #f2f6fc;
+}
+
+.fg-onglets {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 1rem;
+  padding: 0 1rem;
+  border-bottom: 1px solid var(--gm-ligne);
+}
+
+.fg-onglets span:not(.pastille) {
+  padding: 0.5rem 0;
+}
+
+.fg-onglet-actif {
+  font-weight: bold;
+  color: #0b57d0;
+  border-bottom: 3px solid #0b57d0;
+}
+
+.fg-fichiers {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.8rem 1rem;
+}
+
+.fg-fichier {
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+}
+
+.fg-fichier-choisi {
+  background: var(--gm-choisi);
+}
+
+.fg-pied-dialogue {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.8rem;
+  padding: 0.7rem 1rem;
+  border-top: 1px solid var(--gm-ligne);
+}
+
+.fg-bouton-bleu {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 1.2rem;
+  font-weight: bold;
+  color: var(--blanc);
+  background: #0b57d0;
+  border-radius: 999px;
+}
+
+/* La photo dans le message (partie 7) */
+.fg-image-ligne {
+  display: grid;
+  place-items: center;
+  width: 10rem;
+  height: 7rem;
+  margin-top: 0.4rem;
+  font-size: 3rem;
+  background: #eef1f5;
+  border-radius: 8px;
+}
+
+/* La pièce jointe d'un mail reçu (partie 6) */
+.fg-separation {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding-top: 0.6rem;
+  font-weight: bold;
+  border-top: 1px solid var(--gm-ligne);
+}
+
+.fg-piece {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 12rem;
+  overflow: hidden;
+  border: 1px solid var(--gm-ligne);
+  border-radius: 8px;
+}
+
+.fg-piece-image {
+  display: grid;
+  place-items: center;
+  height: 6rem;
+  font-size: 2.5rem;
+  background: #eef1f5;
+}
+
+.fg-piece-nom {
+  padding: 0.4rem 0.6rem;
+  font-size: 0.85rem;
+}
+
+/* Quand la souris est dessus : fond assombri et flèche ⬇️ */
+.fg-piece-survol {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 0.3rem;
+  padding: 0.4rem;
+  background: rgb(0 0 0 / 0.45);
+}
+
+.fg-icone-blanche {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  aspect-ratio: 1;
+  background: var(--blanc);
+  border-radius: 50%;
+}
+
+.fg-souris {
+  position: absolute;
+  top: 40%;
+  left: 35%;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 1.6rem;
+}

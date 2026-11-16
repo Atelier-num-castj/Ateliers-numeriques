@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Apprendre à utiliser les mails</title>
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="./mails.css" />
+    <link
+      rel="shortcut icon"
+      href="../../assets/logo-CASTJ.png"
+      type="image/x-icon"
+    />
+  </head>
+  <body>
+    <header>
+      <img
+        src="../../assets/Logo-CASTJ-blanc.png"
+        alt="Logo du centre d'animation"
+      />
+      <div class="header-title">
+        <h1>Centre d'animation Saint Jean</h1>
+        <h2>Internet</h2>
+      </div>
+      <div class="bas-header">
+        <nav>
+          <ul>
+            <li>
+              <a href="../../index.html" class="bouton">Retour à l'accueil</a>
+            </li>
+            <li>
+              <a href="../index.html" class="bouton">Retour à l'atelier</a>
+            </li>
+          </ul>
+        </nav>
+        <h3>Mails</h3>
+      </div>
+    </header>
+    <main>
+      <div class="instructions">
+        <h3 class="sous-titre">Apprendre à utiliser les mails avec Gmail</h3>
+        <div class="trait"></div>
+      </div>
+
+      <!-- Introduction et sommaire -->
+      <section class="consignes">
+        <p>
+          Un <strong>mail</strong>, c'est une lettre qu'on envoie avec
+          internet. On dit aussi un <strong>courriel</strong> ou un
+          <strong>e-mail</strong>.
+        </p>
+        <p>
+          Ouvre ta boîte mail <strong>Gmail</strong> sur l'ordinateur. Lis
+          chaque partie, puis fais l'exercice de ta fiche.
+        </p>
+        <nav class="sommaire" aria-label="Les parties">
+          <h4>Les parties</h4>
+          <ol>
+            <li><a href="#decouvrir">Découvrir sa boîte mail</a></li>
+            <li><a href="#envoyer">Envoyer un mail</a></li>
+            <li><a href="#repondre">Répondre à un mail</a></li>
+            <li><a href="#transferer">Transférer un mail</a></li>
+            <li><a href="#joindre">Joindre un fichier</a></li>
+            <li><a href="#telecharger">Télécharger une pièce jointe</a></li>
+            <li><a href="#image">Mettre une image dans le mail</a></li>
+          </ol>
+        </nav>
+        <p class="mobile">
+          📱 Sur téléphone, l'application Gmail est un peu différente : les
+          boutons ne sont pas au même endroit.
+        </p>
+      </section>
+
+      <!-- 1. Découvrir sa boîte mail -->
+      <section class="consignes" id="decouvrir">
+        <h4>1. Découvrir sa boîte mail</h4>
+        <h5>Une adresse mail</h5>
+        <p>
+          Chaque personne a une <strong>adresse mail</strong>. Elle s'écrit
+          toujours comme ça :
+        </p>
+        <p class="exemple-adresse">
+          prenom.nom<strong>@</strong>gmail.com
+        </p>
+        <p>
+          Le signe <strong>@</strong> s'appelle l'<strong>arobase</strong>.
+          Pour l'écrire : <kbd>Alt Gr</kbd> + <kbd>à</kbd> (la touche du
+          <kbd>0</kbd>).
+        </p>
+        <p class="astuce">
+          💡 Une adresse mail n'a pas d'espace, et presque jamais d'accent ni
+          de majuscule.
+        </p>
+
+        <h5>Ta boîte Gmail ressemble à ça</h5>
+        <!-- Dessin de Gmail (pas une vraie boîte : rien n'est cliquable).
+             Les pastilles orange renvoient à la légende en dessous. -->
+        <figure
+          class="faux-gmail"
+          role="img"
+          aria-label="Dessin d'une boîte Gmail : le bouton Nouveau message, les dossiers et la liste des mails reçus."
+        >
+          <div class="fg-haut">
+            <span>☰</span>
+            <span class="fg-nom">Gmail</span>
+            <span class="fg-recherche">🔍 Rechercher dans les messages</span>
+            <span class="fg-avatar">N</span>
+          </div>
+          <div class="fg-corps">
+            <div class="fg-menu">
+              <span class="fg-nouveau"
+                >✏️ Nouveau message <span class="pastille">1</span></span
+              >
+              <span class="fg-dossier fg-actif"
+                >📥 Boîte de réception <span class="fg-nombre">2</span
+                ><span class="pastille">2</span></span
+              >
+              <span class="fg-dossier">☆ Messages suivis</span>
+              <span class="fg-dossier"
+                >📤 Messages envoyés <span class="pastille">3</span></span
+              >
+              <span class="fg-dossier">📄 Brouillons</span>
+              <span class="fg-dossier">⌄ Plus <span class="pastille">4</span></span>
+            </div>
+            <div class="fg-liste">
+              <div class="fg-mail fg-non-lu">
+                <span class="pastille">5</span>
+                <span>Centre Saint Jean</span>
+                <span class="fg-apercu"
+                  >Bienvenue à l'atelier
+                  <span>– Bonjour, voici le programme…</span></span
+                >
+                <span class="fg-date">10:42</span>
+              </div>
+              <div class="fg-mail fg-non-lu">
+                <span>☆</span>
+                <span>Camille</span>
+                <span class="fg-apercu"
+                  >Photos du week-end
+                  <span>– Coucou ! Regarde les photos…</span></span
+                >
+                <span class="fg-date">09:15</span>
+              </div>
+              <div class="fg-mail">
+                <span>☆</span>
+                <span>Mairie</span>
+                <span class="fg-apercu"
+                  >Votre rendez-vous
+                  <span>– Bonjour, votre rendez-vous est confirmé…</span></span
+                >
+                <span class="fg-date">14 nov.</span>
+              </div>
+              <div class="fg-mail">
+                <span>☆</span>
+                <span>Nadia</span>
+                <span class="fg-apercu"
+                  >Anniversaire <span>– Merci pour ton message !</span></span
+                >
+                <span class="fg-date">12 nov.</span>
+              </div>
+            </div>
+          </div>
+        </figure>
+        <ol class="legende">
+          <li>
+            <span class="pastille">1</span>
+            <span
+              >✏️ <strong>Nouveau message</strong> : pour écrire un mail.</span
+            >
+          </li>
+          <li>
+            <span class="pastille">2</span>
+            <span
+              >📥 <strong>Boîte de réception</strong> : les mails que tu as
+              <strong>reçus</strong>.</span
+            >
+          </li>
+          <li>
+            <span class="pastille">3</span>
+            <span
+              >📤 <strong>Messages envoyés</strong> : les mails que tu as
+              <strong>envoyés</strong>.</span
+            >
+          </li>
+          <li>
+            <span class="pastille">4</span>
+            <span
+              >⌄ <strong>Plus</strong> : clique ici pour voir la 🗑️
+              <strong>Corbeille</strong> (les mails supprimés).</span
+            >
+          </li>
+          <li>
+            <span class="pastille">5</span>
+            <span>Un mail <strong>en gras</strong> n'a pas encore été lu.</span>
+          </li>
+        </ol>
+
+        <h5>Lire un mail</h5>
+        <ol>
+          <li>📥 Clique sur <strong>Boîte de réception</strong>.</li>
+          <li>
+            👆 Clique sur un mail. Un mail <strong>en gras</strong> n'a pas
+            encore été lu.
+          </li>
+          <li>⬅️ Pour revenir à la liste, clique sur la flèche en haut.</li>
+        </ol>
+        <p class="a-toi">✍️ À toi ! Fais l'exercice 1 de ta fiche.</p>
+      </section>
+
+      <!-- 2. Envoyer un mail -->
+      <section class="consignes" id="envoyer">
+        <h4>2. Envoyer un mail</h4>
+        <!-- Dessin de la fenêtre « Nouveau message ».
+             Les pastilles ont les mêmes numéros que les étapes en dessous. -->
+        <figure
+          class="faux-gmail fg-ecrire"
+          role="img"
+          aria-label="Dessin de la fenêtre Nouveau message de Gmail : les cases À, Objet, Message et le bouton Envoyer."
+        >
+          <span class="fg-nouveau"
+            >✏️ Nouveau message <span class="pastille">1</span></span
+          >
+          <div class="fg-fenetre">
+            <div class="fg-titre-fenetre">
+              <span>Nouveau message</span>
+              <span>_ ⤢ ✕</span>
+            </div>
+            <div class="fg-champ">
+              <b>À</b> le mail de l'animateur
+              <span class="pastille">2</span>
+            </div>
+            <div class="fg-champ">
+              <b>Objet</b> Bonjour <span class="pastille">3</span>
+            </div>
+            <div class="fg-texte">
+              <span
+                >Bonjour,<br />Je m'appelle __________.<br />Aujourd'hui, je
+                suis à l'atelier numérique.<br />À bientôt,<br />__________</span
+              >
+              <span class="pastille">4</span>
+            </div>
+            <div class="fg-outils">
+              <span class="fg-envoyer"
+                >Envoyer <span class="pastille">5</span></span
+              >
+              <span>A</span>
+              <span>📎</span>
+              <span>🔗</span>
+              <span>😊</span>
+              <span>🖼️</span>
+              <span>🗑️</span>
+            </div>
+          </div>
+        </figure>
+        <p>Les numéros orange sont les étapes ci-dessous.</p>
+        <ol>
+          <li>✏️ Clique sur <strong>Nouveau message</strong>, tout en haut.</li>
+          <li>
+            👤 Dans la case <strong>À</strong>, écris l'<strong>adresse
+            mail</strong> de la personne. (La case s'appelle parfois
+            «&nbsp;Destinataires&nbsp;».)
+          </li>
+          <li>
+            🏷️ Dans la case <strong>Objet</strong>, écris en quelques mots de
+            quoi parle le mail.
+          </li>
+          <li>
+            📝 Dans la grande case en dessous, écris ton
+            <strong>message</strong>.
+          </li>
+          <li>📨 Clique sur le bouton bleu <strong>Envoyer</strong>.</li>
+        </ol>
+        <p class="astuce">
+          💡 Pour vérifier, va dans <strong>Messages envoyés</strong> : ton
+          mail est en haut de la liste.
+        </p>
+        <p class="a-toi">✍️ À toi ! Fais l'exercice 2 de ta fiche.</p>
+      </section>
+
+      <!-- 3. Répondre à un mail -->
+      <section class="consignes" id="repondre">
+        <h4>3. Répondre à un mail</h4>
+        <p>
+          <strong>Répondre</strong>, c'est écrire à la personne qui t'a envoyé
+          le mail. Pas besoin d'écrire son adresse.
+        </p>
+        <!-- Dessin : un mail ouvert, puis la réponse en dessous. -->
+        <figure
+          class="faux-gmail fg-ecrire"
+          role="img"
+          aria-label="Dessin d'un mail ouvert dans Gmail, avec le bouton Répondre, puis la case pour écrire la réponse."
+        >
+          <div class="fg-mail-ouvert">
+            <p class="fg-sujet">Re: Bonjour <span class="pastille">1</span></p>
+            <p class="fg-expediteur">
+              <span class="fg-avatar">A</span>
+              <span><b>Animateur</b> <small>le mail de l'animateur</small></span>
+            </p>
+            <p>Bonjour __________ !<br />Quel est ton plat préféré ?</p>
+            <p class="fg-boutons">
+              <span class="fg-bouton">↩️ Répondre <span class="pastille">2</span></span>
+              <span class="fg-bouton">➡️ Transférer</span>
+            </p>
+          </div>
+          <div class="fg-fenetre">
+            <div class="fg-champ"><b>À</b> Animateur</div>
+            <div class="fg-texte">
+              <span
+                >Bonjour,<br />Mon plat préféré est __________.<br />Et toi,
+                quel est ton plat préféré ?</span
+              >
+              <span class="pastille">3</span>
+            </div>
+            <div class="fg-outils">
+              <span class="fg-envoyer">Envoyer <span class="pastille">4</span></span>
+            </div>
+          </div>
+        </figure>
+        <p>Les numéros orange sont les étapes ci-dessous.</p>
+        <ol>
+          <li>📥 Ouvre le mail reçu.</li>
+          <li>↩️ En bas du mail, clique sur <strong>Répondre</strong>.</li>
+          <li>📝 Écris ta réponse.</li>
+          <li>📨 Clique sur <strong>Envoyer</strong>.</li>
+        </ol>
+        <p class="astuce">
+          💡 L'adresse et l'objet sont déjà écrits. L'objet commence par
+          «&nbsp;Re&nbsp;», pour «&nbsp;réponse&nbsp;».
+        </p>
+        <p class="a-toi">✍️ À toi ! Fais l'exercice 3 de ta fiche.</p>
+      </section>
+
+      <!-- 4. Transférer un mail -->
+      <section class="consignes" id="transferer">
+        <h4>4. Transférer un mail</h4>
+        <p>
+          <strong>Transférer</strong>, c'est envoyer un mail reçu à une
+          <strong>autre personne</strong>.
+        </p>
+        <!-- Dessin : un mail ouvert, puis la fenêtre du transfert. -->
+        <figure
+          class="faux-gmail fg-ecrire"
+          role="img"
+          aria-label="Dessin d'un mail ouvert dans Gmail, avec le bouton Transférer, puis la fenêtre pour l'envoyer à une autre personne."
+        >
+          <div class="fg-mail-ouvert">
+            <p class="fg-sujet">Invitation à la fête du centre <span class="pastille">1</span></p>
+            <p class="fg-expediteur">
+              <span class="fg-avatar">A</span>
+              <span><b>Animateur</b> <small>le mail de l'animateur</small></span>
+            </p>
+            <p>Bonjour !<br />Le centre fait une fête samedi à 15 h. Tu es invité !</p>
+            <p class="fg-boutons">
+              <span class="fg-bouton">↩️ Répondre</span>
+              <span class="fg-bouton">➡️ Transférer <span class="pastille">2</span></span>
+            </p>
+          </div>
+          <div class="fg-fenetre">
+            <div class="fg-champ">
+              <b>À</b> l'adresse de l'autre personne <span class="pastille">3</span>
+            </div>
+            <div class="fg-champ"><b>Objet</b> Fwd: Invitation à la fête du centre</div>
+            <div class="fg-texte">
+              <span
+                >Regarde cette invitation ! Tu viens avec moi ?<br /><span
+                  class="fg-citation"
+                  >---------- Message transféré ----------<br />Le centre fait
+                  une fête samedi à 15 h…</span
+                ></span
+              >
+              <span class="pastille">4</span>
+            </div>
+            <div class="fg-outils">
+              <span class="fg-envoyer">Envoyer <span class="pastille">5</span></span>
+            </div>
+          </div>
+        </figure>
+        <p>Les numéros orange sont les étapes ci-dessous.</p>
+        <ol>
+          <li>📥 Ouvre le mail reçu.</li>
+          <li>➡️ En bas du mail, clique sur <strong>Transférer</strong>.</li>
+          <li>
+            👤 Dans la case <strong>À</strong>, écris l'adresse mail de
+            l'autre personne.
+          </li>
+          <li>📝 Tu peux ajouter un petit message.</li>
+          <li>📨 Clique sur <strong>Envoyer</strong>.</li>
+        </ol>
+        <p class="astuce">
+          💡 L'objet commence par «&nbsp;Fwd&nbsp;» ou «&nbsp;TR&nbsp;», pour
+          «&nbsp;transféré&nbsp;».
+        </p>
+        <p class="a-toi">✍️ À toi ! Fais l'exercice 4 de ta fiche.</p>
+      </section>
+
+      <!-- 5. Joindre un fichier -->
+      <section class="consignes" id="joindre">
+        <h4>5. Joindre un fichier</h4>
+        <p>
+          Une <strong>pièce jointe</strong>, c'est un fichier qu'on attache au
+          mail : un document, une photo, un papier scanné…
+        </p>
+        <!-- Dessin : la fenêtre du mail, le trombone, puis la fenêtre
+             de l'ordinateur pour choisir le fichier. -->
+        <figure
+          class="faux-gmail fg-ecrire"
+          role="img"
+          aria-label="Dessin d'un mail dans Gmail avec une pièce jointe, le bouton trombone, et la fenêtre de l'ordinateur pour choisir le fichier."
+        >
+          <div class="fg-dialogue">
+            <div class="fg-dialogue-titre"><span>📂 Ouvrir</span><span>✕</span></div>
+            <div class="fg-fichiers">
+              <span>📁 <b>Téléchargements</b></span>
+              <span class="fg-fichier">📄 programme.pdf</span>
+              <span class="fg-fichier fg-fichier-choisi">🖼️ chat.jpg</span>
+            </div>
+            <div class="fg-pied-dialogue">
+              <span class="fg-bouton-bleu">Ouvrir <span class="pastille">3</span></span>
+              <span class="fg-bouton">Annuler</span>
+            </div>
+          </div>
+          <div class="fg-fenetre">
+            <div class="fg-titre-fenetre">
+              <span>Nouveau message <span class="pastille">1</span></span>
+              <span>_ ⤢ ✕</span>
+            </div>
+            <div class="fg-champ"><b>À</b> le mail de l'animateur</div>
+            <div class="fg-champ"><b>Objet</b> Une photo de chat</div>
+            <div class="fg-texte">
+              <span>Coucou,<br />Je t'envoie une photo de chat.</span>
+            </div>
+            <p class="fg-jointe">🖼️ chat.jpg (120 Ko) <span>✕</span> <span class="pastille">4</span></p>
+            <div class="fg-outils">
+              <span class="fg-envoyer">Envoyer <span class="pastille">5</span></span>
+              <span>A</span>
+              <span class="fg-repere"><span class="fg-surligne">📎</span><span class="pastille">2</span></span>
+              <span>🔗</span>
+              <span>😊</span>
+              <span>🖼️</span>
+            </div>
+          </div>
+        </figure>
+        <p>Les numéros orange sont les étapes ci-dessous.</p>
+        <ol>
+          <li>✏️ Écris un nouveau mail (ou une réponse).</li>
+          <li>
+            📎 En bas du mail, clique sur le <strong>trombone</strong>.
+          </li>
+          <li>
+            📂 Une fenêtre s'ouvre. Clique sur le fichier, puis sur
+            <strong>Ouvrir</strong>.
+          </li>
+          <li>
+            ⏳ <strong>Attends</strong> : le nom du fichier apparaît en bas du
+            mail.
+          </li>
+          <li>📨 Clique sur <strong>Envoyer</strong>.</li>
+        </ol>
+        <p class="astuce">
+          💡 Écris dans le message ce que tu envoies, par exemple
+          «&nbsp;Je vous envoie mon justificatif de domicile.&nbsp;»
+        </p>
+        <p class="a-toi">✍️ À toi ! Fais l'exercice 5 de ta fiche.</p>
+      </section>
+
+      <!-- 6. Télécharger une pièce jointe -->
+      <section class="consignes" id="telecharger">
+        <h4>6. Télécharger une pièce jointe</h4>
+        <p>
+          <strong>Télécharger</strong>, c'est enregistrer sur l'ordinateur le
+          fichier reçu dans un mail.
+        </p>
+        <!-- Dessin : un mail ouvert avec une pièce jointe en bas.
+             La souris est sur la pièce jointe : la flèche apparaît. -->
+        <figure
+          class="faux-gmail fg-ecrire"
+          role="img"
+          aria-label="Dessin d'un mail ouvert dans Gmail, avec une pièce jointe en bas. La souris est dessus et le bouton Télécharger apparaît."
+        >
+          <div class="fg-mail-ouvert">
+            <p class="fg-sujet">Programme de l'atelier 📎 <span class="pastille">1</span></p>
+            <p class="fg-expediteur">
+              <span class="fg-avatar">A</span>
+              <span><b>Animateur</b> <small>le mail de l'animateur</small></span>
+            </p>
+            <p>Bonjour,<br />Voici le programme de l'atelier.<br />À bientôt !</p>
+            <p class="fg-separation">Une pièce jointe <span class="pastille">2</span></p>
+            <div class="fg-piece">
+              <span class="fg-piece-image">📄</span>
+              <span class="fg-piece-nom">programme.pdf</span>
+              <span class="fg-piece-survol">
+                <span class="fg-icone-blanche">⬇️</span><span class="pastille">4</span>
+              </span>
+              <span class="fg-souris">👆<span class="pastille">3</span></span>
+            </div>
+          </div>
+        </figure>
+        <p>Les numéros orange sont les étapes ci-dessous.</p>
+        <ol>
+          <li>📥 Ouvre le mail qui a un 📎 trombone.</li>
+          <li>📄 Descends : la pièce jointe est en bas du mail.</li>
+          <li>🖱️ Mets la souris sur la pièce jointe.</li>
+          <li>
+            ⬇️ Clique sur la flèche vers le bas : <strong>Télécharger</strong>.
+          </li>
+        </ol>
+        <p class="astuce">
+          💡 Le fichier est rangé dans le dossier
+          <strong>Téléchargements</strong> de l'ordinateur.
+        </p>
+        <p class="a-toi">✍️ À toi ! Fais l'exercice 6 de ta fiche.</p>
+      </section>
+
+      <!-- 7. Mettre une image dans le mail -->
+      <section class="consignes" id="image">
+        <h4>7. Mettre une image dans le mail</h4>
+        <p>
+          L'image n'est pas une pièce jointe : elle se voit
+          <strong>dans le message</strong>, au milieu du texte.
+        </p>
+        <!-- Dessin : la fenêtre « Insérer une photo », puis le mail
+             avec la photo dans le message. -->
+        <figure
+          class="faux-gmail fg-ecrire"
+          role="img"
+          aria-label="Dessin de la fenêtre Insérer une photo de Gmail, avec l'onglet Importer et le choix En ligne, puis un mail avec la photo dans le message."
+        >
+          <div class="fg-dialogue">
+            <div class="fg-dialogue-titre"><span>Insérer une photo</span><span>✕</span></div>
+            <p class="fg-onglets">
+              <span>Photos</span>
+              <span>Albums</span>
+              <span class="fg-onglet-actif">Importer</span><span class="pastille">3</span>
+              <span>Adresse web</span>
+            </p>
+            <div class="fg-fichiers">
+              <span class="fg-fichier fg-fichier-choisi">🐶 chien.jpg</span>
+            </div>
+            <div class="fg-pied-dialogue">
+              <span>Insérer : <b>◉ En ligne</b> ○ En pièce jointe</span>
+              <span class="fg-bouton-bleu">Insérer <span class="pastille">4</span></span>
+            </div>
+          </div>
+          <div class="fg-fenetre">
+            <div class="fg-titre-fenetre">
+              <span>Nouveau message <span class="pastille">1</span></span>
+              <span>_ ⤢ ✕</span>
+            </div>
+            <div class="fg-champ"><b>Objet</b> Mon animal préféré</div>
+            <div class="fg-texte">
+              <span
+                >Bonjour,<br />Mon animal préféré est le chien. Voici une
+                photo :<br /><span class="fg-image-ligne">🐶</span></span
+              >
+            </div>
+            <div class="fg-outils">
+              <span class="fg-envoyer">Envoyer <span class="pastille">5</span></span>
+              <span>A</span>
+              <span>📎</span>
+              <span class="fg-repere"><span class="fg-surligne">🖼️</span><span class="pastille">2</span></span>
+            </div>
+          </div>
+        </figure>
+        <p>Les numéros orange sont les étapes ci-dessous.</p>
+        <ol>
+          <li>✏️ Écris un nouveau mail.</li>
+          <li>
+            🖼️ En bas du mail, clique sur <strong>Insérer une photo</strong>
+            (le petit dessin de paysage).
+          </li>
+          <li>
+            📂 Choisis <strong>Importer</strong>, puis la photo sur
+            l'ordinateur.
+          </li>
+          <li>
+            ✅ Vérifie que <strong>En ligne</strong> est choisi, puis clique
+            sur <strong>Insérer</strong>.
+          </li>
+          <li>📨 Clique sur <strong>Envoyer</strong>.</li>
+        </ol>
+        <p class="astuce">
+          💡 Si tu choisis «&nbsp;En pièce jointe&nbsp;», la photo est
+          attachée au mail, comme dans la partie 5.
+        </p>
+        <p class="a-toi">✍️ À toi ! Fais l'exercice 7 de ta fiche.</p>
+      </section>
+
+      <a class="lien-jeu" href="../index.html"
+        >Revenir aux activités Internet →</a
+      >
+    </main>
+  </body>
+</html>
