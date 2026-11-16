@@ -413,6 +413,8 @@
   --web-barre: #dee1e6;
   --web-champ: #f1f3f4;
   --web-trait: #dadce0;
+  --web-ia: #eef3fd;
+  --web-ia-bord: #c9d7f8;
 
   /* de la place en bas : le guide ne cache pas la fin de la page */
   padding-bottom: 4rem;
@@ -641,16 +643,179 @@
   margin-bottom: 1.8rem;
 }
 
-.questions p:not(.titre-bloc) {
-  display: flex;
-  justify-content: space-between;
-  padding: 0.8rem 0;
+/* Une question qui se déplie */
+.questions details {
   border-top: 1px solid var(--web-trait);
 }
 
-.questions p:not(.titre-bloc)::after {
+.questions summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 0;
+  list-style: none; /* enlève le petit triangle ▶ du navigateur */
+  cursor: pointer;
+}
+
+/* Le même triangle, pour Safari */
+.questions summary::-webkit-details-marker {
+  display: none;
+}
+
+/* La flèche ⌄ se retourne quand la question est ouverte */
+.questions summary::after {
   content: "⌄";
   color: var(--web-gris);
+  transition: rotate 0.2s;
+}
+
+.questions details[open] summary::after {
+  rotate: 180deg;
+}
+
+.questions details p {
+  padding-bottom: 0.9rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--web-gris);
+}
+
+/* La réponse de l'IA, tout en haut des résultats */
+.reponse-ia {
+  margin-bottom: 1.8rem;
+  padding: 1rem 1.2rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  background: var(--web-ia);
+  border: 1px solid var(--web-ia-bord);
+  border-radius: 16px;
+}
+
+.ia-titre {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.ia-attention {
+  margin-top: 0.6rem;
+  font-size: 0.8rem;
+  color: var(--web-gris);
+}
+
+/* La page de la recette : un blog de cuisine */
+.recette {
+  --web-brun: #8a4b2a;
+  --web-creme: #f0e2d0;
+  --web-surligne: #fff3cd;
+}
+
+.recette .onglet-icone {
+  background: var(--web-brun);
+}
+
+.recette-site {
+  padding: 1rem 1.5rem;
+  font-family: Georgia, serif;
+  font-size: 1.6rem;
+  text-align: center;
+  color: var(--web-brun);
+  border-bottom: 2px solid var(--web-creme);
+}
+
+.recette-page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 1.4rem 1.5rem 0;
+}
+
+.recette-titre {
+  margin-bottom: 0.6rem;
+  font-family: Georgia, serif;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.recette-infos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--web-gris);
+}
+
+.recette-photo {
+  display: block;
+  width: 100%;
+  height: 300px;
+  margin-bottom: 1rem;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.recette-intro {
+  margin-bottom: 1rem;
+  font-family: Georgia, serif;
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+.recette-section {
+  margin: 1rem 0 0.6rem;
+  font-family: Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--web-brun);
+}
+
+.ingredients {
+  margin-bottom: 1rem;
+}
+
+.ingredients li {
+  padding: 0.4rem 0.9rem;
+  font-size: 1.1rem;
+  border-bottom: 1px dashed var(--web-creme);
+}
+
+.etapes-recette {
+  margin-bottom: 1.4rem;
+  padding-left: 1.8rem;
+}
+
+/* Une étape : un bouton qui prend toute la ligne */
+.etapes-recette button {
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  text-align: left;
+  color: inherit;
+  background: none;
+  border: none;
+  border-bottom: 1px dashed var(--web-creme);
+  cursor: pointer;
+}
+
+.etapes-recette button:hover {
+  background: var(--web-surligne);
+}
+
+.etapes-recette button.trouve {
+  color: var(--blanc);
+  background: var(--vert);
+}
+
+.recette-galerie {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.recette-galerie img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 /* ---------- 10. La fenêtre « Bravo » ----------
@@ -704,5 +869,13 @@
   .resultat.avec-photo img {
     width: 80px;
     height: 70px;
+  }
+
+  .recette-photo {
+    height: 200px;
+  }
+
+  .recette-galerie {
+    grid-template-columns: repeat(2, 1fr);
   }
 }

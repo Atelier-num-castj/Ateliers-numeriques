@@ -295,6 +295,20 @@
         <div class="resultats">
           <p class="nombre-resultats">Environ 1 230 000 résultats</p>
 
+          <!-- La réponse écrite par une intelligence artificielle (IA),
+               tout en haut, comme sur beaucoup de moteurs de recherche -->
+          <div class="reponse-ia">
+            <p class="ia-titre">✨ Réponse de l'IA</p>
+            <p>
+              Pour faire des crêpes, il faut <strong>250 g de farine</strong>,
+              <strong>4 œufs</strong> et <strong>50 cl de lait</strong>.
+              Mélange la farine et les œufs, puis ajoute le lait petit à petit.
+              Fais cuire chaque crêpe 1 minute de chaque côté, dans une poêle
+              chaude.
+            </p>
+            <p class="ia-attention">L'IA peut se tromper. Vérifie sur les sites.</p>
+          </div>
+
           <div class="resultat">
             <p class="site"><span class="site-icone">🍳</span><span>Recettes faciles<small>https://www.recettes-faciles.fr › crepes</small></span></p>
             <button type="button" class="resultat-titre">Pâte à crêpes rapide en 10 minutes</button>
@@ -310,11 +324,25 @@
             <img src="../../assets/faux_google/crepes_5.webp" alt="Des crêpes épaisses" />
           </div>
 
+          <!-- Les questions se déplient comme sur un vrai moteur de recherche :
+               <details> et <summary> le font tout seuls, sans JavaScript -->
           <div class="questions">
             <p class="titre-bloc">Autres questions posées</p>
-            <p>Quelle farine pour les crêpes ?</p>
-            <p>Faut-il laisser reposer la pâte ?</p>
-            <p>Combien de crêpes avec 250 g de farine ?</p>
+            <details>
+              <summary>Quelle farine pour les crêpes ?</summary>
+              <p>La farine de blé classique (type 45 ou 55) convient très bien.</p>
+            </details>
+            <details>
+              <summary>Faut-il laisser reposer la pâte ?</summary>
+              <p>
+                Ce n'est pas obligatoire, mais une heure de repos rend les
+                crêpes plus moelleuses.
+              </p>
+            </details>
+            <details>
+              <summary>Combien de crêpes avec 250 g de farine ?</summary>
+              <p>Environ 12 à 15 crêpes, selon la taille de la poêle.</p>
+            </details>
           </div>
 
           <div class="resultat">
@@ -337,6 +365,78 @@
               <p class="resume">Ma recette de crêpes, simple et inratable, pour 4 personnes.</p>
             </div>
             <img src="../../assets/faux_google/crepes_1.webp" alt="" />
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <!-- Niveau 3, manche 2 : la page de la recette
+         (celle sur laquelle on arrive en cliquant sur le résultat) -->
+    <template id="scene-recette">
+      <div class="scene page-web recette">
+        <div class="navigateur" aria-hidden="true">
+          <span class="onglet"><span class="onglet-icone"></span>Les crêpes de Mamie</span>
+          <div class="barre-adresse">
+            <span class="fleches">← → ↻</span>
+            <span class="adresse">lacuisinedemamie.fr/crepes</span>
+          </div>
+        </div>
+
+        <p class="recette-site">👵 La cuisine de Mamie</p>
+
+        <div class="recette-page">
+          <p class="recette-titre">Les crêpes de Mamie</p>
+          <p class="recette-infos">
+            <span>👥 4 personnes</span><span>⏱️ 10 min</span><span>🔥 20 min</span>
+          </p>
+          <img
+            class="recette-photo"
+            src="../../assets/faux_google/crepes_1.webp"
+            alt="Une pile de crêpes"
+          />
+          <p class="recette-intro">
+            Les crêpes, c'est la recette de mon enfance. Voici ma recette
+            simple, pour un goûter en famille.
+          </p>
+          <p class="recette-intro">
+            Le petit secret de Mamie : laisse reposer la pâte une heure.
+            Les crêpes seront encore meilleures !
+          </p>
+
+          <p class="recette-section">Ingrédients</p>
+          <ul class="ingredients">
+            <li>250 g de farine</li>
+            <li>4 œufs</li>
+            <li>50 cl de lait</li>
+            <li>1 pincée de sel</li>
+            <li>2 cuillères de sucre</li>
+            <li>50 g de beurre fondu</li>
+          </ul>
+
+          <p class="recette-section">Préparation</p>
+          <!-- Les étapes sont des boutons : on peut cliquer dessus.
+               La dernière est celle à trouver (classe « cible »). -->
+          <ol class="etapes-recette">
+            <li><button type="button">Mets la farine dans un grand saladier.</button></li>
+            <li><button type="button">Fais un trou au milieu de la farine.</button></li>
+            <li><button type="button">Casse les œufs dans le trou.</button></li>
+            <li><button type="button">Mélange doucement avec un fouet.</button></li>
+            <li><button type="button">Verse le lait petit à petit, sans arrêter de mélanger.</button></li>
+            <li><button type="button">Ajoute le sel, le sucre et le beurre fondu.</button></li>
+            <li><button type="button">Laisse reposer la pâte une heure.</button></li>
+            <li><button type="button">Fais chauffer une poêle avec un peu de beurre.</button></li>
+            <li><button type="button">Verse une petite louche de pâte dans la poêle.</button></li>
+            <li><button type="button">Fais cuire 1 minute, puis retourne la crêpe.</button></li>
+            <li><button type="button">Fais cuire encore 1 minute de l'autre côté.</button></li>
+            <li><button type="button" class="cible">Régale-toi en mangeant les crêpes ! 😋</button></li>
+          </ol>
+
+          <p class="recette-section">Vos photos</p>
+          <div class="recette-galerie">
+            <img src="../../assets/faux_google/crepes_2.webp" alt="" />
+            <img src="../../assets/faux_google/crepes_3.webp" alt="" />
+            <img src="../../assets/faux_google/crepes_4.webp" alt="" />
+            <img src="../../assets/faux_google/crepes_5.webp" alt="" />
           </div>
         </div>
       </div>

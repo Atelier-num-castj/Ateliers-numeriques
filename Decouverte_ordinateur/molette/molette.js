@@ -137,10 +137,10 @@ const NIVEAUX = [
     titre: "Chercher sur internet",
     introduction: "Tu vas chercher une information sur **une page internet**.",
     usages: [
-      { picto: "🔎", texte: "Lire les résultats d'une **recherche**" },
-      { picto: "🍳", texte: "Trouver une **recette** de cuisine" },
-      { picto: "🏛️", texte: "Trouver les **horaires** de la mairie" },
-      { picto: "📰", texte: "Lire les **actualités** jusqu'en bas" },
+      { picto: "🔎", texte: "Lire **tous les résultats** d'une recherche" },
+      { picto: "🔗", texte: "Ouvrir le **bon site** en cliquant sur un résultat" },
+      { picto: "📄", texte: "Trouver une **information** sur un site" },
+      { picto: "⬇️", texte: "Voir le **bas de la page** : adresse, horaires, contact" },
     ],
     astuce:
       "sur internet, ce qu'on cherche est souvent **plus bas**. Tourne la molette **vers toi** pour descendre.",
@@ -158,6 +158,22 @@ const NIVEAUX = [
             guide: { fleche: "↓", texte: "Trouve « Les crêpes de Mamie »" },
             // Le guide quand le bon résultat apparaît à l'écran
             guideArrivee: { fleche: "👆", texte: "Clique sur le titre bleu" },
+          },
+        ],
+      },
+      {
+        scene: "recette",
+        nom: "La recette",
+        etapes: [
+          {
+            nom: "chercher",
+            consigne:
+              "Tu es sur la page de la recette. Descends jusqu'à la **préparation** et clique sur la **dernière étape** : « **Régale-toi en mangeant les crêpes !** »",
+            guide: { fleche: "↓", texte: "Trouve « Régale-toi en mangeant les crêpes ! »" },
+            guideArrivee: {
+              fleche: "👆",
+              texte: "Clique sur « Régale-toi en mangeant les crêpes ! »",
+            },
           },
         ],
       },
@@ -431,6 +447,8 @@ function demarrerManche() {
   const modele = document.getElementById(`scene-${manche.scene}`);
   const decor = modele.content.firstElementChild.cloneNode(true);
   scene.replaceChildren(decor);
+  // On commence en haut du jeu (la fusée, elle, se replace en bas juste après)
+  plateau.scrollIntoView({ block: "start" });
 
   PREPARER_SCENE[manche.scene](decor);
   afficherEtape();
@@ -729,8 +747,13 @@ function preparerMessages(decor) {
 }
 
 // Niveau 3 : une page internet, où il faut trouver et cliquer
-// sur l'élément qui a la classe « cible »
-function preparerPageWeb(decor, texteReussite) {
+// sur l'élément qui a la classe « cible ».
+// texteErreur : ce que dit le guide après un clic sur autre chose
+function preparerPageWeb(
+  decor,
+  texteReussite,
+  texteErreur = "Ce n'est pas ça. Continue à chercher.",
+) {
   const cible = decor.querySelector(".cible");
   let cibleVue = false; // true dès que la cible est apparue à l'écran
   let retourDuGuide = null; // minuteur : le guide reprend son texte normal
@@ -762,7 +785,7 @@ function preparerPageWeb(decor, texteReussite) {
       // Le message est loin en bas : c'est le guide qui le dit,
       // pendant 2,5 secondes, puis il reprend son texte normal
       guideFleche.textContent = "✋";
-      guideTexte.textContent = "Ce n'est pas ça. Continue à chercher.";
+      guideTexte.textContent = texteErreur;
       clearTimeout(retourDuGuide);
       retourDuGuide = setTimeout(() => {
         if (!mancheFinie) remettreLeGuide();
@@ -776,6 +799,15 @@ function preparerRecherche(decor) {
   preparerPageWeb(decor, "Tu as trouvé la recette.");
 }
 
+// Niveau 3, manche 2 : la page de la recette
+function preparerRecette(decor) {
+  preparerPageWeb(
+    decor,
+    "Bon appétit !",
+    "Ce n'est pas la dernière étape. Continue à descendre.",
+  );
+}
+
 // Le décor à préparer pour chaque valeur de « scene » (section 1)
 const PREPARER_SCENE = {
   tresor: preparerTresor,
@@ -783,6 +815,7 @@ const PREPARER_SCENE = {
   contacts: preparerContacts,
   messages: preparerMessages,
   recherche: preparerRecherche,
+  recette: preparerRecette,
 };
 
 // ---------- 7. L'aide du niveau 2 ----------
