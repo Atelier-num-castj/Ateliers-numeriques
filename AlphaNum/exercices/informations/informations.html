@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../../styles.css" />
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="./informations.css" />
+    <link
+      rel="shortcut icon"
+      href="../../../assets/logo-CASTJ.png"
+      type="image/x-icon"
+    />
+    <script type="module" src="./informations.js"></script>
+    <title>Mes informations</title>
+  </head>
+  <body>
+    <header>
+      <img
+        src="../../../assets/Logo-CASTJ-blanc.png"
+        alt="Logo du centre d'animation"
+      />
+      <div class="header-title">
+        <h1>Centre d'animation Saint Jean</h1>
+        <h2>AlphaNum</h2>
+      </div>
+      <div class="bas-header">
+        <nav>
+          <ul>
+            <li>
+              <a href="../../../index.html" class="bouton"
+                >Retour à l'accueil</a
+              >
+            </li>
+            <li>
+              <a href="../../index.html" class="bouton">Retour à l'atelier</a>
+            </li>
+          </ul>
+        </nav>
+        <h3>Mes informations</h3>
+      </div>
+    </header>
+    <main>
+      <div class="instructions">
+        <h3 class="sous-titre">Apprendre à écrire ses informations</h3>
+        <div class="trait"></div>
+        <p>
+          Écris tes informations dans la case.<br />
+          Puis appuie sur <kbd>Entrée</kbd> ou clique sur
+          <strong>Suivant</strong>.
+        </p>
+      </div>
+
+      <section class="fiche">
+        <h4>📝 Ma fiche</h4>
+        <!-- Les lignes de la fiche sont créées par informations.js -->
+        <ol class="lignes" id="lignes"></ol>
+        <p class="message" id="message" role="status"></p>
+        <button type="button" class="recommencer" id="bouton-recommencer" hidden>
+          Recommencer
+        </button>
+      </section>
+    </main>
+
+    <!-- ===== Les modèles utilisés par informations.js ===== -->
+
+    <!-- Une case à remplir (nom, prénom, âge, ville, téléphone) -->
+    <template id="modele-case">
+      <li class="en-cours">
+        <form class="formulaire">
+          <label class="question"></label>
+          <div class="ligne-saisie">
+            <input class="saisie" autocomplete="off" />
+            <button type="submit" class="suivant">Suivant →</button>
+          </div>
+        </form>
+      </li>
+    </template>
+
+    <!-- L'étape femme / homme : écrire le mot sous le bon dessin -->
+    <template id="modele-femme-homme">
+      <li class="en-cours">
+        <form class="formulaire">
+          <div class="haut-etape">
+            <p class="question">Tu es une femme ou un homme ?</p>
+            <button type="button" class="aide">Aide</button>
+          </div>
+          <div class="choix-ecrit">
+            <div class="choix">
+              <span class="picto" aria-hidden="true">👩</span>
+              <b class="modele-aide" hidden>Femme</b>
+              <input class="saisie" data-picto="👩" aria-label="Femme" autocomplete="off" />
+            </div>
+            <div class="choix">
+              <span class="picto" aria-hidden="true">👨</span>
+              <b class="modele-aide" hidden>Homme</b>
+              <input class="saisie" data-picto="👨" aria-label="Homme" autocomplete="off" />
+            </div>
+          </div>
+          <button type="submit" class="suivant">Suivant →</button>
+        </form>
+      </li>
+    </template>
+
+    <!-- Une information déjà écrite -->
+    <template id="modele-rempli">
+      <li class="rempli">
+        <span class="info"><span class="etiquette"></span><b class="valeur"></b></span>
+        <button type="button" class="changer">✏️ Changer</button>
+      </li>
+    </template>
+  </body>
+</html>

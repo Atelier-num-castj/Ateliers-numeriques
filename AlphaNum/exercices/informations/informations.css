@@ -1,0 +1,283 @@
+/* =========================================================
+   informations.css — exercice « Mes informations »
+   Chargé APRÈS ../../../styles.css et ../../styles.css
+   Les couleurs viennent de :root dans ../../../styles.css
+   ========================================================= */
+
+main {
+  padding: 0 1rem 2rem;
+}
+
+/* ---------- La fiche (la carte blanche) ---------- */
+.fiche {
+  width: min(40rem, 100%);
+  padding: 1.5rem;
+  background: var(--blanc);
+  border-radius: 16px;
+  box-shadow: var(--ombre);
+}
+
+.fiche h4 {
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+  text-align: center;
+}
+
+.lignes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  list-style: none; /* pas de numéros 1, 2, 3 devant les lignes */
+}
+
+/* ---------- Une information déjà écrite (vert) ---------- */
+.rempli {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.7rem 1rem;
+  font-size: 1.3rem;
+  background: var(--vert-pale);
+  border-radius: var(--arrondi);
+}
+
+.rempli .info {
+  min-width: 0; /* un mot très long passe à la ligne au lieu de déborder */
+  overflow-wrap: anywhere;
+}
+
+.changer {
+  flex-shrink: 0; /* le bouton garde sa taille */
+  margin-left: auto; /* le bouton se range tout à droite */
+  padding: 0.3rem 0.7rem;
+  font-size: 0.95rem;
+  color: var(--encre);
+  background: var(--blanc);
+  border: 2px solid var(--bordure);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.changer:hover {
+  border-color: var(--bleu);
+}
+
+/* ---------- Une information à venir (grisée) ---------- */
+.a-venir {
+  padding: 0.7rem 1rem;
+  font-size: 1.3rem;
+  color: var(--texte-leger);
+  border: 2px dashed var(--bordure);
+  border-radius: var(--arrondi);
+}
+
+/* ---------- La case en cours (cadre orange) ---------- */
+.en-cours {
+  padding: 1rem;
+  border: 3px solid var(--orange);
+  border-radius: var(--arrondi);
+}
+
+/* Case vide : le cadre tremble (@keyframes secoue : dans ../../../styles.css) */
+.en-cours.refuse {
+  animation: secoue 0.35s;
+}
+
+.formulaire {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.question {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.ligne-saisie {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+/* Les cases où l'on écrit */
+.saisie {
+  min-width: 0;
+  height: 4rem;
+  padding: 0 1rem;
+  font-size: 2rem;
+  color: var(--encre);
+  background: var(--blanc);
+  border: 3px solid var(--encre);
+  border-radius: var(--arrondi);
+}
+
+/* La case prend la place libre, mais jamais moins de 12rem :
+   sur téléphone, le bouton « Suivant » passe alors en dessous. */
+.ligne-saisie .saisie {
+  flex: 1 1 12rem;
+}
+
+.ligne-saisie .suivant {
+  margin-left: auto; /* le bouton reste à droite, même seul sur sa ligne */
+}
+
+.saisie:focus {
+  outline: 4px solid var(--bleu);
+  border-color: transparent;
+}
+
+/* ---------- Les boutons ---------- */
+.suivant {
+  align-self: flex-end; /* à droite, sous les deux dessins */
+  height: 4rem;
+  padding: 0 1.4rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--blanc);
+  background: var(--bleu);
+  border: none;
+  border-radius: var(--arrondi);
+  cursor: pointer;
+}
+
+.suivant:hover {
+  background: var(--orange);
+}
+
+/* Même style que le bouton Aide de l'Alphabet */
+.aide {
+  padding: 0.5rem 1.1rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--bleu);
+  background: var(--blanc);
+  border: 3px solid var(--bleu);
+  border-radius: 14px;
+  cursor: pointer;
+}
+
+.aide.actif {
+  color: var(--blanc);
+  background: var(--bleu);
+}
+
+.recommencer {
+  display: block;
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.9rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--blanc);
+  background: var(--bleu);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.recommencer:hover {
+  background: var(--orange);
+}
+
+/* Contour bien visible quand on navigue au clavier (touche Tab) */
+.changer:focus-visible,
+.suivant:focus-visible,
+.aide:focus-visible,
+.recommencer:focus-visible {
+  outline: 4px solid var(--orange);
+  outline-offset: 3px;
+}
+
+/* ---------- L'étape femme / homme ---------- */
+.haut-etape {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.choix-ecrit {
+  display: flex;
+  gap: 1rem;
+}
+
+.choix {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  padding: 0.8rem;
+  border: 2px solid var(--bordure);
+  border-radius: var(--arrondi);
+}
+
+.picto {
+  font-size: 4rem;
+  line-height: 1;
+}
+
+.choix .saisie {
+  width: 100%;
+  height: 3.5rem;
+  padding: 0 0.6rem;
+  font-size: 1.6rem;
+  text-align: center;
+}
+
+/* Le mot montré par le bouton Aide : pastille orange, comme dans l'Alphabet */
+.modele-aide {
+  padding: 0.2rem 0.8rem;
+  font-size: 1.6rem;
+  background: var(--orange);
+  border: 4px solid var(--encre);
+  border-radius: 16px;
+}
+
+/* ---------- Le message ---------- */
+.message {
+  min-height: 1.5rem;
+  margin-top: 1rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* ---------- Petits écrans ---------- */
+@media (max-width: 700px) {
+  .fiche {
+    padding: 1rem;
+  }
+
+  .rempli,
+  .a-venir {
+    padding: 0.6rem 0.7rem;
+    font-size: 1.1rem;
+  }
+
+  .changer {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .question {
+    font-size: 1.3rem;
+  }
+
+  .picto {
+    font-size: 3rem;
+  }
+
+  .choix .saisie {
+    padding: 0 0.3rem;
+    font-size: 1.2rem;
+  }
+
+  .modele-aide {
+    padding: 0.1rem 0.5rem;
+    font-size: 1.2rem;
+  }
+}
